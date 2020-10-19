@@ -1,5 +1,5 @@
-# softhaxi-gov-web
-Web administration
+# softhaxi-gov-common
+Common libraries
 
 ### Reference Documentation
 For further reference, please consider the following sections:
