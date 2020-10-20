@@ -1,6 +1,7 @@
 package com.softhaxi.marves.core.domain.account;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author Raja Sihombing
@@ -20,17 +21,18 @@ public class User implements Serializable {
     protected int noLoginFailed;
     protected String passphrase;
     protected String imageSecurity;
+    protected boolean isLDAPUser;
     
     /**
      * 
      */
     public User() {
-        this(null, null, null, null, null, null, -1, null, null);
+        this.isLDAPUser = false;
     }
 
     public User(String id, String username, String email, String mobile, 
             String password, String status, int noLoginFailed, 
-            String passphrase, String imageSecurity) {
+            String passphrase, String imageSecurity, boolean isLDAPUser) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -40,6 +42,7 @@ public class User implements Serializable {
         this.noLoginFailed = noLoginFailed;
         this.passphrase = passphrase;
         this.imageSecurity = imageSecurity;
+        this.isLDAPUser = isLDAPUser;
     }
     
     
@@ -170,24 +173,46 @@ public class User implements Serializable {
         this.imageSecurity = imageSecurity;
     }
 
-    /**
-     * 
-     * @return 
-     */
+
+    public boolean isLDAPUser() {
+        return this.isLDAPUser;
+    }
+
+    public void setIsLDAPUser(boolean isLDAPUser) {
+        this.isLDAPUser = isLDAPUser;
+    }
+
     @Override
-    public String toString() {
-        return "User{" 
-                + "id=" + id 
-                + ", username=" + username 
-                + ", email=" + email 
-                + ", mobile=" + mobile 
-                + ", password=" + password 
-                + ", status=" + status 
-                + ", noLoginFailed=" + noLoginFailed 
-                + ", passphrase=" + passphrase 
-                + ", imageSecurity=" + imageSecurity 
-                + '}';
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof User)) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, email, mobile, password, status, noLoginFailed, passphrase, imageSecurity, isLDAPUser);
     }
     
-    
+
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + getId() + "'" +
+            ", username='" + getUsername() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", mobile='" + getMobile() + "'" +
+            ", password='" + getPassword() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", noLoginFailed='" + getNoLoginFailed() + "'" +
+            ", passphrase='" + getPassphrase() + "'" +
+            ", imageSecurity='" + getImageSecurity() + "'" +
+            ", isLDAPUser='" + isLDAPUser() + "'" +
+            "}";
+    }
+
 }
