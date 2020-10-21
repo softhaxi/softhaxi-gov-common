@@ -4,23 +4,68 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+
 /**
  * @author Raja Sihombing
  * @since 1
  */
+
+@Entity
+@Table(name = "attendance")
+@Access(value = AccessType.FIELD)
 public abstract class Attendence implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 1328697867644739119L;
+    
+    
+    @NotBlank
+   	@Column(name = "id", length=40)
     protected String id;
+    
+    
+    @NotBlank
+   	@Column(name = "type", length=10)
     protected String type;
+    
+    
+    @NotBlank
+   	@Column(name = "dateTime")
+    @Temporal(TemporalType.TIMESTAMP)
     protected Timestamp dateTime;
+    
+    
+    @NotBlank
+   	@Column(name = "action", length=20)
     protected String action;
+    
+    @NotBlank
+   	@Column(name = "latitude")
     protected float latitude;
+    
+    
+    @NotBlank
+   	@Column(name = "longitude")
     protected float longitude;
+    
+    
+    @NotBlank
+   	@Column(name = "is_mock_location")
     protected boolean isMockLocation;
+    
+    
+    @NotBlank
+   	@Column(name = "picture_path", length=100)
     protected String picturePath;
 
 

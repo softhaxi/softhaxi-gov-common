@@ -3,24 +3,64 @@ package com.softhaxi.marves.core.domain.account;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
 /**
  * @author Raja Sihombing
  * @since 1
  */
+@Entity
+@Table(name = "user")
+@Access(value = AccessType.FIELD)
 public class User implements Serializable {
     /**
      *
      */
     private static final long serialVersionUID = 7769293153652418675L;
+    
+    @NotBlank
+	@Column(name = "id")
     protected String id;
+    
+    @NotBlank
+	@Column(name = "username")
     protected String username;
+    
+    @NotBlank
+	@Column(name = "email")
     protected String email;
+    
+    @NotBlank
+ 	@Column(name = "mobile")
     protected String mobile;
+    
+    @NotBlank
+ 	@Column(name = "password")
     protected String password;
+    
+    @NotBlank
+ 	@Column(name = "status")
     protected String status;
+    
+    @NotBlank
+ 	@Column(name = "no_login_failed")
     protected int noLoginFailed;
+    
+    @NotBlank
+ 	@Column(name = "passphrase")
     protected String passphrase;
+    
+    @NotBlank
+ 	@Column(name = "image_security")
     protected String imageSecurity;
+    
+    @NotBlank
+ 	@Column(name = "is_ldap_user")
     protected boolean isLDAPUser;
     
     /**

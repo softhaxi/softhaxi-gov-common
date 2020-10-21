@@ -2,17 +2,37 @@ package com.softhaxi.marves.core.domain.access;
 
 import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
 /**
  * @author Raja Sihombing
  * @since 1
  */
+
+@Entity
+@Table(name = "role")
+@Access(value = AccessType.FIELD)
 public class Role implements Serializable {
     /**
      *
      */
     private static final long serialVersionUID = 6852505996291312103L;
+    
+    @NotBlank
+   	@Column(name = "id", length=40)
     protected String id;
+    
+    @NotBlank
+   	@Column(name = "name", length=40)
     protected String name;
+    
+    @NotBlank
+   	@Column(name = "description", length=200)
     protected String description;
     
     /**

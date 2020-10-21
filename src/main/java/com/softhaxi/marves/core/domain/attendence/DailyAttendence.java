@@ -3,23 +3,61 @@ package com.softhaxi.marves.core.domain.attendence;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+
 /**
  * @author Raja Sihombing
  * @since 1
  */
+
+@Entity
+@Table(name = "daily_attendance")
+@Access(value = AccessType.FIELD)
 public class DailyAttendence extends Attendence {
 
     /**
      *
      */
     private static final long serialVersionUID = -3657340582284188254L;
+    
+    @NotBlank
+   	@Column(name = "id", length=40)
     protected String absence;
+    
+    @NotBlank
+   	@Column(name = "out_action", length=40)
     protected String outAction;
+    
+    @NotBlank
+    @Temporal(TemporalType.TIMESTAMP)
+   	@Column(name = "out_date_time")
     protected Timestamp outDateTime;
+    
+    @NotBlank
+   	@Column(name = "out_latitude")
     protected float outLatitude;
+    
+    @NotBlank
+   	@Column(name = "out_longitude")
     protected float outLongitude;
+    
+    @NotBlank
+   	@Column(name = "is_out_mock_location")
     protected boolean isOutMockLocation;
+    
+    @NotBlank
+   	@Column(name = "out_picture_path", length=200)
     protected String outPicturePath;
+    
+    @NotBlank
+   	@Column(name = "out_absence", length=40)
     protected String outAbsence;
 
 

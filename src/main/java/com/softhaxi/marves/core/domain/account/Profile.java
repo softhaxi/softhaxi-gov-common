@@ -2,26 +2,74 @@ package com.softhaxi.marves.core.domain.account;
 
 import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
 /**
  * @author Raja Sihombing
  * @since 1
  */
+@Entity
+@Table(name = "profile")
+@Access(value = AccessType.FIELD)
 public class Profile implements Serializable {
     /**
      *
      */
     private static final long serialVersionUID = -2215408560873289635L;
+
+    @NotBlank
+	@Column(name = "id", length=40)
     protected String id;
+    
+    @OneToOne
+    @JoinColumn(name="user_id", referencedColumnName="id")
     protected User user;
+    
+    @OneToOne
+    @JoinColumn(name="owner_id",  referencedColumnName="id")    
     protected User owner;
+    
+    @NotBlank
+	@Column(name = "first_name", length=40)
     protected String firstName;
+    
+    @NotBlank
+	@Column(name = "last_name", length=40)
     protected String lastName;
+    
+    @NotBlank
+	@Column(name = "gender", length=10)
     protected String gender;
+    
+    @NotBlank
+	@Column(name = "nationality", length=20)
     protected String nationality;
+    
+    @NotBlank
+	@Column(name = "identity_id", length=40)
     protected String identityID;
+    
+    @NotBlank
+	@Column(name = "identity_type", length=15)
     protected String identityType;
+    
+    @NotBlank
+	@Column(name = "primary_email", length=40)
     protected String primaryEmail;
+    
+    @NotBlank
+	@Column(name = "primary_mobile", length=15)
     protected String primaryMobile;
+    
+    @NotBlank
+	@Column(name = "status", length=10)
     protected String status;
 
     /**

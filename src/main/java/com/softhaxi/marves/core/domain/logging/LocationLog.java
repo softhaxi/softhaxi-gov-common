@@ -4,20 +4,46 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+
 /**
  * @author Raja Sihombing
  * @since 1
  */
+
+@Entity
+@Table(name = "location_log")
+@Access(value = AccessType.FIELD)
 public class LocationLog implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 1611171951226492406L;
+    
+    @NotBlank
+   	@Column(name = "id", length=40)
     protected String id;
+    
+    @NotBlank
+    @Temporal(TemporalType.TIMESTAMP)
+   	@Column(name = "date_time")
     protected Timestamp dateTime;
+    @NotBlank
+   	@Column(name = "latitude")
     protected float latitude;
+    @NotBlank
+   	@Column(name = "longitude")
     protected float longitude;
+    @NotBlank
+   	@Column(name = "is_mock_location")
     protected boolean isMockLocation;
 
 
