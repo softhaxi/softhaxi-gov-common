@@ -4,76 +4,36 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
+import com.softhaxi.marves.core.domain.account.User;
 
 /**
  * @author Raja Sihombing
  * @since 1
  */
 
-@Entity
-@Table(name = "attendance")
-@Access(value = AccessType.FIELD)
 public abstract class Attendence implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 1328697867644739119L;
-    
-    
-    @NotBlank
-   	@Column(name = "id", length=40)
     protected String id;
-    
-    
-    @NotBlank
-   	@Column(name = "type", length=10)
+    protected User user;
     protected String type;
-    
-    
-    @NotBlank
-   	@Column(name = "dateTime")
-    @Temporal(TemporalType.TIMESTAMP)
     protected Timestamp dateTime;
-    
-    
-    @NotBlank
-   	@Column(name = "action", length=20)
     protected String action;
-    
-    @NotBlank
-   	@Column(name = "latitude")
     protected float latitude;
-    
-    
-    @NotBlank
-   	@Column(name = "longitude")
     protected float longitude;
-    
-    
-    @NotBlank
-   	@Column(name = "is_mock_location")
     protected boolean isMockLocation;
-    
-    
-    @NotBlank
-   	@Column(name = "picture_path", length=100)
     protected String picturePath;
 
 
     public Attendence() {
     }
 
-    public Attendence(String id, String type, Timestamp dateTime, String action, float latitude, float longitude, boolean isMockLocation, String picturePath) {
+    public Attendence(String id, User user, String type, Timestamp dateTime, String action, float latitude, float longitude, boolean isMockLocation, String picturePath) {
         this.id = id;
+        this.user = user;
         this.type = type;
         this.dateTime = dateTime;
         this.action = action;
@@ -89,6 +49,14 @@ public abstract class Attendence implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getType() {
@@ -152,6 +120,11 @@ public abstract class Attendence implements Serializable {
         return this;
     }
 
+    public Attendence user(User user) {
+        this.user = user;
+        return this;
+    }
+
     public Attendence type(String type) {
         this.type = type;
         return this;
@@ -200,13 +173,14 @@ public abstract class Attendence implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, dateTime, action, latitude, longitude, isMockLocation, picturePath);
+        return Objects.hash(id, user.getId(), type, dateTime, action, latitude, longitude, isMockLocation, picturePath);
     }
 
     @Override
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
+            ", user='" + getUser().getId() + "'" +
             ", type='" + getType() + "'" +
             ", dateTime='" + getDateTime() + "'" +
             ", action='" + getAction() + "'" +

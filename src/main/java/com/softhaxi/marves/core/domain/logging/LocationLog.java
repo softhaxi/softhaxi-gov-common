@@ -4,54 +4,33 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
+import com.softhaxi.marves.core.domain.account.User;
 
 /**
  * @author Raja Sihombing
  * @since 1
  */
-
-@Entity
-@Table(name = "location_log")
-@Access(value = AccessType.FIELD)
 public class LocationLog implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 1611171951226492406L;
-    
-    @NotBlank
-   	@Column(name = "id", length=40)
     protected String id;
-    
-    @NotBlank
-    @Temporal(TemporalType.TIMESTAMP)
-   	@Column(name = "date_time")
+    protected User user;
     protected Timestamp dateTime;
-    @NotBlank
-   	@Column(name = "latitude")
     protected float latitude;
-    @NotBlank
-   	@Column(name = "longitude")
     protected float longitude;
-    @NotBlank
-   	@Column(name = "is_mock_location")
     protected boolean isMockLocation;
 
 
     public LocationLog() {
+        isMockLocation = false;
     }
 
-    public LocationLog(String id, Timestamp dateTime, float latitude, float longitude, boolean isMockLocation) {
+    public LocationLog(String id, User user, Timestamp dateTime, float latitude, float longitude, boolean isMockLocation) {
         this.id = id;
+        this.user = user;
         this.dateTime = dateTime;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -64,6 +43,14 @@ public class LocationLog implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Timestamp getDateTime() {
@@ -103,6 +90,11 @@ public class LocationLog implements Serializable {
         return this;
     }
 
+    public LocationLog user(User user) {
+        this.user = user;
+        return this;
+    }
+
     public LocationLog dateTime(Timestamp dateTime) {
         this.dateTime = dateTime;
         return this;
@@ -136,13 +128,14 @@ public class LocationLog implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dateTime, latitude, longitude, isMockLocation);
+        return Objects.hash(id, user.getId(), dateTime, latitude, longitude, isMockLocation);
     }
 
     @Override
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
+            ", user='" + getUser().getId() + "'" +
             ", dateTime='" + getDateTime() + "'" +
             ", latitude='" + getLatitude() + "'" +
             ", longitude='" + getLongitude() + "'" +

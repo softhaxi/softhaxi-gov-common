@@ -2,40 +2,18 @@ package com.softhaxi.marves.core.domain.access;
 
 import java.io.Serializable;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-
 /**
  * @author Raja Sihombing
  * @since 1
  */
-
-@Entity
-@Table(name = "menu_role")
-@Access(value = AccessType.FIELD)
 public class MenuRole implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 7940062212428766722L;
-    
-    @NotBlank
-    @Column(name = "id", length=40)
     protected String id;
-    
-    @OneToOne(mappedBy = "menu")
-    @JoinColumn(name="menu_id", referencedColumnName="id")
     protected Menu menu;
-    
-    @OneToOne(mappedBy = "role")
-    @JoinColumn(name="role_id", referencedColumnName="id")
     protected Role role;
 
 

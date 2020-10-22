@@ -3,88 +3,52 @@ package com.softhaxi.marves.core.domain.attendence;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
+import com.softhaxi.marves.core.domain.account.User;
 
 /**
  * @author Raja Sihombing
  * @since 1
  */
-
-@Entity
-@Table(name = "daily_attendance")
-@Access(value = AccessType.FIELD)
 public class DailyAttendence extends Attendence {
 
     /**
      *
      */
     private static final long serialVersionUID = -3657340582284188254L;
-    
-    @NotBlank
-   	@Column(name = "id", length=40)
-    protected String absence;
-    
-    @NotBlank
-   	@Column(name = "out_action", length=40)
+    protected String inWork;
     protected String outAction;
-    
-    @NotBlank
-    @Temporal(TemporalType.TIMESTAMP)
-   	@Column(name = "out_date_time")
     protected Timestamp outDateTime;
-    
-    @NotBlank
-   	@Column(name = "out_latitude")
     protected float outLatitude;
-    
-    @NotBlank
-   	@Column(name = "out_longitude")
     protected float outLongitude;
-    
-    @NotBlank
-   	@Column(name = "is_out_mock_location")
     protected boolean isOutMockLocation;
-    
-    @NotBlank
-   	@Column(name = "out_picture_path", length=200)
     protected String outPicturePath;
+    protected String outWork;
     
-    @NotBlank
-   	@Column(name = "out_absence", length=40)
-    protected String outAbsence;
 
 
     public DailyAttendence() {
     }
 
-    public DailyAttendence(String id, Timestamp dateTime, String action, float latitude, float longitude, boolean isMockLocation, String picturePath, 
-        String absence, String outAction, Timestamp outDateTime, float outLatitude, float outLongitude, boolean isOutMockLocation, String outPicturePath,
-        String outAbsence) {
-        super(id, "DAILY", dateTime, action, latitude, longitude, isMockLocation, picturePath);
-        this.absence = absence;
+    public DailyAttendence(String id, User user, Timestamp dateTime, String action, float latitude, float longitude, boolean isMockLocation, String picturePath, 
+        String inWork, String outAction, Timestamp outDateTime, float outLatitude, float outLongitude, boolean isOutMockLocation, String outPicturePath,
+        String outWork) {
+        super(id, user, "DAILY", dateTime, action, latitude, longitude, isMockLocation, picturePath);
+        this.inWork = inWork;
         this.outAction = outAction;
         this.outDateTime = outDateTime;
         this.outLatitude = outLatitude;
         this.outLongitude = outLongitude;
         this.isOutMockLocation = isOutMockLocation;
         this.outPicturePath = outPicturePath;
-        this.outAbsence = outAbsence;
+        this.outWork = outWork;
     }
 
-
-    public String getAbsence() {
-        return this.absence;
+    public String getInWork() {
+        return this.inWork;
     }
 
-    public void setAbsence(String absence) {
-        this.absence = absence;
+    public void setInWork(String inWork) {
+        this.inWork = inWork;
     }
 
     public String getOutAction() {
@@ -135,16 +99,16 @@ public class DailyAttendence extends Attendence {
         this.outPicturePath = outPicturePath;
     }
 
-    public String getOutAbsence() {
-        return this.outAbsence;
+    public String getOutWork() {
+        return this.outWork;
     }
 
-    public void setOutAbsence(String outAbsence) {
-        this.outAbsence = outAbsence;
+    public void setOutWork(String outWork) {
+        this.outWork = outWork;
     }
 
-    public DailyAttendence absence(String absence) {
-        this.absence = absence;
+    public DailyAttendence inWork(String inWork) {
+        this.inWork = inWork;
         return this;
     }
 
@@ -178,8 +142,8 @@ public class DailyAttendence extends Attendence {
         return this;
     }
 
-    public DailyAttendence outAbsence(String outAbsence) {
-        this.outAbsence = outAbsence;
+    public DailyAttendence outWork(String outWork) {
+        this.outWork = outWork;
         return this;
     }
 
@@ -196,20 +160,20 @@ public class DailyAttendence extends Attendence {
 
     @Override
     public int hashCode() {
-        return Objects.hash(absence, outAction, outDateTime, outLatitude, outLongitude, isOutMockLocation, outPicturePath, outAbsence);
+        return Objects.hash(super.hashCode(), inWork, outAction, outDateTime, outLatitude, outLongitude, isOutMockLocation, outPicturePath, outWork);
     }
 
     @Override
     public String toString() {
-        return "{" +
-            " absence='" + getAbsence() + "'" +
+        return "{" + super.toString() +
+            ", outAction='" + getInWork() + "'" +
             ", outAction='" + getOutAction() + "'" +
             ", outDateTime='" + getOutDateTime() + "'" +
             ", outLatitude='" + getOutLatitude() + "'" +
             ", outLongitude='" + getOutLongitude() + "'" +
             ", isOutMockLocation='" + isOutMockLocation() + "'" +
             ", outPicturePath='" + getOutPicturePath() + "'" +
-            ", outAbsence='" + getOutAbsence() + "'" +
+            ", outAction='" + getOutWork() + "'" +
             "}";
     }
     

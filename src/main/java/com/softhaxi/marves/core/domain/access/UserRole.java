@@ -2,40 +2,19 @@ package com.softhaxi.marves.core.domain.access;
 
 import java.io.Serializable;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-
 import com.softhaxi.marves.core.domain.account.User;
 
 /**
  * @author Raja Sihombing
  * @since 1
  */
-@Entity
-@Table(name = "user_role")
-@Access(value = AccessType.FIELD)
 public class UserRole implements Serializable {
     /**
      *
      */
     private static final long serialVersionUID = -4410367904229012076L;
-    
-    @NotBlank
-	@Column(name = "id", length=50)
     protected String id;
-    
-    @OneToOne(mappedBy = "user")
-    @JoinColumn(name="user_id", referencedColumnName="id")
     protected User user;
-    
-    @OneToOne(mappedBy = "role")
-    @JoinColumn(name="role_id", referencedColumnName="id")
     protected Role role;
     
     public UserRole() {
