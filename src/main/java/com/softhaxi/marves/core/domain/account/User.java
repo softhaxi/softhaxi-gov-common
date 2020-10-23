@@ -7,6 +7,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -15,7 +16,7 @@ import javax.validation.constraints.NotBlank;
  * @since 1
  */
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Access(value = AccessType.FIELD)
 public class User implements Serializable {
     /**
@@ -23,6 +24,7 @@ public class User implements Serializable {
      */
     private static final long serialVersionUID = 7769293153652418675L;
     
+    @Id
     @NotBlank
 	@Column(name = "id")
     protected String id;
