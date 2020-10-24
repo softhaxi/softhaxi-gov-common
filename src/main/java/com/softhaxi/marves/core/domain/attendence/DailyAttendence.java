@@ -18,8 +18,8 @@ public class DailyAttendence extends Attendence {
     protected String inWork;
     protected String outAction;
     protected Timestamp outDateTime;
-    protected float outLatitude;
-    protected float outLongitude;
+    protected double outLatitude;
+    protected double outLongitude;
     protected boolean isOutMockLocation;
     protected String outPicturePath;
     protected String outWork;
@@ -29,8 +29,8 @@ public class DailyAttendence extends Attendence {
     public DailyAttendence() {
     }
 
-    public DailyAttendence(String id, User user, Timestamp dateTime, String action, float latitude, float longitude, boolean isMockLocation, String picturePath, 
-        String inWork, String outAction, Timestamp outDateTime, float outLatitude, float outLongitude, boolean isOutMockLocation, String outPicturePath,
+    public DailyAttendence(String id, User user, Timestamp dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
+        String inWork, String outAction, Timestamp outDateTime, double outLatitude, double outLongitude, boolean isOutMockLocation, String outPicturePath,
         String outWork) {
         super(id, user, "DAILY", dateTime, action, latitude, longitude, isMockLocation, picturePath);
         this.inWork = inWork;
@@ -67,19 +67,19 @@ public class DailyAttendence extends Attendence {
         this.outDateTime = outDateTime;
     }
 
-    public float getOutLatitude() {
+    public double getOutLatitude() {
         return this.outLatitude;
     }
 
-    public void setOutLatitude(float outLatitude) {
+    public void setOutLatitude(double outLatitude) {
         this.outLatitude = outLatitude;
     }
 
-    public float getOutLongitude() {
+    public double getOutLongitude() {
         return this.outLongitude;
     }
 
-    public void setOutLongitude(float outLongitude) {
+    public void setOutLongitude(double outLongitude) {
         this.outLongitude = outLongitude;
     }
 
@@ -122,12 +122,12 @@ public class DailyAttendence extends Attendence {
         return this;
     }
 
-    public DailyAttendence outLatitude(float outLatitude) {
+    public DailyAttendence outLatitude(double outLatitude) {
         this.outLatitude = outLatitude;
         return this;
     }
 
-    public DailyAttendence outLongitude(float outLongitude) {
+    public DailyAttendence outLongitude(double outLongitude) {
         this.outLongitude = outLongitude;
         return this;
     }

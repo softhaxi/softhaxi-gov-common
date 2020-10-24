@@ -22,8 +22,8 @@ public abstract class Attendence implements Serializable {
     protected String type;
     protected Timestamp dateTime;
     protected String action;
-    protected float latitude;
-    protected float longitude;
+    protected double latitude;
+    protected double longitude;
     protected boolean isMockLocation;
     protected String picturePath;
 
@@ -31,7 +31,7 @@ public abstract class Attendence implements Serializable {
     public Attendence() {
     }
 
-    public Attendence(String id, User user, String type, Timestamp dateTime, String action, float latitude, float longitude, boolean isMockLocation, String picturePath) {
+    public Attendence(String id, User user, String type, Timestamp dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath) {
         this.id = id;
         this.user = user;
         this.type = type;
@@ -83,19 +83,19 @@ public abstract class Attendence implements Serializable {
         this.action = action;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return this.latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return this.longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -140,12 +140,12 @@ public abstract class Attendence implements Serializable {
         return this;
     }
 
-    public Attendence latitude(float latitude) {
+    public Attendence latitude(double latitude) {
         this.latitude = latitude;
         return this;
     }
 
-    public Attendence longitude(float longitude) {
+    public Attendence longitude(double longitude) {
         this.longitude = longitude;
         return this;
     }

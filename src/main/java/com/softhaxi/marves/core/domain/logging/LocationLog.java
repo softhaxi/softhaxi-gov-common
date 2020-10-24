@@ -48,11 +48,11 @@ public class LocationLog implements Serializable {
 
     @NotBlank
     @Column(name="latitude")
-    protected float latitude;
+    protected double latitude;
 
     @NotBlank
     @Column(name="longitude")
-    protected float longitude;
+    protected double longitude;
 
     @NotBlank
     @Column(name="is_mock_location")
@@ -63,7 +63,7 @@ public class LocationLog implements Serializable {
         isMockLocation = false;
     }
 
-    public LocationLog(String id, User user, Timestamp dateTime, float latitude, float longitude, boolean isMockLocation) {
+    public LocationLog(String id, User user, Timestamp dateTime, double latitude, double longitude, boolean isMockLocation) {
         this.id = id;
         this.user = user;
         this.dateTime = dateTime;
@@ -96,19 +96,19 @@ public class LocationLog implements Serializable {
         this.dateTime = dateTime;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return this.latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return this.longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -135,12 +135,12 @@ public class LocationLog implements Serializable {
         return this;
     }
 
-    public LocationLog latitude(float latitude) {
+    public LocationLog latitude(double latitude) {
         this.latitude = latitude;
         return this;
     }
 
-    public LocationLog longitude(float longitude) {
+    public LocationLog longitude(double longitude) {
         this.longitude = longitude;
         return this;
     }

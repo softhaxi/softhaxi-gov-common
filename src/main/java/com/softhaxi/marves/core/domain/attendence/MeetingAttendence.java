@@ -21,7 +21,7 @@ public class MeetingAttendence extends Attendence {
     public MeetingAttendence() {
     }
 
-    public MeetingAttendence(String id, User user, Timestamp dateTime, String action, float latitude, float longitude, boolean isMockLocation, String picturePath, 
+    public MeetingAttendence(String id, User user, Timestamp dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
         String code, String title, String description) {
         super(id, user, "MEETING", dateTime, action, latitude, longitude, isMockLocation, picturePath);
         this.code = code;
