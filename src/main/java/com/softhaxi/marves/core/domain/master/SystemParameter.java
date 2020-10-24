@@ -2,36 +2,83 @@ package com.softhaxi.marves.core.domain.master;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 /**
  * @author Raja Sihombing
  * @since 1
  */
+@Entity
+@Table(name = "sysparams")
+@Access(value = AccessType.FIELD)
 public class SystemParameter implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 6724979328243935740L;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "pg-uuid")
+	@Column(name = "id", updatable = false, nullable = false)
+    protected UUID id;
+
+    @Column(name = "code", nullable = false, length = 20)
     protected String code;
+
+    @Column(name = "name", nullable = false, length = 100)
     protected String name;
+
+    @Column(name = "description", nullable = true)
+    protected String decription;
+
+    @Column(name = "value", nullable = true, length = 100)
     protected String value;
+
+    @Column(name = "regex", nullable = true)
     protected String regex;
-    protected boolean isSystem;
-    protected boolean isEditable;
+
+    @Column(name = "is_system")
+    protected boolean isSystem = false;
+
+    @Column(name = "is_editable")
+    protected boolean isEditable = true;
+
+    @Column(name = "is_deleted")
     protected boolean isDeleted;
 
     public SystemParameter() {
     }
 
-    public SystemParameter(String code, String name, String value, String regex, boolean isSystem, boolean isEditable, boolean isDeleted) {
+    public SystemParameter(String code, String name, String decription, String value, String regex, boolean isSystem, boolean isEditable, boolean isDeleted) {
         this.code = code;
         this.name = name;
+        this.decription = decription;
         this.value = value;
         this.regex = regex;
         this.isSystem = isSystem;
         this.isEditable = isEditable;
         this.isDeleted = isDeleted;
+    }
+
+    public UUID getId() {
+        return this.id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getCode() {
@@ -48,6 +95,14 @@ public class SystemParameter implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDecription() {
+        return this.decription;
+    }
+
+    public void setDecription(String decription) {
+        this.decription = decription;
     }
 
     public String getValue() {
@@ -90,6 +145,11 @@ public class SystemParameter implements Serializable {
         this.isDeleted = isDeleted;
     }
 
+    public SystemParameter id(UUID id) {
+        this.id = id;
+        return this;
+    }
+
     public SystemParameter code(String code) {
         this.code = code;
         return this;
@@ -97,6 +157,11 @@ public class SystemParameter implements Serializable {
 
     public SystemParameter name(String name) {
         this.name = name;
+        return this;
+    }
+
+    public SystemParameter decription(String decription) {
+        this.decription = decription;
         return this;
     }
 
@@ -133,7 +198,7 @@ public class SystemParameter implements Serializable {
             return false;
         }
         SystemParameter systemParameter = (SystemParameter) o;
-        return Objects.equals(code, systemParameter.code);
+        return Objects.equals(id, systemParameter.id) || Objects.equals(code, systemParameter.code);
     }
 
     @Override
