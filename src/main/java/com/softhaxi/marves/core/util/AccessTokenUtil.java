@@ -48,7 +48,7 @@ public class AccessTokenUtil implements Serializable {
         Key key = Keys.hmacShaKeyFor(keyBytes);
         return Jwts.builder().setClaims(claims).setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                //.setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
                 .signWith(key)
                 // .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
