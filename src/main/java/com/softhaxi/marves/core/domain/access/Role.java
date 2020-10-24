@@ -1,93 +1,135 @@
 package com.softhaxi.marves.core.domain.access;
 
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.UUID;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 /**
  * @author Raja Sihombing
  * @since 1
  */
+@Entity
+@Table(name = "roles")
+@Access(value = AccessType.FIELD)
 public class Role implements Serializable {
     /**
      *
      */
     private static final long serialVersionUID = 6852505996291312103L;
-    protected String id;
-    protected String name;
-    protected String description;
     
-    /**
-     * 
-     */
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "pg-uuid")
+	@Column(name = "id", updatable = false, nullable = false)
+    protected UUID id;
+
+    @Column(name = "name", nullable = false, length = 50)
+    protected String name;
+
+    @Column(name = "description", length = 100)
+    protected String description;
+
+    @Column(name = "is_system")
+    protected boolean isSystem = false;
+    
+
     public Role() {
-        this(null, null, null);
     }
 
-    /**
-     * 
-     * @param id
-     * @param name
-     * @param description 
-     */
-    public Role(String id, String name, String description) {
-        this.id = id;
+    public Role( String name, String description, boolean isSystem) {
         this.name = name;
         this.description = description;
+        this.isSystem = isSystem;
     }
 
-    /**
-     * @return the id
-     */
-    public String getId() {
-        return id;
+    public UUID getId() {
+        return this.id;
     }
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    /**
-     * @return the name
-     */
     public String getName() {
-        return name;
+        return this.name;
     }
 
-    /**
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * @return the description
-     */
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
-    /**
-     * @param description the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * 
-     * @return 
-     */
+    public boolean isSystem() {
+        return this.isSystem;
+    }
+
+    public void setIsSystem(boolean isSystem) {
+        this.isSystem = isSystem;
+    }
+
+    public Role id(UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    public Role name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Role description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public Role isSystem(boolean isSystem) {
+        this.isSystem = isSystem;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Role)) {
+            return false;
+        }
+        Role role = (Role) o;
+        return (Objects.equals(id, role.id) || Objects.equals(name, role.name)) && isSystem == role.isSystem;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, isSystem);
+    }
+
     @Override
     public String toString() {
-        return "Role{" 
-                + "id=" + id 
-                + ", name=" + name 
-                + ", description=" + description 
-                + '}';
+        return "{" +
+            " id='" + getId() + "'" +
+            ", name='" + getName() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", isSystem='" + isSystem() + "'" +
+            "}";
     }
-    
-    
+
 }

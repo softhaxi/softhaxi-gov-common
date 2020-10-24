@@ -2,14 +2,24 @@ package com.softhaxi.marves.core.domain.account;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import com.softhaxi.marves.core.domain.access.UserRole;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 /**
  * @author Raja Sihombing
@@ -25,57 +35,53 @@ public class User implements Serializable {
     private static final long serialVersionUID = 7769293153652418675L;
     
     @Id
-    @NotBlank
-	@Column(name = "id")
-    protected String id;
-    
-    @NotBlank
-	@Column(name = "username")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "pg-uuid")
+	@Column(name = "id", updatable = false, nullable = false)
+    protected UUID id;
+
+	@Column(name = "username", nullable = false, unique = true, length = 50)
     protected String username;
     
-    @NotBlank
-	@Column(name = "email")
+	@Column(name = "email", length = 100)
     protected String email;
     
-    @NotBlank
- 	@Column(name = "mobile")
+ 	@Column(name = "mobile", length = 20)
     protected String mobile;
     
     @NotBlank
  	@Column(name = "password")
     protected String password;
     
-    @NotBlank
  	@Column(name = "status")
-    protected String status;
+    protected String status = "ACTIVE";
     
-    @NotBlank
  	@Column(name = "no_login_failed")
-    protected int noLoginFailed;
+    protected int noLoginFailed = 0;
     
-    @NotBlank
- 	@Column(name = "passphrase")
+ 	@Column(name = "passphrase", length = 20)
     protected String passphrase;
     
-    @NotBlank
  	@Column(name = "image_security")
     protected String imageSecurity;
-    
-    @NotBlank
+
  	@Column(name = "is_ldap_user")
-    protected boolean isLDAPUser;
+    protected boolean isLDAPUser = true;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    protected Set<UserRole> roles;
     
     /**
      * 
      */
     public User() {
-        this.isLDAPUser = false;
+
     }
 
-    public User(String id, String username, String email, String mobile, 
+    public User(String username, String email, String mobile, 
             String password, String status, int noLoginFailed, 
             String passphrase, String imageSecurity, boolean isLDAPUser) {
-        this.id = id;
         this.username = username;
         this.email = email;
         this.mobile = mobile;
@@ -86,20 +92,18 @@ public class User implements Serializable {
         this.imageSecurity = imageSecurity;
         this.isLDAPUser = isLDAPUser;
     }
-    
-    
 
     /**
      * @return the id
      */
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -224,6 +228,65 @@ public class User implements Serializable {
         this.isLDAPUser = isLDAPUser;
     }
 
+    public Set<UserRole> getRoles() {
+        return this.roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
+    }
+
+
+    public User id(UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    public User username(String username) {
+        this.username = username;
+        return this;
+    }
+
+    public User email(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public User mobile(String mobile) {
+        this.mobile = mobile;
+        return this;
+    }
+
+    public User password(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public User status(String status) {
+        this.status = status;
+        return this;
+    }
+
+    public User noLoginFailed(int noLoginFailed) {
+        this.noLoginFailed = noLoginFailed;
+        return this;
+    }
+
+    public User passphrase(String passphrase) {
+        this.passphrase = passphrase;
+        return this;
+    }
+
+    public User imageSecurity(String imageSecurity) {
+        this.imageSecurity = imageSecurity;
+        return this;
+    }
+
+    public User roles(Set<UserRole> roles) {
+        this.roles = roles;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -232,7 +295,7 @@ public class User implements Serializable {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(id, user.id);
+        return Objects.equals(id, user.id) || Objects.equals(username, user.username);
     }
 
     @Override
@@ -244,7 +307,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
+            " id='" + getId().toString() + "'" +
             ", username='" + getUsername() + "'" +
             ", email='" + getEmail() + "'" +
             ", mobile='" + getMobile() + "'" +
