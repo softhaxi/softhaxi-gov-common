@@ -39,11 +39,11 @@ public class UserRole implements Serializable {
 	@Column(name = "id", updatable = false, nullable = false)
     protected UUID id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     protected User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
     protected Role role;
 

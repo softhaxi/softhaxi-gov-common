@@ -69,7 +69,7 @@ public class User implements Serializable {
  	@Column(name = "is_ldap_user")
     protected boolean isLDAPUser = true;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     protected Set<UserRole> roles;
     
     /**
