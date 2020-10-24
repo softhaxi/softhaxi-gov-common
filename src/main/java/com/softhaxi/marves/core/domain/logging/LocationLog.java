@@ -3,12 +3,14 @@ package com.softhaxi.marves.core.domain.logging;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.UUID;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,6 +18,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import com.softhaxi.marves.core.domain.account.User;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 /**
  * @author Raja Sihombing
@@ -33,38 +38,39 @@ public class LocationLog implements Serializable {
     private static final long serialVersionUID = 1611171951226492406L;
 
     @Id
-    @NotBlank
-	@Column(name = "id")
-    protected String id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "pg-uuid")
+	@Column(name = "id", updatable = false, nullable = false)
+    protected UUID id;
 
     @NotBlank
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="user_id", nullable = false)
     protected User user;
 
     @NotBlank
-    @Column(name="date_time")
+    @Column(name="date_time", nullable = false)
     protected Timestamp dateTime;
 
     @NotBlank
     @Column(name="latitude")
-    protected double latitude;
+    protected double latitude = 0.0;
 
     @NotBlank
     @Column(name="longitude")
-    protected double longitude;
+    protected double longitude = 0.0;
 
     @NotBlank
     @Column(name="is_mock_location")
-    protected boolean isMockLocation;
+    protected boolean isMockLocation = false;
 
 
     public LocationLog() {
-        isMockLocation = false;
+
     }
 
-    public LocationLog(String id, User user, Timestamp dateTime, double latitude, double longitude, boolean isMockLocation) {
-        this.id = id;
+    public LocationLog(User user, Timestamp dateTime, double latitude, double longitude, boolean isMockLocation) {
         this.user = user;
         this.dateTime = dateTime;
         this.latitude = latitude;
@@ -72,11 +78,11 @@ public class LocationLog implements Serializable {
         this.isMockLocation = isMockLocation;
     }
 
-    public String getId() {
+    public UUID getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -120,7 +126,7 @@ public class LocationLog implements Serializable {
         this.isMockLocation = isMockLocation;
     }
 
-    public LocationLog id(String id) {
+    public LocationLog id(UUID id) {
         this.id = id;
         return this;
     }
