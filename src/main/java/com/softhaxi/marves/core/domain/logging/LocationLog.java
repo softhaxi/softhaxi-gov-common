@@ -4,23 +4,58 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+
 import com.softhaxi.marves.core.domain.account.User;
 
 /**
  * @author Raja Sihombing
  * @since 1
  */
+
+@Entity
+@Table(name = "location_logs")
+@Access(value = AccessType.FIELD)
 public class LocationLog implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 1611171951226492406L;
+
+    @Id
+    @NotBlank
+	@Column(name = "id")
     protected String id;
+
+    @NotBlank
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
     protected User user;
+
+    @NotBlank
+    @Column(name="date_time")
     protected Timestamp dateTime;
+
+    @NotBlank
+    @Column(name="latitude")
     protected float latitude;
+
+    @NotBlank
+    @Column(name="longitude")
     protected float longitude;
+
+    @NotBlank
+    @Column(name="is_mock_location")
     protected boolean isMockLocation;
 
 
