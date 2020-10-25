@@ -1,7 +1,7 @@
 package com.softhaxi.marves.core.domain.logging;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -50,8 +50,8 @@ public class LocationLog implements Serializable {
     protected User user;
 
     @NotBlank
-    @Column(name="date_time", nullable = false)
-    protected Timestamp dateTime;
+    @Column(name="date_time", columnDefinition = "ZonedDateTime WITH TIME ZONE", nullable = false)
+    protected ZonedDateTime dateTime;
 
     @NotBlank
     @Column(name="latitude")
@@ -70,7 +70,7 @@ public class LocationLog implements Serializable {
 
     }
 
-    public LocationLog(User user, Timestamp dateTime, double latitude, double longitude, boolean isMockLocation) {
+    public LocationLog(User user, ZonedDateTime dateTime, double latitude, double longitude, boolean isMockLocation) {
         this.user = user;
         this.dateTime = dateTime;
         this.latitude = latitude;
@@ -94,11 +94,11 @@ public class LocationLog implements Serializable {
         this.user = user;
     }
 
-    public Timestamp getDateTime() {
+    public ZonedDateTime getDateTime() {
         return this.dateTime;
     }
 
-    public void setDateTime(Timestamp dateTime) {
+    public void setDateTime(ZonedDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -136,7 +136,7 @@ public class LocationLog implements Serializable {
         return this;
     }
 
-    public LocationLog dateTime(Timestamp dateTime) {
+    public LocationLog dateTime(ZonedDateTime dateTime) {
         this.dateTime = dateTime;
         return this;
     }

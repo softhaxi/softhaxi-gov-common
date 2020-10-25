@@ -1,6 +1,6 @@
 package com.softhaxi.marves.core.domain.attendence;
 
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 import com.softhaxi.marves.core.domain.account.User;
@@ -21,9 +21,9 @@ public class MeetingAttendence extends Attendence {
     public MeetingAttendence() {
     }
 
-    public MeetingAttendence(String id, User user, Timestamp dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
+    public MeetingAttendence(String id, User user, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
         String code, String title, String description) {
-        super(id, user, "MEETING", dateTime, action, latitude, longitude, isMockLocation, picturePath);
+        super(user, "MEETING", dateTime, action, latitude, longitude, isMockLocation, picturePath);
         this.code = code;
         this.title = title;
         this.description = description;

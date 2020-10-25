@@ -1,6 +1,7 @@
 package com.softhaxi.marves.core.domain.attendence;
 
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
+import java.time.OffsetTime;
 import java.util.Objects;
 
 import javax.persistence.Access;
@@ -25,23 +26,26 @@ public class DailyAttendence extends Attendence {
      */
     private static final long serialVersionUID = -3657340582284188254L;
 
+    @Column(name = "work_from", length = 10)
+    protected String workFrom = "WFO";
+
     @Column(name = "in_work", length = 10)
     protected String inWork = "WFO";
 
     @Column(name = "action", length = 10)
     protected String outAction;
 
-    @Column(name = "date_time")
-    protected Timestamp outDateTime;
+    @Column(name = "date_time", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    protected ZonedDateTime outDateTime;
 
     @Column(name = "latitude")
-    protected double outLatitude = 0.0;
+    protected double outLatitude;
 
     @Column(name = "longitude")
-    protected double outLongitude = 0.0;
+    protected double outLongitude;
 
     @Column(name = "is_mock_location")
-    protected boolean isOutMockLocation = false;
+    protected boolean isOutMockLocation;
 
     @Column(name = "picture_path")
     protected String outPicturePath;
@@ -55,10 +59,11 @@ public class DailyAttendence extends Attendence {
         setType("DAILY");
     }
 
-    public DailyAttendence(String id, User user, Timestamp dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
-        String inWork, String outAction, Timestamp outDateTime, double outLatitude, double outLongitude, boolean isOutMockLocation, String outPicturePath,
+    public DailyAttendence(String id, User user, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
+        String workFrom, String inWork, String outAction, ZonedDateTime outDateTime, double outLatitude, double outLongitude, boolean isOutMockLocation, String outPicturePath,
         String outWork) {
         super(user, "DAILY", dateTime, action, latitude, longitude, isMockLocation, picturePath);
+        this.workFrom = workFrom;
         this.inWork = inWork;
         this.outAction = outAction;
         this.outDateTime = outDateTime;
@@ -67,6 +72,28 @@ public class DailyAttendence extends Attendence {
         this.isOutMockLocation = isOutMockLocation;
         this.outPicturePath = outPicturePath;
         this.outWork = outWork;
+    }
+
+    public String getWorkFrom() {
+        return this.workFrom;
+    }
+
+    public void setWorkFrom(String workFrom) {
+        this.workFrom = workFrom;
+    }
+
+    public boolean isIsOutMockLocation() {
+        return this.isOutMockLocation;
+    }
+
+    public boolean getIsOutMockLocation() {
+        return this.isOutMockLocation;
+    }
+
+
+    public DailyAttendence workFrom(String workFrom) {
+        this.workFrom = workFrom;
+        return this;
     }
 
     public String getInWork() {
@@ -85,11 +112,11 @@ public class DailyAttendence extends Attendence {
         this.outAction = outAction;
     }
 
-    public Timestamp getOutDateTime() {
+    public ZonedDateTime getOutDateTime() {
         return this.outDateTime;
     }
 
-    public void setOutDateTime(Timestamp outDateTime) {
+    public void setOutDateTime(ZonedDateTime outDateTime) {
         this.outDateTime = outDateTime;
     }
 
@@ -143,7 +170,7 @@ public class DailyAttendence extends Attendence {
         return this;
     }
 
-    public DailyAttendence outDateTime(Timestamp outDateTime) {
+    public DailyAttendence outDateTime(ZonedDateTime outDateTime) {
         this.outDateTime = outDateTime;
         return this;
     }
@@ -186,21 +213,21 @@ public class DailyAttendence extends Attendence {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), inWork, outAction, outDateTime, outLatitude, outLongitude, isOutMockLocation, outPicturePath, outWork);
+        return Objects.hash(super.hashCode(), workFrom, inWork, outAction, outDateTime, outLatitude, outLongitude, isOutMockLocation, outPicturePath, outWork);
     }
 
     @Override
     public String toString() {
         return "{" + super.toString() +
-            ", outAction='" + getInWork() + "'" +
+            ", workFrom='" + getWorkFrom() + "'" +
+            ", inWork='" + getInWork() + "'" +
             ", outAction='" + getOutAction() + "'" +
             ", outDateTime='" + getOutDateTime() + "'" +
             ", outLatitude='" + getOutLatitude() + "'" +
             ", outLongitude='" + getOutLongitude() + "'" +
-            ", isOutMockLocation='" + isOutMockLocation() + "'" +
+            ", isOutMockLocation='" + isIsOutMockLocation() + "'" +
             ", outPicturePath='" + getOutPicturePath() + "'" +
-            ", outAction='" + getOutWork() + "'" +
+            ", outWork='" + getOutWork() + "'" +
             "}";
     }
-    
 }

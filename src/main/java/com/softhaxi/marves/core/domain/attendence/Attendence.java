@@ -1,7 +1,8 @@
 package com.softhaxi.marves.core.domain.attendence;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -54,8 +55,8 @@ public abstract class Attendence implements Serializable {
     @Column(name = "type", nullable = false, length = 20)
     protected String type = "ATTENDENCE";
 
-    @Column(name = "date_time", nullable = false)
-    protected Timestamp dateTime;
+    @Column(name = "date_time", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
+    protected ZonedDateTime dateTime;
 
     @Column(name = "action", length = 10)
     protected String action;
@@ -76,7 +77,7 @@ public abstract class Attendence implements Serializable {
     public Attendence() {
     }
 
-    public Attendence(User user, String type, Timestamp dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath) {
+    public Attendence(User user, String type, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath) {
         this.user = user;
         this.type = type;
         this.dateTime = dateTime;
@@ -111,11 +112,11 @@ public abstract class Attendence implements Serializable {
         this.type = type;
     }
 
-    public Timestamp getDateTime() {
+    public ZonedDateTime getDateTime() {
         return this.dateTime;
     }
 
-    public void setDateTime(Timestamp dateTime) {
+    public void setDateTime(ZonedDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -174,7 +175,7 @@ public abstract class Attendence implements Serializable {
         return this;
     }
 
-    public Attendence dateTime(Timestamp dateTime) {
+    public Attendence dateTime(ZonedDateTime dateTime) {
         this.dateTime = dateTime;
         return this;
     }
