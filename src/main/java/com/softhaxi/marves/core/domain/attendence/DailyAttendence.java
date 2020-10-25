@@ -3,36 +3,62 @@ package com.softhaxi.marves.core.domain.attendence;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import com.softhaxi.marves.core.domain.account.User;
 
 /**
  * @author Raja Sihombing
  * @since 1
  */
+@Entity
+@Table(name = "daily_attendences")
+@Access(value = AccessType.FIELD)
 public class DailyAttendence extends Attendence {
 
     /**
      *
      */
     private static final long serialVersionUID = -3657340582284188254L;
-    protected String inWork;
+
+    @Column(name = "in_work", length = 10)
+    protected String inWork = "WFO";
+
+    @Column(name = "action", length = 10)
     protected String outAction;
+
+    @Column(name = "date_time")
     protected Timestamp outDateTime;
-    protected double outLatitude;
-    protected double outLongitude;
-    protected boolean isOutMockLocation;
+
+    @Column(name = "latitude")
+    protected double outLatitude = 0.0;
+
+    @Column(name = "longitude")
+    protected double outLongitude = 0.0;
+
+    @Column(name = "is_mock_location")
+    protected boolean isOutMockLocation = false;
+
+    @Column(name = "picture_path")
     protected String outPicturePath;
+
+    @Column(name = "out_work", length = 10)
     protected String outWork;
     
 
 
     public DailyAttendence() {
+        setType("DAILY");
     }
 
     public DailyAttendence(String id, User user, Timestamp dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
         String inWork, String outAction, Timestamp outDateTime, double outLatitude, double outLongitude, boolean isOutMockLocation, String outPicturePath,
         String outWork) {
-        super(id, user, "DAILY", dateTime, action, latitude, longitude, isMockLocation, picturePath);
+        super(user, "DAILY", dateTime, action, latitude, longitude, isMockLocation, picturePath);
         this.inWork = inWork;
         this.outAction = outAction;
         this.outDateTime = outDateTime;

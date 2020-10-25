@@ -3,36 +3,80 @@ package com.softhaxi.marves.core.domain.attendence;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.UUID;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.softhaxi.marves.core.domain.account.User;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 /**
  * @author Raja Sihombing
  * @since 1
  */
-
+@Entity
+@Table(name = "attendences")
+@Inheritance(
+    strategy = InheritanceType.JOINED
+)
+@Access(value = AccessType.FIELD)
 public abstract class Attendence implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 1328697867644739119L;
-    protected String id;
+
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "pg-uuid")
+	@Column(name = "id", updatable = false, nullable = false)
+    protected UUID id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     protected User user;
-    protected String type;
+
+    @Column(name = "type", nullable = false, length = 20)
+    protected String type = "ATTENDENCE";
+
+    @Column(name = "date_time", nullable = false)
     protected Timestamp dateTime;
+
+    @Column(name = "action", length = 10)
     protected String action;
+
+    @Column(name = "latitude")
     protected double latitude;
+
+    @Column(name = "longitude")
     protected double longitude;
+
+    @Column(name = "is_mock_location")
     protected boolean isMockLocation;
+
+    @Column(name = "picture_path")
     protected String picturePath;
 
 
     public Attendence() {
     }
 
-    public Attendence(String id, User user, String type, Timestamp dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath) {
-        this.id = id;
+    public Attendence(User user, String type, Timestamp dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath) {
         this.user = user;
         this.type = type;
         this.dateTime = dateTime;
@@ -43,11 +87,11 @@ public abstract class Attendence implements Serializable {
         this.picturePath = picturePath;
     }
 
-    public String getId() {
+    public UUID getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -115,7 +159,7 @@ public abstract class Attendence implements Serializable {
         this.picturePath = picturePath;
     }
 
-    public Attendence id(String id) {
+    public Attendence id(UUID id) {
         this.id = id;
         return this;
     }
