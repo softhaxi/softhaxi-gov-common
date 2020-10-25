@@ -1,7 +1,6 @@
 package com.softhaxi.marves.core.domain.attendence;
 
 import java.time.ZonedDateTime;
-import java.time.OffsetTime;
 import java.util.Objects;
 
 import javax.persistence.Access;
@@ -27,10 +26,10 @@ public class DailyAttendence extends Attendence {
     private static final long serialVersionUID = -3657340582284188254L;
 
     @Column(name = "work_from", length = 10)
-    protected String workFrom = "WFO";
+    protected String workFrom;
 
     @Column(name = "in_work", length = 10)
-    protected String inWork = "WFO";
+    protected String inWork;
 
     @Column(name = "action", length = 10)
     protected String outAction;
@@ -38,13 +37,13 @@ public class DailyAttendence extends Attendence {
     @Column(name = "date_time", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     protected ZonedDateTime outDateTime;
 
-    @Column(name = "latitude")
+    @Column(name = "latitude", nullable = true)
     protected double outLatitude;
 
-    @Column(name = "longitude")
+    @Column(name = "longitude", nullable = true)
     protected double outLongitude;
 
-    @Column(name = "is_mock_location")
+    @Column(name = "is_mock_location", nullable = true)
     protected boolean isOutMockLocation;
 
     @Column(name = "picture_path")

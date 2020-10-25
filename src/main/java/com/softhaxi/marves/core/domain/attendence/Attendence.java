@@ -2,7 +2,6 @@ package com.softhaxi.marves.core.domain.attendence;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
