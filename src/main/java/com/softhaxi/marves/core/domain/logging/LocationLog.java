@@ -50,7 +50,7 @@ public class LocationLog implements Serializable {
     protected User user;
 
     @NotBlank
-    @Column(name="date_time", columnDefinition = "ZonedDateTime WITH TIME ZONE", nullable = false)
+    @Column(name="date_time", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
     protected ZonedDateTime dateTime;
 
     @NotBlank

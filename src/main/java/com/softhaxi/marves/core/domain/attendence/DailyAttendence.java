@@ -81,20 +81,6 @@ public class DailyAttendence extends Attendence {
         this.workFrom = workFrom;
     }
 
-    public boolean isIsOutMockLocation() {
-        return this.isOutMockLocation;
-    }
-
-    public boolean getIsOutMockLocation() {
-        return this.isOutMockLocation;
-    }
-
-
-    public DailyAttendence workFrom(String workFrom) {
-        this.workFrom = workFrom;
-        return this;
-    }
-
     public String getInWork() {
         return this.inWork;
     }
@@ -157,6 +143,11 @@ public class DailyAttendence extends Attendence {
 
     public void setOutWork(String outWork) {
         this.outWork = outWork;
+    }
+
+    public DailyAttendence workFrom(String workFrom) {
+        this.workFrom = workFrom;
+        return this;
     }
 
     public DailyAttendence inWork(String inWork) {
@@ -224,7 +215,7 @@ public class DailyAttendence extends Attendence {
             ", outDateTime='" + getOutDateTime() + "'" +
             ", outLatitude='" + getOutLatitude() + "'" +
             ", outLongitude='" + getOutLongitude() + "'" +
-            ", isOutMockLocation='" + isIsOutMockLocation() + "'" +
+            ", isOutMockLocation='" + isOutMockLocation() + "'" +
             ", outPicturePath='" + getOutPicturePath() + "'" +
             ", outWork='" + getOutWork() + "'" +
             "}";
