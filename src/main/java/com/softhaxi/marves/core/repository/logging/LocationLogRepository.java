@@ -1,4 +1,4 @@
-package com.softhaxi.marves.core.repository;
+package com.softhaxi.marves.core.repository.logging;
 
 import com.softhaxi.marves.core.domain.logging.LocationLog;
 

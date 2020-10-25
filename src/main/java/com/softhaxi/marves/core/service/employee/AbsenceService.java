@@ -6,7 +6,7 @@ import com.softhaxi.marves.core.domain.attendence.DailyAttendence;
 import com.softhaxi.marves.core.domain.attendence.MeetingAttendence;
 import com.softhaxi.marves.core.domain.logging.LocationLog;
 import com.softhaxi.marves.core.domain.master.Office;
-import com.softhaxi.marves.core.repository.LocationLogRepository;
+import com.softhaxi.marves.core.repository.logging.LocationLogRepository;
 import com.softhaxi.marves.core.repository.attendence.DailyAttendenceRepository;
 import com.softhaxi.marves.core.repository.attendence.MeetingAttendenceRepository;
 import com.softhaxi.marves.core.repository.master.OfficeRepository;

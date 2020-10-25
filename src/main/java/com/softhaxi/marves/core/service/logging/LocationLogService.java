@@ -1,10 +1,10 @@
-package com.softhaxi.marves.core.service;
+package com.softhaxi.marves.core.service.logging;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.softhaxi.marves.core.domain.logging.LocationLog;
-import com.softhaxi.marves.core.repository.LocationLogRepository;
+import com.softhaxi.marves.core.repository.logging.LocationLogRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
