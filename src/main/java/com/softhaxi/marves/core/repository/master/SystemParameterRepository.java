@@ -13,6 +13,6 @@ import org.springframework.data.jpa.repository.Query;
  * @since 1
  */
 public interface SystemParameterRepository extends JpaRepository<SystemParameter, UUID> {
-    @Query("FROM User WHERE UPPER(username) = UPPER(?1)")
+    @Query("FROM SystemParameter WHERE UPPER(code) = UPPER(?1)")
     public Optional<SystemParameter> findByCode(String code);
 }
