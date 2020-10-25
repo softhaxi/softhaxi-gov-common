@@ -3,10 +3,12 @@ package com.softhaxi.marves.core.service.employee;
 import com.softhaxi.marves.core.domain.account.User;
 import com.softhaxi.marves.core.domain.attendence.Attendence;
 import com.softhaxi.marves.core.domain.attendence.DailyAttendence;
+import com.softhaxi.marves.core.domain.attendence.MeetingAttendence;
 import com.softhaxi.marves.core.domain.logging.LocationLog;
 import com.softhaxi.marves.core.domain.master.Office;
 import com.softhaxi.marves.core.repository.LocationLogRepository;
 import com.softhaxi.marves.core.repository.attendence.DailyAttendenceRepository;
+import com.softhaxi.marves.core.repository.attendence.MeetingAttendenceRepository;
 import com.softhaxi.marves.core.repository.master.OfficeRepository;
 import com.softhaxi.marves.core.repository.master.SystemParameterRepository;
 import com.softhaxi.marves.core.util.LocationUtil;
@@ -30,6 +32,9 @@ public class AbsenceService {
     private DailyAttendenceRepository dailyAttendenceRepository;
 
     @Autowired
+    private MeetingAttendenceRepository meetingRepository;
+
+    @Autowired
     private SystemParameterRepository sysParamRepository;
 
     @Autowired
@@ -41,11 +46,13 @@ public class AbsenceService {
     @Autowired
     private LocationUtil locationUtil;
 
-    public Attendence getLastAbsence(User user, String type) {
+    public Attendence getLastAbsence(User user, String type, String code) {
         Attendence attendence = null;
         if(type.equalsIgnoreCase("DAILY")) {
             attendence = dailyAttendenceRepository.findFirstByUserOrderByDateTimeDesc(user)
                 .orElse(new DailyAttendence());
+        } else if(type.equalsIgnoreCase("MEETING")) {
+            attendence = meetingRepository.findFirstByUserAndCode(user, code).orElse(new MeetingAttendence());
         }
         return attendence;
     }
@@ -71,7 +78,7 @@ public class AbsenceService {
                 locationLog.setDateTime(daily.getDateTime());
                 locationLog.setLatitude(daily.getLatitude());
                 locationLog.setLongitude(daily.getLongitude());
-                locationLog.setIsMockLocation(daily.getIsOutMockLocation());
+                locationLog.setIsMockLocation(daily.isMockLocation());
             } else {
                 if(daily.getOutLatitude() == 0.0 && daily.getOutLongitude() == 0.0) {
                     daily.setOutWork("WFH");
@@ -87,9 +94,16 @@ public class AbsenceService {
                 locationLog.setDateTime(daily.getOutDateTime());
                 locationLog.setLatitude(daily.getOutLatitude());
                 locationLog.setLongitude(daily.getOutLongitude());
-                locationLog.setIsMockLocation(daily.getIsOutMockLocation());
+                locationLog.setIsMockLocation(daily.isOutMockLocation());
             }
             attendence = dailyAttendenceRepository.save(daily);
+        } else if(attendence instanceof MeetingAttendence) {
+            MeetingAttendence meeting = (MeetingAttendence) attendence;
+            locationLog.setDateTime(meeting.getDateTime());
+            locationLog.setLatitude(meeting.getLatitude());
+            locationLog.setLongitude(meeting.getLongitude());
+            locationLog.setIsMockLocation(meeting.isMockLocation());
+            attendence = meetingRepository.save(meeting);
         }
         saveLocationLog(locationLog);
 
