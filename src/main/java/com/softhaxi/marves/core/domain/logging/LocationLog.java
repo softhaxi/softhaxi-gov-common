@@ -26,7 +26,6 @@ import org.hibernate.annotations.Type;
  * @author Raja Sihombing
  * @since 1
  */
-
 @Entity
 @Table(name = "location_logs")
 @Access(value = AccessType.FIELD)

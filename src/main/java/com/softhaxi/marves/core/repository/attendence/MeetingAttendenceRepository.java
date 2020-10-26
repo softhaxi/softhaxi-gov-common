@@ -9,9 +9,10 @@ import com.softhaxi.marves.core.domain.attendence.MeetingAttendence;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * @author Raka Sihombing
+ * @author Raja Sihombing
  * @since 1
  */
 public interface MeetingAttendenceRepository extends JpaRepository<MeetingAttendence, UUID> {
     public Optional<MeetingAttendence> findFirstByUserAndCode(User user, String code);
+    public Optional<MeetingAttendence> findFirstByUserAndCodeOrderByDateTimeDesc(User user, String code);
 }
