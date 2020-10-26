@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softhaxi.marves.core.domain.account.User;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -47,6 +48,7 @@ public abstract class Attendence implements Serializable {
 	@Column(name = "id", updatable = false, nullable = false)
     protected UUID id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     protected User user;
