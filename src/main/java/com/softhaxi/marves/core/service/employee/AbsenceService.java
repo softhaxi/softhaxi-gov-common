@@ -80,7 +80,7 @@ public class AbsenceService {
                     daily.setInWork(distance <= limitRadiusInM ? "WFO" : "WFH");
                 }
                 activityLog = new ActivityLog().user(daily.getUser())
-                    .actionDate(daily.getDateTime().toLocalDate())
+                    // .actionDate(daily.getDateTime().toLocalDate())
                     .actionTime(daily.getDateTime())
                     .actionName("CLOCK IN")
                     .description(daily.getInWork());
@@ -102,7 +102,7 @@ public class AbsenceService {
                     }
                 }
                 activityLog = new ActivityLog().user(daily.getUser())
-                    .actionDate(daily.getOutDateTime().toLocalDate())
+                    // .actionDate(daily.getOutDateTime().toLocalDate())
                     .actionTime(daily.getOutDateTime())
                     .actionName("CLOCK OUT")
                     .description(daily.getOutWork());
@@ -116,7 +116,7 @@ public class AbsenceService {
         } else if(attendence instanceof MeetingAttendence) {
             MeetingAttendence meeting = (MeetingAttendence) attendence;
             activityLog = new ActivityLog().user(meeting.getUser())
-                    .actionDate(meeting.getDateTime().toLocalDate())
+                    // .actionDate(meeting.getDateTime().toLocalDate())
                     .actionTime(meeting.getDateTime())
                     .actionName("CHECK IN")
                     .description("MEETING " + meeting.getCode());

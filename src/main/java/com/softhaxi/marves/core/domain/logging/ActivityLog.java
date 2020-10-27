@@ -61,8 +61,8 @@ public class ActivityLog implements Serializable {
     @Column(name = "action_name", length = 20)
     protected String actionName;
 
-    @Column(name="action_date", nullable = false)
-    protected LocalDate actionDate;
+    // @Column(name="action_date", nullable = false)
+    // protected LocalDate actionDate;
 
     @Column(name="action_time", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
     protected ZonedDateTime actionTime;
@@ -73,13 +73,13 @@ public class ActivityLog implements Serializable {
     public ActivityLog() {
     }
 
-    public ActivityLog(User user, String deepLink, String uri, String referenceId, String actionName, LocalDate actionDate, ZonedDateTime actionTime, String description) {
+    public ActivityLog(User user, String deepLink, String uri, String referenceId, String actionName, ZonedDateTime actionTime, String description) {
         this.user = user;
         this.deepLink = deepLink;
         this.uri = uri;
         this.referenceId = referenceId;
         this.actionName = actionName;
-        this.actionDate = actionDate;
+        // this.actionDate = actionDate;
         this.actionTime = actionTime;
         this.description = description;
     }
@@ -132,13 +132,13 @@ public class ActivityLog implements Serializable {
         this.actionName = actionName;
     }
 
-    public LocalDate getActionDate() {
-        return this.actionDate;
-    }
+    // public LocalDate getActionDate() {
+    //     return this.actionDate;
+    // }
 
-    public void setActionDate(LocalDate actionDate) {
-        this.actionDate = actionDate;
-    }
+    // public void setActionDate(LocalDate actionDate) {
+    //     this.actionDate = actionDate;
+    // }
 
     public ZonedDateTime getActionTime() {
         return this.actionTime;
@@ -186,10 +186,10 @@ public class ActivityLog implements Serializable {
         return this;
     }
 
-    public ActivityLog actionDate(LocalDate actionDate) {
-        this.actionDate = actionDate;
-        return this;
-    }
+    // public ActivityLog actionDate(LocalDate actionDate) {
+    //     this.actionDate = actionDate;
+    //     return this;
+    // }
 
     public ActivityLog actionTime(ZonedDateTime actionTime) {
         this.actionTime = actionTime;
@@ -214,7 +214,7 @@ public class ActivityLog implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, deepLink, uri, referenceId, actionName, actionDate, actionTime, description);
+        return Objects.hash(id, user, deepLink, uri, referenceId, actionName, actionTime, description);
     }
 
     @Override
@@ -226,7 +226,6 @@ public class ActivityLog implements Serializable {
             ", uri='" + getUri() + "'" +
             ", referenceId='" + getReferenceId() + "'" +
             ", actionName='" + getActionName() + "'" +
-            ", actionDate='" + getActionDate() + "'" +
             ", actionTime='" + getActionTime() + "'" +
             ", description='" + getdescription() + "'" +
             "}";
