@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softhaxi.marves.core.domain.account.User;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -44,6 +45,7 @@ public class LocationLog implements Serializable {
     protected UUID id;
 
     @NotBlank
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id", nullable = false)
     protected User user;
