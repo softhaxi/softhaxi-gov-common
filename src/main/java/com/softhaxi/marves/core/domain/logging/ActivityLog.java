@@ -1,7 +1,6 @@
 package com.softhaxi.marves.core.domain.logging;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
