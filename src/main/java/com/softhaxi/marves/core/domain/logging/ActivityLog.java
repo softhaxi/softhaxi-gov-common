@@ -147,11 +147,11 @@ public class ActivityLog implements Serializable {
         this.actionTime = actionTime;
     }
 
-    public String getdescription() {
+    public String getDescription() {
         return this.description;
     }
 
-    public void setdescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -226,7 +226,7 @@ public class ActivityLog implements Serializable {
             ", referenceId='" + getReferenceId() + "'" +
             ", actionName='" + getActionName() + "'" +
             ", actionTime='" + getActionTime() + "'" +
-            ", description='" + getdescription() + "'" +
+            ", description='" + getDescription() + "'" +
             "}";
     }
 
