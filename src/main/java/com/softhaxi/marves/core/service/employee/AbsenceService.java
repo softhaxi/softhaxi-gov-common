@@ -1,5 +1,15 @@
 package com.softhaxi.marves.core.service.employee;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.softhaxi.marves.core.domain.account.User;
 import com.softhaxi.marves.core.domain.attendence.Attendence;
 import com.softhaxi.marves.core.domain.attendence.DailyAttendence;
@@ -45,6 +55,39 @@ public class AbsenceService {
 
     @Autowired
     private LocationUtil locationUtil;
+
+    public List<?> getDailyAbsenceCountWeekly() {
+        LocalDate now = LocalDate.now();
+        final LocalDate from = now.with(DayOfWeek.MONDAY).minusDays(1);
+        final LocalDate to = now.with(DayOfWeek.SUNDAY);
+        final long days = from.until(to, ChronoUnit.DAYS);
+        logger.debug("[getDailyAbsenceCountWeekly] First day of week ..." + from);
+        logger.debug("[getDailyAbsenceCountWeekly] Last day of week ..." + to);
+        List<Integer> wfo = Arrays.asList(0, 0, 0, 0, 0, 0, 0);
+        List<Integer> wfh = Arrays.asList(0, 0, 0, 0, 0, 0, 0);
+        List<LocalDate> dateRange = Stream.iterate(from, 
+            d -> d.plusDays(1))
+            .limit(days)
+            .collect(Collectors.toList());
+        Collection<Object[]> data = dailyAttendenceRepository.findStatisticWorkFromRangeDate(
+            now.with(DayOfWeek.MONDAY).minusDays(1).atStartOfDay(ZoneId.systemDefault()), 
+            now.with(DayOfWeek.SATURDAY).atStartOfDay(ZoneId.systemDefault()));
+        logger.debug("[getDailyAbsenceCountWeekly] Date Range size... " + dateRange.size());
+        for(var record : data) {
+            LocalDate date = LocalDate.parse(record[0].toString()); //LocalDate.ofInstant(record[0].toInstant(), ZoneId.systemDefault());
+            var index = dateRange.indexOf(date);
+            logger.debug("[getDailyAbsenceCountWeekly] Index..." + index);
+            if(record[1].toString().equalsIgnoreCase("WFO")) {
+                wfo.set(index, Integer.parseInt(record[2].toString()));
+            } else {
+                wfh.set(index, Integer.parseInt(record[2].toString()));
+            }
+            logger.debug("[getDailyAbsenceCountWeekly] Date..." + dateRange.toString());
+            logger.debug("[getDailyAbsenceCountWeekly] WFO..." + wfo.toString());
+            logger.debug("[getDailyAbsenceCountWeekly] WFH..." + wfh.toString());
+        }
+        return Arrays.asList(dateRange, wfo, wfh);
+    }
 
     public Attendence getLastAbsence(User user, String type, String code) {
         try {
