@@ -77,14 +77,14 @@ public class AbsenceService {
             LocalDate date = LocalDate.parse(record[0].toString()); //LocalDate.ofInstant(record[0].toInstant(), ZoneId.systemDefault());
             var index = dateRange.indexOf(date);
             logger.debug("[getDailyAbsenceCountWeekly] Index..." + index);
-            if(record[1].toString().equalsIgnoreCase("WFO")) {
+            if(record[1].toString().equalsIgnoreCase("wfo")) {
                 wfo.set(index, Integer.parseInt(record[2].toString()));
             } else {
                 wfh.set(index, Integer.parseInt(record[2].toString()));
             }
-            logger.debug("[getDailyAbsenceCountWeekly] Date..." + dateRange.toString());
-            logger.debug("[getDailyAbsenceCountWeekly] WFO..." + wfo.toString());
-            logger.debug("[getDailyAbsenceCountWeekly] WFH..." + wfh.toString());
+            logger.debug("[getDailyAbsenceCountWeekly] date..." + dateRange.toString());
+            logger.debug("[getDailyAbsenceCountWeekly] wfo..." + wfo.toString());
+            logger.debug("[getDailyAbsenceCountWeekly] wfh..." + wfh.toString());
         }
         return Arrays.asList(dateRange, wfo, wfh);
     }
@@ -114,18 +114,18 @@ public class AbsenceService {
             DailyAttendence daily = (DailyAttendence) attendence;
             if(daily.getInWork() == null) {
                 if(daily.getLatitude() == 0.0 && daily.getLongitude() == 0.0) {
-                    daily.setWorkFrom("WFH");
-                    daily.setInWork("WFH");
+                    daily.setWorkFrom("wfh");
+                    daily.setInWork("wfh");
                 } else {
                     double distance = locationUtil.calculateDistanceKM(office.getLatitude(), office.getLongitude(), 
                         daily.getLatitude(), daily.getLongitude()) * 1000;
-                    daily.setWorkFrom(distance <= limitRadiusInM ? "WFO" : "WFH");
-                    daily.setInWork(distance <= limitRadiusInM ? "WFO" : "WFH");
+                    daily.setWorkFrom(distance <= limitRadiusInM ? "wfo" : "wfh");
+                    daily.setInWork(distance <= limitRadiusInM ? "wfo" : "wfh");
                 }
                 activityLog = new ActivityLog().user(daily.getUser())
                     // .actionDate(daily.getDateTime().toLocalDate())
                     .actionTime(daily.getDateTime())
-                    .actionName("CLOCK IN")
+                    .actionName("clock.in")
                     .description(daily.getInWork());
                 locationLog = new LocationLog().user(daily.getUser())
                     .dateTime(daily.getDateTime())
@@ -135,19 +135,19 @@ public class AbsenceService {
                 
             } else {
                 if(daily.getOutLatitude() == 0.0 && daily.getOutLongitude() == 0.0) {
-                    daily.setOutWork("WFH");
+                    daily.setOutWork("wfh");
                 } else {
                     double distance = locationUtil.calculateDistanceKM(office.getLatitude(), office.getLongitude(), 
                         daily.getOutLatitude(), daily.getOutLongitude()) * 1000;
-                    daily.setOutWork(distance <= limitRadiusInM ? "WFO" : "WFH");
-                    if(daily.getInWork().equalsIgnoreCase("WFH")) {
-                        daily.setWorkFrom(distance <= limitRadiusInM ? "WFO" : "WFH");
+                    daily.setOutWork(distance <= limitRadiusInM ? "wfo" : "wfh");
+                    if(daily.getInWork().equalsIgnoreCase("wfh")) {
+                        daily.setWorkFrom(distance <= limitRadiusInM ? "wfo" : "wfh");
                     }
                 }
                 activityLog = new ActivityLog().user(daily.getUser())
                     // .actionDate(daily.getOutDateTime().toLocalDate())
                     .actionTime(daily.getOutDateTime())
-                    .actionName("CLOCK OUT")
+                    .actionName("clock.out")
                     .description(daily.getOutWork());
                 locationLog = new LocationLog().user(daily.getUser())
                     .dateTime(daily.getOutDateTime())
@@ -161,8 +161,8 @@ public class AbsenceService {
             activityLog = new ActivityLog().user(meeting.getUser())
                     // .actionDate(meeting.getDateTime().toLocalDate())
                     .actionTime(meeting.getDateTime())
-                    .actionName("CHECK IN")
-                    .description("MEETING " + meeting.getCode());
+                    .actionName("check.in")
+                    .description(meeting.getCode());
             locationLog = new LocationLog().user(meeting.getUser())
                     .dateTime(meeting.getDateTime())
                     .latitude(meeting.getLatitude())
