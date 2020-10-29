@@ -50,6 +50,9 @@ public class SystemParameter implements Serializable {
     @Column(name = "regex", nullable = true)
     protected String regex;
 
+    @Column(name = "additional_info", nullable = true)
+    protected String additionalInfo;
+
     @Column(name = "is_system")
     protected boolean isSystem = false;
 
@@ -62,12 +65,13 @@ public class SystemParameter implements Serializable {
     public SystemParameter() {
     }
 
-    public SystemParameter(String code, String name, String decription, String value, String regex, boolean isSystem, boolean isEditable, boolean isDeleted) {
+    public SystemParameter(String code, String name, String decription, String value, String regex, String additionalInfo, boolean isSystem, boolean isEditable, boolean isDeleted) {
         this.code = code;
         this.name = name;
         this.decription = decription;
         this.value = value;
         this.regex = regex;
+        this.additionalInfo = additionalInfo;
         this.isSystem = isSystem;
         this.isEditable = isEditable;
         this.isDeleted = isDeleted;
@@ -119,6 +123,14 @@ public class SystemParameter implements Serializable {
 
     public void setRegex(String regex) {
         this.regex = regex;
+    }
+
+    public String getAdditionalInfo() {
+        return this.additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
     public boolean isSystem() {
@@ -175,6 +187,11 @@ public class SystemParameter implements Serializable {
         return this;
     }
 
+    public SystemParameter additionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+        return this;
+    }
+
     public SystemParameter isSystem(boolean isSystem) {
         this.isSystem = isSystem;
         return this;
@@ -203,7 +220,7 @@ public class SystemParameter implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(code, name, value, regex, isSystem, isEditable, isDeleted);
+        return Objects.hash(code, name, value, regex, additionalInfo, isSystem, isEditable, isDeleted);
     }
 
     @Override
@@ -213,6 +230,7 @@ public class SystemParameter implements Serializable {
             ", name='" + getName() + "'" +
             ", value='" + getValue() + "'" +
             ", regex='" + getRegex() + "'" +
+            ", regex='" + getAdditionalInfo() + "'" +
             ", isSystem='" + isSystem() + "'" +
             ", isEditable='" + isEditable() + "'" +
             ", isDeleted='" + isDeleted() + "'" +
