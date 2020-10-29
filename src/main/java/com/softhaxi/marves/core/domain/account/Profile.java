@@ -1,60 +1,79 @@
 package com.softhaxi.marves.core.domain.account;
 
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.UUID;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 /**
  * @author Raja Sihombing
  * @since 1
  */
+@Entity
+@Table(name = "profiles")
+@Access(value = AccessType.FIELD)
 public class Profile implements Serializable {
     /**
      *
      */
     private static final long serialVersionUID = -2215408560873289635L;
-    protected String id;
+
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "pg-uuid")
+	@Column(name = "id", updatable = false, nullable = false)
+    protected UUID id;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", nullable = false)
     protected User user; 
+    
     protected User owner;
     protected String firstName;
     protected String lastName;
+
+    @Column(name = "full_name", nullable = false, length = 100)
+    protected String fullName;
     protected String gender;
     protected String nationality;
     protected String identityID;
     protected String identityType;
+
+    @Column(name = "primary_email", length = 50)
     protected String primaryEmail;
     protected String primaryMobile;
-    protected String status;
 
-    /**
-     * 
-     */
+    @Column(name = "status", length = 10)
+    protected String status = "ACTIVE";
+
+
     public Profile() {
-        this(null, null, null, null, null, null, null, null, null, null, null, null);
     }
 
-    /**
-     * 
-     * @param id
-     * @param user
-     * @param owner
-     * @param firstName
-     * @param lastName
-     * @param gender
-     * @param nationality
-     * @param identityID
-     * @param identityType
-     * @param primaryEmail
-     * @param primaryMobile
-     * @param status 
-     */
-    public Profile(String id, User user, User owner, String firstName, 
-            String lastName, String gender, String nationality, String identityID, 
-            String identityType, String primaryEmail, String primaryMobile, 
-            String status) {
-        this.id = id;
+    public Profile(User user, User owner, String firstName, String lastName, String fullName, String gender, String nationality, String identityID, String identityType, String primaryEmail, String primaryMobile, String status) {
         this.user = user;
         this.owner = owner;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.fullName = fullName;
         this.gender = gender;
         this.nationality = nationality;
         this.identityID = identityID;
@@ -64,195 +83,208 @@ public class Profile implements Serializable {
         this.status = status;
     }
 
-    /**
-     * @return the id
-     */
-    public String getId() {
-        return id;
+    public UUID getId() {
+        return this.id;
     }
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    /**
-     * @return the user
-     */
     public User getUser() {
-        return user;
+        return this.user;
     }
 
-    /**
-     * @param user the user to set
-     */
     public void setUser(User user) {
         this.user = user;
     }
 
-    /**
-     * @return the owner
-     */
     public User getOwner() {
-        return owner;
+        return this.owner;
     }
 
-    /**
-     * @param owner the owner to set
-     */
     public void setOwner(User owner) {
         this.owner = owner;
     }
 
-    /**
-     * @return the firstName
-     */
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
-    /**
-     * @param firstName the firstName to set
-     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    /**
-     * @return the lastName
-     */
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
-    /**
-     * @param lastName the lastName to set
-     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    /**
-     * @return the gender
-     */
-    public String getGender() {
-        return gender;
+    public String getFullName() {
+        return this.fullName;
     }
 
-    /**
-     * @param gender the gender to set
-     */
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getGender() {
+        return this.gender;
+    }
+
     public void setGender(String gender) {
         this.gender = gender;
     }
 
-    /**
-     * @return the nationality
-     */
     public String getNationality() {
-        return nationality;
+        return this.nationality;
     }
 
-    /**
-     * @param nationality the nationality to set
-     */
     public void setNationality(String nationality) {
         this.nationality = nationality;
     }
 
-    /**
-     * @return the identityID
-     */
     public String getIdentityID() {
-        return identityID;
+        return this.identityID;
     }
 
-    /**
-     * @param identityID the identityID to set
-     */
     public void setIdentityID(String identityID) {
         this.identityID = identityID;
     }
 
-    /**
-     * @return the identityType
-     */
     public String getIdentityType() {
-        return identityType;
+        return this.identityType;
     }
 
-    /**
-     * @param identityType the identityType to set
-     */
     public void setIdentityType(String identityType) {
         this.identityType = identityType;
     }
 
-    /**
-     * @return the primaryEmail
-     */
     public String getPrimaryEmail() {
-        return primaryEmail;
+        return this.primaryEmail;
     }
 
-    /**
-     * @param primaryEmail the primaryEmail to set
-     */
     public void setPrimaryEmail(String primaryEmail) {
         this.primaryEmail = primaryEmail;
     }
 
-    /**
-     * @return the primaryMobile
-     */
     public String getPrimaryMobile() {
-        return primaryMobile;
+        return this.primaryMobile;
     }
 
-    /**
-     * @param primaryMobile the primaryMobile to set
-     */
     public void setPrimaryMobile(String primaryMobile) {
         this.primaryMobile = primaryMobile;
     }
 
-    /**
-     * @return the status
-     */
     public String getStatus() {
-        return status;
+        return this.status;
     }
 
-    /**
-     * @param status the status to set
-     */
     public void setStatus(String status) {
         this.status = status;
     }
 
-    /**
-     * 
-     * @return 
-     */
+    public Profile id(UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    public Profile user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public Profile owner(User owner) {
+        this.owner = owner;
+        return this;
+    }
+
+    public Profile firstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public Profile lastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public Profile fullName(String fullName) {
+        this.fullName = fullName;
+        return this;
+    }
+
+    public Profile gender(String gender) {
+        this.gender = gender;
+        return this;
+    }
+
+    public Profile nationality(String nationality) {
+        this.nationality = nationality;
+        return this;
+    }
+
+    public Profile identityID(String identityID) {
+        this.identityID = identityID;
+        return this;
+    }
+
+    public Profile identityType(String identityType) {
+        this.identityType = identityType;
+        return this;
+    }
+
+    public Profile primaryEmail(String primaryEmail) {
+        this.primaryEmail = primaryEmail;
+        return this;
+    }
+
+    public Profile primaryMobile(String primaryMobile) {
+        this.primaryMobile = primaryMobile;
+        return this;
+    }
+
+    public Profile status(String status) {
+        this.status = status;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Profile)) {
+            return false;
+        }
+        Profile profile = (Profile) o;
+        return Objects.equals(id, profile.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, owner, firstName, lastName, fullName, gender, nationality, identityID, identityType, primaryEmail, primaryMobile, status);
+    }
+
     @Override
     public String toString() {
-        return "Profile{" 
-                + "id=" + id 
-                + ", user=" + user 
-                + ", owner=" + owner 
-                + ", firstName=" + firstName 
-                + ", lastName=" + lastName 
-                + ", gender=" + gender 
-                + ", nationality=" + nationality 
-                + ", identityID=" + identityID 
-                + ", identityType=" + identityType 
-                + ", primaryEmail=" + primaryEmail 
-                + ", primaryMobile=" + primaryMobile 
-                + ", status=" + status 
-                + '}';
+        return "{" +
+            " id='" + getId() + "'" +
+            ", user='" + getUser() + "'" +
+            ", owner='" + getOwner() + "'" +
+            ", firstName='" + getFirstName() + "'" +
+            ", lastName='" + getLastName() + "'" +
+            ", fullName='" + getFullName() + "'" +
+            ", gender='" + getGender() + "'" +
+            ", nationality='" + getNationality() + "'" +
+            ", identityID='" + getIdentityID() + "'" +
+            ", identityType='" + getIdentityType() + "'" +
+            ", primaryEmail='" + getPrimaryEmail() + "'" +
+            ", primaryMobile='" + getPrimaryMobile() + "'" +
+            ", status='" + getStatus() + "'" +
+            "}";
     }
-    
     
 }

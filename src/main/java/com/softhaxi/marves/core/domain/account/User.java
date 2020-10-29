@@ -13,10 +13,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import com.softhaxi.marves.core.domain.access.UserRole;
+import com.softhaxi.marves.core.domain.employee.Employee;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -68,6 +70,12 @@ public class User implements Serializable {
 
  	@Column(name = "is_ldap_user")
     protected boolean isLDAPUser = true;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    protected Profile profile;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    protected Employee employee;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     protected Set<UserRole> roles;
@@ -228,6 +236,22 @@ public class User implements Serializable {
         this.isLDAPUser = isLDAPUser;
     }
 
+    public Profile getProfile() {
+        return this.profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public Employee getEmployee() {
+        return this.employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
     public Set<UserRole> getRoles() {
         return this.roles;
     }
@@ -284,6 +308,16 @@ public class User implements Serializable {
 
     public User roles(Set<UserRole> roles) {
         this.roles = roles;
+        return this;
+    }
+
+    public User profile(Profile profile) {
+        this.profile = profile;
+        return this;
+    }
+
+    public User employee(Employee employee) {
+        this.employee = employee;
         return this;
     }
 
