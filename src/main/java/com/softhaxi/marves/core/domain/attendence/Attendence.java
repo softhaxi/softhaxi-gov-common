@@ -10,8 +10,6 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -19,10 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.softhaxi.marves.core.domain.Auditable;
 import com.softhaxi.marves.core.domain.account.User;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 /**
  * @author Raja Sihombing
@@ -34,26 +30,19 @@ import org.hibernate.annotations.Type;
     strategy = InheritanceType.JOINED
 )
 @Access(value = AccessType.FIELD)
-public abstract class Attendence implements Serializable {
+public abstract class Attendence extends Auditable<String> implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 1328697867644739119L;
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type = "pg-uuid")
-	@Column(name = "id", updatable = false, nullable = false)
-    protected UUID id;
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     protected User user;
 
-    @Column(name = "type", nullable = false, length = 20)
+    @Column(name = "type", nullable = false, length = 50)
     protected String type = "ATTENDENCE";
 
     @Column(name = "date_time", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
@@ -71,6 +60,7 @@ public abstract class Attendence implements Serializable {
     @Column(name = "is_mock_location")
     protected boolean isMockLocation;
 
+    @JsonIgnore
     @Column(name = "picture_path")
     protected String picturePath;
 
@@ -87,14 +77,6 @@ public abstract class Attendence implements Serializable {
         this.longitude = longitude;
         this.isMockLocation = isMockLocation;
         this.picturePath = picturePath;
-    }
-
-    public UUID getId() {
-        return this.id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public User getUser() {
@@ -159,6 +141,12 @@ public abstract class Attendence implements Serializable {
 
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
+    }
+
+    public String getPhotoUrl() {
+        if(getPicturePath() == null)
+            return null;
+        return String.format("/asset%s", getPicturePath());
     }
 
     public Attendence id(UUID id) {

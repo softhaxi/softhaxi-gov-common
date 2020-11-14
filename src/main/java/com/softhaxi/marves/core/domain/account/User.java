@@ -10,18 +10,14 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import com.softhaxi.marves.core.domain.Auditable;
 import com.softhaxi.marves.core.domain.access.UserRole;
 import com.softhaxi.marves.core.domain.employee.Employee;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 /**
  * @author Raja Sihombing
@@ -30,19 +26,11 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "users")
 @Access(value = AccessType.FIELD)
-public class User implements Serializable {
+public class User extends Auditable<String> implements Serializable {
     /**
      *
      */
     private static final long serialVersionUID = 7769293153652418675L;
-    
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type = "pg-uuid")
-	@Column(name = "id", updatable = false, nullable = false)
-    protected UUID id;
-
 	@Column(name = "username", nullable = false, unique = true, length = 50)
     protected String username;
     
@@ -99,20 +87,6 @@ public class User implements Serializable {
         this.passphrase = passphrase;
         this.imageSecurity = imageSecurity;
         this.isLDAPUser = isLDAPUser;
-    }
-
-    /**
-     * @return the id
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     /**

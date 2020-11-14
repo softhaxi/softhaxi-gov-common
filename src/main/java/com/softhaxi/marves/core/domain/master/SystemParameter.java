@@ -8,12 +8,9 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
+import com.softhaxi.marves.core.domain.Auditable;
 
 /**
  * @author Raja Sihombing
@@ -22,29 +19,23 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "sysparams")
 @Access(value = AccessType.FIELD)
-public class SystemParameter implements Serializable {
+public class SystemParameter extends Auditable<String> implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 6724979328243935740L;
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type = "pg-uuid")
-	@Column(name = "id", updatable = false, nullable = false)
-    protected UUID id;
-
-    @Column(name = "code", nullable = false, length = 20)
+    
+    @Column(name = "code", nullable = false, length = 50)
     protected String code;
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "name", nullable = true, length = 100)
     protected String name;
 
     @Column(name = "description", nullable = true)
     protected String decription;
 
-    @Column(name = "value", nullable = true, length = 100)
+    @Column(name = "value", nullable = true)
     protected String value;
 
     @Column(name = "regex", nullable = true)
@@ -75,14 +66,6 @@ public class SystemParameter implements Serializable {
         this.isSystem = isSystem;
         this.isEditable = isEditable;
         this.isDeleted = isDeleted;
-    }
-
-    public UUID getId() {
-        return this.id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getCode() {

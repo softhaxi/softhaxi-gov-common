@@ -52,8 +52,6 @@ public class DailyAttendence extends Attendence {
     @Column(name = "out_work", length = 10)
     protected String outWork;
     
-
-
     public DailyAttendence() {
         setType("DAILY");
     }

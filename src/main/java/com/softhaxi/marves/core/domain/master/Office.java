@@ -8,12 +8,9 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
+import com.softhaxi.marves.core.domain.Auditable;
 
 /**
  * @author Raja Sihombing
@@ -22,19 +19,13 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "offices")
 @Access(value = AccessType.FIELD)
-public class Office implements Serializable {
+public class Office extends Auditable<String> implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = -4270860244610567774L;
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type = "pg-uuid")
-	@Column(name = "id", updatable = false, nullable = false)
-    protected UUID id;
-
+    
     @Column(name = "code", nullable = true, length = 20)
     protected String code;
     
@@ -76,14 +67,6 @@ public class Office implements Serializable {
         this.type = type;
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    public UUID getId() {
-        return this.id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getCode() {

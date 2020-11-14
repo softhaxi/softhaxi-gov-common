@@ -17,12 +17,12 @@ import org.springframework.data.jpa.repository.Query;
  * @since 1
  */
 public interface ActivityLogRepository extends JpaRepository<ActivityLog, UUID> {
-    public default Collection<ActivityLog> findByUserAndActionDateOrderByActionTimeDesc(User user, LocalDate actionDate) {
-        return findByUserAndActionTimeBetweenOrderByActionTimeDesc(user, 
+    public default Collection<ActivityLog> findAllUserDailyActivity(User user, LocalDate actionDate) {
+        return findAllUserDailyActivityOrderByActionTimeDesc(user, 
             actionDate.atStartOfDay(ZoneId.systemDefault()), 
             actionDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
     }
 
-    @Query(value = "FROM ActivityLog WHERE user = ?1 AND actionTime >= ?2 AND actionTime <= ?3 ORDER BY actionTime DESC")
-    Collection<ActivityLog> findByUserAndActionTimeBetweenOrderByActionTimeDesc(User user, ZonedDateTime startTime, ZonedDateTime endTime);
+    @Query("FROM ActivityLog WHERE user = ?1 AND actionType='daily' AND actionTime >= ?2 AND actionTime <= ?3 ORDER BY actionTime DESC")
+    Collection<ActivityLog> findAllUserDailyActivityOrderByActionTimeDesc(User user, ZonedDateTime startTime, ZonedDateTime endTime);
 }

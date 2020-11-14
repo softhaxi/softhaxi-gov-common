@@ -8,16 +8,12 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.softhaxi.marves.core.domain.Auditable;
 import com.softhaxi.marves.core.domain.account.User;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 /**
  * @author Raja Sihombing
@@ -26,19 +22,12 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "user_roles")
 @Access(value = AccessType.FIELD)
-public class UserRole implements Serializable {
+public class UserRole extends Auditable<String> implements Serializable {
     /**
      *
      */
     private static final long serialVersionUID = -4410367904229012076L;
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type = "pg-uuid")
-	@Column(name = "id", updatable = false, nullable = false)
-    protected UUID id;
-
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     protected User user;
@@ -64,21 +53,7 @@ public class UserRole implements Serializable {
         this.user = user;
         this.role = role;
     }
-
-    /**
-     * @return the id
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
+    
     /**
      * @return the user
      */
@@ -105,6 +80,41 @@ public class UserRole implements Serializable {
      */
     public void setRole(Role role) {
         this.role = role;
+    }
+
+
+    public UserRole(User user, Role role, String description) {
+        this.user = user;
+        this.role = role;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public UserRole id(UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    public UserRole user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public UserRole role(Role role) {
+        this.role = role;
+        return this;
+    }
+
+    public UserRole description(String description) {
+        this.description = description;
+        return this;
     }
 
     /**

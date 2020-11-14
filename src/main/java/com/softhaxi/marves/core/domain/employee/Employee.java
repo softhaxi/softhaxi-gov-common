@@ -10,17 +10,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.softhaxi.marves.core.domain.Auditable;
 import com.softhaxi.marves.core.domain.account.User;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 /**
  * @author Raja Sihombing
@@ -29,19 +25,12 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "employees")
 @Access(value = AccessType.FIELD)
-public class Employee implements Serializable {
+public class Employee extends Auditable<String> implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type = "pg-uuid")
-	@Column(name = "id", updatable = false, nullable = false)
-    protected UUID id;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -59,15 +48,7 @@ public class Employee implements Serializable {
         this.user = user;
         this.employeeNo = employeeNo;
     }
-
-    public UUID getId() {
-        return this.id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
+    
     public User getUser() {
         return this.user;
     }

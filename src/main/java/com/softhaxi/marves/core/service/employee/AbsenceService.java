@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,6 +18,7 @@ import com.softhaxi.marves.core.domain.attendence.MeetingAttendence;
 import com.softhaxi.marves.core.domain.logging.ActivityLog;
 import com.softhaxi.marves.core.domain.logging.LocationLog;
 import com.softhaxi.marves.core.domain.master.Office;
+import com.softhaxi.marves.core.repository.attendence.AttendenceRepository;
 import com.softhaxi.marves.core.repository.attendence.DailyAttendenceRepository;
 import com.softhaxi.marves.core.repository.attendence.MeetingAttendenceRepository;
 import com.softhaxi.marves.core.repository.master.OfficeRepository;
@@ -39,6 +41,9 @@ public class AbsenceService {
     private static final Logger logger = LoggerFactory.getLogger(AbsenceService.class);
 
     @Autowired
+    private AttendenceRepository attendenceRepo;
+
+    @Autowired
     private DailyAttendenceRepository dailyAttendenceRepository;
 
     @Autowired
@@ -58,8 +63,8 @@ public class AbsenceService {
 
     public List<?> getDailyAbsenceCountWeekly() {
         LocalDate now = LocalDate.now();
-        final LocalDate from = now.with(DayOfWeek.MONDAY).minusDays(1);
-        final LocalDate to = now.with(DayOfWeek.SUNDAY);
+        final LocalDate from = now.with(DayOfWeek.MONDAY);
+        final LocalDate to = now.with(DayOfWeek.SUNDAY).plusDays(1);
         final long days = from.until(to, ChronoUnit.DAYS);
         logger.debug("[getDailyAbsenceCountWeekly] First day of week ..." + from);
         logger.debug("[getDailyAbsenceCountWeekly] Last day of week ..." + to);
@@ -69,9 +74,8 @@ public class AbsenceService {
             d -> d.plusDays(1))
             .limit(days)
             .collect(Collectors.toList());
-        Collection<Object[]> data = dailyAttendenceRepository.findStatisticWorkFromRangeDate(
-            now.with(DayOfWeek.MONDAY).minusDays(1).atStartOfDay(ZoneId.systemDefault()), 
-            now.with(DayOfWeek.SATURDAY).atStartOfDay(ZoneId.systemDefault()));
+        Collection<Object[]> data = dailyAttendenceRepository.findStatisticWorkFromRangeDate(from.atStartOfDay(ZoneId.systemDefault()), 
+            to.atStartOfDay(ZoneId.systemDefault()));
         logger.debug("[getDailyAbsenceCountWeekly] Date Range size... " + dateRange.size());
         for(var record : data) {
             LocalDate date = LocalDate.parse(record[0].toString()); //LocalDate.ofInstant(record[0].toInstant(), ZoneId.systemDefault());
@@ -123,7 +127,6 @@ public class AbsenceService {
                     daily.setInWork(distance <= limitRadiusInM ? "wfo" : "wfh");
                 }
                 activityLog = new ActivityLog().user(daily.getUser())
-                    // .actionDate(daily.getDateTime().toLocalDate())
                     .actionTime(daily.getDateTime())
                     .actionName("clock.in")
                     .description(daily.getInWork());
@@ -145,10 +148,9 @@ public class AbsenceService {
                     }
                 }
                 activityLog = new ActivityLog().user(daily.getUser())
-                    // .actionDate(daily.getOutDateTime().toLocalDate())
                     .actionTime(daily.getOutDateTime())
                     .actionName("clock.out")
-                    .description(daily.getOutWork());
+                    .description(daily.getWorkFrom());
                 locationLog = new LocationLog().user(daily.getUser())
                     .dateTime(daily.getOutDateTime())
                     .latitude(daily.getOutLatitude())
@@ -159,7 +161,6 @@ public class AbsenceService {
         } else if(attendence instanceof MeetingAttendence) {
             MeetingAttendence meeting = (MeetingAttendence) attendence;
             activityLog = new ActivityLog().user(meeting.getUser())
-                    // .actionDate(meeting.getDateTime().toLocalDate())
                     .actionTime(meeting.getDateTime())
                     .actionName("check.in")
                     .description(meeting.getCode());
@@ -172,9 +173,9 @@ public class AbsenceService {
         }
         if(activityLog != null) {
             activityLog.setUri("/attendence");
-            activityLog.setDeepLink(String.format("core://marves.dev/attendence?id=%s", 
-                attendence.getId().toString()));
+            activityLog.setDeepLink("core://marves.dev/attendence");
             activityLog.setReferenceId(attendence.getId().toString());
+            activityLog.setActionType("daily");
             loggerService.saveAsyncActivityLog(activityLog);
         }   
         if(locationLog != null)
@@ -182,4 +183,8 @@ public class AbsenceService {
 
         return attendence;
     }
+
+	public Attendence getByUserAndId(User user, UUID id) {
+		return attendenceRepo.getByUserAndId(user, id).orElse(null);
+	}
 }

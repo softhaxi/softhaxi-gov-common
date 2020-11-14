@@ -10,17 +10,13 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.softhaxi.marves.core.domain.Auditable;
 import com.softhaxi.marves.core.domain.account.User;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 /**
  * @author Raja Sihombing
@@ -29,19 +25,12 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "activity_logs")
 @Access(value = AccessType.FIELD)
-public class ActivityLog implements Serializable {
+public class ActivityLog extends Auditable<String> implements Serializable {
 
     /**
      *
      */
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type = "pg-uuid")
-	@Column(name = "id", updatable = false, nullable = false)
-    protected UUID id;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,6 +40,7 @@ public class ActivityLog implements Serializable {
     @Column(name = "deep_link", nullable = false, length = 200)
     protected String deepLink;
 
+    @JsonIgnore
     @Column(name = "uri", nullable = false, length = 200)
     protected String uri;
 
@@ -59,6 +49,9 @@ public class ActivityLog implements Serializable {
 
     @Column(name = "action_name", length = 20)
     protected String actionName;
+
+    @Column(name = "action_type", length = 100)
+    protected String actionType = "audit";
 
     // @Column(name="action_date", nullable = false)
     // protected LocalDate actionDate;
@@ -72,23 +65,15 @@ public class ActivityLog implements Serializable {
     public ActivityLog() {
     }
 
-    public ActivityLog(User user, String deepLink, String uri, String referenceId, String actionName, ZonedDateTime actionTime, String description) {
+    public ActivityLog(User user, String deepLink, String uri, String referenceId, String actionName, String actionType, ZonedDateTime actionTime, String description) {
         this.user = user;
         this.deepLink = deepLink;
         this.uri = uri;
         this.referenceId = referenceId;
         this.actionName = actionName;
-        // this.actionDate = actionDate;
+        this.actionType = actionType;
         this.actionTime = actionTime;
         this.description = description;
-    }
-
-    public UUID getId() {
-        return this.id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public User getUser() {
@@ -129,6 +114,14 @@ public class ActivityLog implements Serializable {
 
     public void setActionName(String actionName) {
         this.actionName = actionName;
+    }
+
+    public String getActionType() {
+        return this.actionType;
+    }
+
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
     }
 
     // public LocalDate getActionDate() {
@@ -185,6 +178,11 @@ public class ActivityLog implements Serializable {
         return this;
     }
 
+    public ActivityLog actionType(String actionType) {
+        this.actionType = actionType;
+        return this;
+    }
+
     // public ActivityLog actionDate(LocalDate actionDate) {
     //     this.actionDate = actionDate;
     //     return this;
@@ -213,7 +211,7 @@ public class ActivityLog implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, deepLink, uri, referenceId, actionName, actionTime, description);
+        return Objects.hash(id, user, deepLink, uri, referenceId, actionName, actionType, actionTime, description);
     }
 
     @Override
@@ -225,6 +223,7 @@ public class ActivityLog implements Serializable {
             ", uri='" + getUri() + "'" +
             ", referenceId='" + getReferenceId() + "'" +
             ", actionName='" + getActionName() + "'" +
+            ", actionTime='" + getActionType() + "'" +
             ", actionTime='" + getActionTime() + "'" +
             ", description='" + getDescription() + "'" +
             "}";

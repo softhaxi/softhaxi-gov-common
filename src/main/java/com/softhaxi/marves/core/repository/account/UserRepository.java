@@ -14,8 +14,10 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface UserRepository extends JpaRepository<User, UUID>{
 
-    @Query("FROM User WHERE LOWER(username) = LOWER(?1)")
     public Optional<User> findByUsername(String username);
+
+    @Query("FROM User WHERE lower(username) = lower(?1) or lower(email)=lower(?1)")
+    public Optional<User> findByUsernameOrEmailIgnoreCase(String username);
     
     @Query("FROM User WHERE username =?1 and password=?2")
     public Optional<User> findUserByUsernameAndPassword(String username, String password);
