@@ -162,7 +162,7 @@ public class Ticket extends Auditable<String> implements Serializable {
     public String getPhotoUrl() {
         if(getStoragePath() == null)
             return null;
-        return String.format("/asset%s", getStoragePath());
+        return String.format("/asset%s", getStoragePath().replace('\\', '/'));
     }
 
     public Set<TicketComment> getComments() {
