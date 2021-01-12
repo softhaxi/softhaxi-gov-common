@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.softhaxi.marves.core.domain.attendence.DailyAttendence;
-import com.softhaxi.marves.core.repository.attendence.DailyAttendenceRepository;
+import com.softhaxi.marves.core.domain.attendance.DailyAttendance;
+import com.softhaxi.marves.core.repository.attendance.DailyAttendanceRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class ChartUtil {
 
     @Autowired
-    private static DailyAttendenceRepository dailyAttendenceRepository;
+    private static DailyAttendanceRepository dailyAttendanceRepository;
 
     enum Days {
         Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
@@ -45,71 +45,71 @@ public class ChartUtil {
         List<Map<Object, Object>> sundayWFHData = new ArrayList<Map<Object, Object>>();
         List<Map<Object, Object>> sundayWFOData = new ArrayList<Map<Object, Object>>();
 
-        List<DailyAttendence> dailyAttendences = dailyAttendenceRepository.findAll();
+        List<DailyAttendance> dailyAttendances = dailyAttendanceRepository.findAll();
 
-        List<DailyAttendence> mondayAttendanceWFH = new ArrayList<>();
-        List<DailyAttendence> mondayAttendanceWFO = new ArrayList<>();
-        List<DailyAttendence> tuesdayAttendanceWFH = new ArrayList<>();
-        List<DailyAttendence> tuesdayAttendanceWFO = new ArrayList<>();
-        List<DailyAttendence> wednesdayAttendanceWFH = new ArrayList<>();
-        List<DailyAttendence> wednesdayAttendanceWFO = new ArrayList<>();
-        List<DailyAttendence> thursdayAttendanceWFH = new ArrayList<>();
-        List<DailyAttendence> thursdayAttendanceWFO = new ArrayList<>();
-        List<DailyAttendence> fridayAttendanceWFH = new ArrayList<>();
-        List<DailyAttendence> fridayAttendanceWFO = new ArrayList<>();
-        List<DailyAttendence> saturdayAttendanceWFH = new ArrayList<>();
-        List<DailyAttendence> saturdayAttendanceWFO = new ArrayList<>();
-        List<DailyAttendence> sundayAttendanceWFH = new ArrayList<>();
-        List<DailyAttendence> sundayAttendanceWFO = new ArrayList<>();
+        List<DailyAttendance> mondayAttendanceWFH = new ArrayList<>();
+        List<DailyAttendance> mondayAttendanceWFO = new ArrayList<>();
+        List<DailyAttendance> tuesdayAttendanceWFH = new ArrayList<>();
+        List<DailyAttendance> tuesdayAttendanceWFO = new ArrayList<>();
+        List<DailyAttendance> wednesdayAttendanceWFH = new ArrayList<>();
+        List<DailyAttendance> wednesdayAttendanceWFO = new ArrayList<>();
+        List<DailyAttendance> thursdayAttendanceWFH = new ArrayList<>();
+        List<DailyAttendance> thursdayAttendanceWFO = new ArrayList<>();
+        List<DailyAttendance> fridayAttendanceWFH = new ArrayList<>();
+        List<DailyAttendance> fridayAttendanceWFO = new ArrayList<>();
+        List<DailyAttendance> saturdayAttendanceWFH = new ArrayList<>();
+        List<DailyAttendance> saturdayAttendanceWFO = new ArrayList<>();
+        List<DailyAttendance> sundayAttendanceWFH = new ArrayList<>();
+        List<DailyAttendance> sundayAttendanceWFO = new ArrayList<>();
 
-        for (DailyAttendence dailyAttendence : dailyAttendences) {
-            String day = new SimpleDateFormat("EEE").format(Date.from(dailyAttendence.getDateTime().toInstant()));
+        for (DailyAttendance dailyAttendance : dailyAttendances) {
+            String day = new SimpleDateFormat("EEE").format(Date.from(dailyAttendance.getDateTime().toInstant()));
             if ("Mon".equals(day)) {
-                if ("WFH".equals(dailyAttendence.getWorkFrom())) {
-                    mondayAttendanceWFH.add(dailyAttendence);
+                if ("WFH".equals(dailyAttendance.getWorkFrom())) {
+                    mondayAttendanceWFH.add(dailyAttendance);
                 } else {
-                    mondayAttendanceWFO.add(dailyAttendence);
+                    mondayAttendanceWFO.add(dailyAttendance);
                 }
             } else if ("Tue".equals(day)) {
-                if ("WFH".equals(dailyAttendence.getWorkFrom())) {
-                    tuesdayAttendanceWFH.add(dailyAttendence);
+                if ("WFH".equals(dailyAttendance.getWorkFrom())) {
+                    tuesdayAttendanceWFH.add(dailyAttendance);
                 } else {
-                    tuesdayAttendanceWFO.add(dailyAttendence);
+                    tuesdayAttendanceWFO.add(dailyAttendance);
                 }
 
             } else if ("Wed".equals(day)) {
-                if ("WFH".equals(dailyAttendence.getWorkFrom())) {
-                    wednesdayAttendanceWFH.add(dailyAttendence);
+                if ("WFH".equals(dailyAttendance.getWorkFrom())) {
+                    wednesdayAttendanceWFH.add(dailyAttendance);
                 } else {
-                    wednesdayAttendanceWFO.add(dailyAttendence);
+                    wednesdayAttendanceWFO.add(dailyAttendance);
                 }
 
             } else if ("Thu".equals(day)) {
-                if ("WFH".equals(dailyAttendence.getWorkFrom())) {
-                    thursdayAttendanceWFH.add(dailyAttendence);
+                if ("WFH".equals(dailyAttendance.getWorkFrom())) {
+                    thursdayAttendanceWFH.add(dailyAttendance);
                 } else {
-                    thursdayAttendanceWFO.add(dailyAttendence);
+                    thursdayAttendanceWFO.add(dailyAttendance);
                 }
 
             } else if ("Fri".equals(day)) {
-                if ("WFH".equals(dailyAttendence.getWorkFrom())) {
-                    fridayAttendanceWFH.add(dailyAttendence);
+                if ("WFH".equals(dailyAttendance.getWorkFrom())) {
+                    fridayAttendanceWFH.add(dailyAttendance);
                 } else {
-                    fridayAttendanceWFO.add(dailyAttendence);
+                    fridayAttendanceWFO.add(dailyAttendance);
                 }
 
             } else if ("Sat".equals(day)) {
-                if ("WFH".equals(dailyAttendence.getWorkFrom())) {
-                    saturdayAttendanceWFH.add(dailyAttendence);
+                if ("WFH".equals(dailyAttendance.getWorkFrom())) {
+                    saturdayAttendanceWFH.add(dailyAttendance);
                 } else {
-                    saturdayAttendanceWFO.add(dailyAttendence);
+                    saturdayAttendanceWFO.add(dailyAttendance);
                 }
 
             } else {
-                if ("WFH".equals(dailyAttendence.getWorkFrom())) {
-                    mondayAttendanceWFH.add(dailyAttendence);
+                if ("WFH".equals(dailyAttendance.getWorkFrom())) {
+                    mondayAttendanceWFH.add(dailyAttendance);
                 } else {
-                    mondayAttendanceWFO.add(dailyAttendence);
+                    mondayAttendanceWFO.add(dailyAttendance);
                 }
 
             }

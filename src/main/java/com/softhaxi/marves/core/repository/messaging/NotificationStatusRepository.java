@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface NotificationStatusRepository extends JpaRepository<NotificationStatus, UUID> {
 
-    @Query("FROM NotificationStatus WHERE message= ?1 AND user= ?2 AND isDelivered = false")
+    @Query("FROM NotificationStatus WHERE message= ?1 AND user= ?2 AND delivered = false")
     public Optional<NotificationStatus> findOneUndeliveredNotificationByUser(Notification notification, User user);
 
     @Query("FROM NotificationStatus WHERE message= ?1 AND user= ?2")

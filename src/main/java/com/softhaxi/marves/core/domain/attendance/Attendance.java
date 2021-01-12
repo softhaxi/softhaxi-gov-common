@@ -1,4 +1,4 @@
-package com.softhaxi.marves.core.domain.attendence;
+package com.softhaxi.marves.core.domain.attendance;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -25,12 +25,12 @@ import com.softhaxi.marves.core.domain.account.User;
  * @since 1
  */
 @Entity
-@Table(name = "attendences")
+@Table(name = "attendances")
 @Inheritance(
     strategy = InheritanceType.JOINED
 )
 @Access(value = AccessType.FIELD)
-public abstract class Attendence extends Auditable<String> implements Serializable {
+public abstract class Attendance extends Auditable<String> implements Serializable {
 
     /**
      *
@@ -65,10 +65,10 @@ public abstract class Attendence extends Auditable<String> implements Serializab
     protected String picturePath;
 
 
-    public Attendence() {
+    public Attendance() {
     }
 
-    public Attendence(User user, String type, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath) {
+    public Attendance(User user, String type, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath) {
         this.user = user;
         this.type = type;
         this.dateTime = dateTime;
@@ -149,47 +149,47 @@ public abstract class Attendence extends Auditable<String> implements Serializab
         return String.format("/asset%s", getPicturePath());
     }
 
-    public Attendence id(UUID id) {
+    public Attendance id(UUID id) {
         this.id = id;
         return this;
     }
 
-    public Attendence user(User user) {
+    public Attendance user(User user) {
         this.user = user;
         return this;
     }
 
-    public Attendence type(String type) {
+    public Attendance type(String type) {
         this.type = type;
         return this;
     }
 
-    public Attendence dateTime(ZonedDateTime dateTime) {
+    public Attendance dateTime(ZonedDateTime dateTime) {
         this.dateTime = dateTime;
         return this;
     }
 
-    public Attendence action(String action) {
+    public Attendance action(String action) {
         this.action = action;
         return this;
     }
 
-    public Attendence latitude(double latitude) {
+    public Attendance latitude(double latitude) {
         this.latitude = latitude;
         return this;
     }
 
-    public Attendence longitude(double longitude) {
+    public Attendance longitude(double longitude) {
         this.longitude = longitude;
         return this;
     }
 
-    public Attendence isMockLocation(boolean isMockLocation) {
+    public Attendance isMockLocation(boolean isMockLocation) {
         this.isMockLocation = isMockLocation;
         return this;
     }
 
-    public Attendence picturePath(String picturePath) {
+    public Attendance picturePath(String picturePath) {
         this.picturePath = picturePath;
         return this;
     }
@@ -198,10 +198,10 @@ public abstract class Attendence extends Auditable<String> implements Serializab
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Attendence)) {
+        if (!(o instanceof Attendance)) {
             return false;
         }
-        Attendence attendence = (Attendence) o;
+        Attendance attendence = (Attendance) o;
         return Objects.equals(id, attendence.id);
     }
 

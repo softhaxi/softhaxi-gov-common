@@ -24,11 +24,15 @@ public class Notification extends Message {
 
     @JsonIgnore
     @Column(name = "level", nullable = false)
-    protected String level = "GENERAL";
+    protected String level = "PUBLIC";
 
     @JsonIgnore
     @Column(name = "assignee", nullable = false)
     protected String assignee = "ALL";
+
+    @JsonIgnore
+    @Column(name = "category", nullable = false)
+    protected String category = "GENERAL";
 
     @Column(name = "deep_link", length = 200)
     protected String deepLink;
@@ -45,10 +49,11 @@ public class Notification extends Message {
     }
 
     public Notification(User user, String content, ZonedDateTime dateTime, boolean delivered, boolean read, 
-            String level, String assignee, String deepLink, String uri, String referenceId) {
+            String level, String assignee, String category, String deepLink, String uri, String referenceId) {
         super(user, "NOTIFICATION", content, dateTime, delivered, read);
         this.level = level;
         this.assignee = assignee;
+        this.category = category;
         this.deepLink = deepLink;
         this.uri = uri;
         this.referenceId = referenceId;
@@ -68,6 +73,14 @@ public class Notification extends Message {
 
     public void setAssignee(String assignee) {
         this.assignee = assignee;
+    }
+
+    public String getCategory() {
+        return this.assignee;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getDeepLink() {
@@ -101,6 +114,11 @@ public class Notification extends Message {
 
     public Notification assignee(String assignee) {
         this.assignee = assignee;
+        return this;
+    }
+
+    public Notification category(String category) {
+        this.category = category;
         return this;
     }
 
@@ -138,7 +156,7 @@ public class Notification extends Message {
     @Override
     public String toString() {
         return "{" + " level='" + getId() + "'" + ", level='" + getLevel() + "'" + ", assignee='" + getAssignee() + "'"
-                + ", deepLink='" + getDeepLink() + "'" + ", uri='" + getUri() + "'" + ", referenceId='"
+                + ", category='" + getCategory() + "'" + ", deepLink='" + getDeepLink() + "'" + ", uri='" + getUri() + "'" + ", referenceId='"
                 + getReferenceId() + "'" + "}";
     }
 }

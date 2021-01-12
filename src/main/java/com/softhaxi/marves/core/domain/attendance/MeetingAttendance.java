@@ -1,4 +1,4 @@
-package com.softhaxi.marves.core.domain.attendence;
+package com.softhaxi.marves.core.domain.attendance;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -15,9 +15,9 @@ import com.softhaxi.marves.core.domain.account.User;
  * @since 1
  */
 @Entity
-@Table(name = "meeting_attendences")
+@Table(name = "meeting_attendances")
 @Access(value = AccessType.FIELD)
-public class MeetingAttendence extends Attendence {
+public class MeetingAttendance extends Attendance {
 
     /**
      *
@@ -49,11 +49,11 @@ public class MeetingAttendence extends Attendence {
     protected String endTime;
 
 
-    public MeetingAttendence() {
+    public MeetingAttendance() {
         setType("MEETING");
     }
 
-    public MeetingAttendence(String id, User user, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
+    public MeetingAttendance(String id, User user, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
     String code, String referenceId, String location, String organizer, String title, String description, String startTime, String endTime) {
         super(user, "MEETING", dateTime, action, latitude, longitude, isMockLocation, picturePath);this.code = code;
         this.referenceId = referenceId;
@@ -129,42 +129,42 @@ public class MeetingAttendence extends Attendence {
         this.endTime = endTime;
     }
 
-    public MeetingAttendence code(String code) {
+    public MeetingAttendance code(String code) {
         this.code = code;
         return this;
     }
 
-    public MeetingAttendence referenceId(String referenceId) {
+    public MeetingAttendance referenceId(String referenceId) {
         this.referenceId = referenceId;
         return this;
     }
 
-    public MeetingAttendence location(String location) {
+    public MeetingAttendance location(String location) {
         this.location = location;
         return this;
     }
 
-    public MeetingAttendence organizer(String organizer) {
+    public MeetingAttendance organizer(String organizer) {
         this.organizer = organizer;
         return this;
     }
 
-    public MeetingAttendence title(String title) {
+    public MeetingAttendance title(String title) {
         this.title = title;
         return this;
     }
 
-    public MeetingAttendence description(String description) {
+    public MeetingAttendance description(String description) {
         this.description = description;
         return this;
     }
 
-    public MeetingAttendence startTime(String startTime) {
+    public MeetingAttendance startTime(String startTime) {
         this.startTime = startTime;
         return this;
     }
 
-    public MeetingAttendence endTime(String endTime) {
+    public MeetingAttendance endTime(String endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -173,11 +173,11 @@ public class MeetingAttendence extends Attendence {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof MeetingAttendence)) {
+        if (!(o instanceof MeetingAttendance)) {
             return false;
         }
-        MeetingAttendence meetingAttendence = (MeetingAttendence) o;
-        return Objects.equals(code, meetingAttendence.code);
+        MeetingAttendance meetingAttendance = (MeetingAttendance) o;
+        return Objects.equals(code, meetingAttendance.code);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.softhaxi.marves.core.domain.attendence;
+package com.softhaxi.marves.core.domain.attendance;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -16,9 +16,9 @@ import com.softhaxi.marves.core.domain.account.User;
  * @since 1
  */
 @Entity
-@Table(name = "daily_attendences")
+@Table(name = "daily_attendances")
 @Access(value = AccessType.FIELD)
-public class DailyAttendence extends Attendence {
+public class DailyAttendance extends Attendance {
 
     /**
      *
@@ -52,11 +52,11 @@ public class DailyAttendence extends Attendence {
     @Column(name = "out_work", length = 10)
     protected String outWork;
     
-    public DailyAttendence() {
+    public DailyAttendance() {
         setType("DAILY");
     }
 
-    public DailyAttendence(String id, User user, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
+    public DailyAttendance(String id, User user, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
         String workFrom, String inWork, String outAction, ZonedDateTime outDateTime, double outLatitude, double outLongitude, boolean isOutMockLocation, String outPicturePath,
         String outWork) {
         super(user, "DAILY", dateTime, action, latitude, longitude, isMockLocation, picturePath);
@@ -143,47 +143,47 @@ public class DailyAttendence extends Attendence {
         this.outWork = outWork;
     }
 
-    public DailyAttendence workFrom(String workFrom) {
+    public DailyAttendance workFrom(String workFrom) {
         this.workFrom = workFrom;
         return this;
     }
 
-    public DailyAttendence inWork(String inWork) {
+    public DailyAttendance inWork(String inWork) {
         this.inWork = inWork;
         return this;
     }
 
-    public DailyAttendence outAction(String outAction) {
+    public DailyAttendance outAction(String outAction) {
         this.outAction = outAction;
         return this;
     }
 
-    public DailyAttendence outDateTime(ZonedDateTime outDateTime) {
+    public DailyAttendance outDateTime(ZonedDateTime outDateTime) {
         this.outDateTime = outDateTime;
         return this;
     }
 
-    public DailyAttendence outLatitude(double outLatitude) {
+    public DailyAttendance outLatitude(double outLatitude) {
         this.outLatitude = outLatitude;
         return this;
     }
 
-    public DailyAttendence outLongitude(double outLongitude) {
+    public DailyAttendance outLongitude(double outLongitude) {
         this.outLongitude = outLongitude;
         return this;
     }
 
-    public DailyAttendence isOutMockLocation(boolean isOutMockLocation) {
+    public DailyAttendance isOutMockLocation(boolean isOutMockLocation) {
         this.isOutMockLocation = isOutMockLocation;
         return this;
     }
 
-    public DailyAttendence outPicturePath(String outPicturePath) {
+    public DailyAttendance outPicturePath(String outPicturePath) {
         this.outPicturePath = outPicturePath;
         return this;
     }
 
-    public DailyAttendence outWork(String outWork) {
+    public DailyAttendance outWork(String outWork) {
         this.outWork = outWork;
         return this;
     }
@@ -192,10 +192,10 @@ public class DailyAttendence extends Attendence {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof DailyAttendence)) {
+        if (!(o instanceof DailyAttendance)) {
             return false;
         }
-        Attendence dailyAttendence = (Attendence) o;
+        Attendance dailyAttendence = (Attendance) o;
         return super.equals(dailyAttendence);
     }
 

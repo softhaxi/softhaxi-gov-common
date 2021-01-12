@@ -3,6 +3,7 @@ package com.softhaxi.marves.core.service.employee;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,15 +13,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.softhaxi.marves.core.domain.account.User;
-import com.softhaxi.marves.core.domain.attendence.Attendence;
-import com.softhaxi.marves.core.domain.attendence.DailyAttendence;
-import com.softhaxi.marves.core.domain.attendence.MeetingAttendence;
+import com.softhaxi.marves.core.domain.attendance.Attendance;
+import com.softhaxi.marves.core.domain.attendance.DailyAttendance;
+import com.softhaxi.marves.core.domain.attendance.MeetingAttendance;
 import com.softhaxi.marves.core.domain.logging.ActivityLog;
 import com.softhaxi.marves.core.domain.logging.LocationLog;
 import com.softhaxi.marves.core.domain.master.Office;
-import com.softhaxi.marves.core.repository.attendence.AttendenceRepository;
-import com.softhaxi.marves.core.repository.attendence.DailyAttendenceRepository;
-import com.softhaxi.marves.core.repository.attendence.MeetingAttendenceRepository;
+import com.softhaxi.marves.core.repository.attendance.AttendanceRepository;
+import com.softhaxi.marves.core.repository.attendance.DailyAttendanceRepository;
+import com.softhaxi.marves.core.repository.attendance.MeetingAttendanceRepository;
 import com.softhaxi.marves.core.repository.master.OfficeRepository;
 import com.softhaxi.marves.core.repository.master.SystemParameterRepository;
 import com.softhaxi.marves.core.service.logging.LoggerService;
@@ -41,13 +42,13 @@ public class AbsenceService {
     private static final Logger logger = LoggerFactory.getLogger(AbsenceService.class);
 
     @Autowired
-    private AttendenceRepository attendenceRepo;
+    private AttendanceRepository attendenceRepo;
 
     @Autowired
-    private DailyAttendenceRepository dailyAttendenceRepository;
+    private DailyAttendanceRepository dailyAttendanceRepository;
 
     @Autowired
-    private MeetingAttendenceRepository meetingRepository;
+    private MeetingAttendanceRepository meetingRepository;
 
     @Autowired
     private SystemParameterRepository sysParamRepository;
@@ -74,7 +75,7 @@ public class AbsenceService {
             d -> d.plusDays(1))
             .limit(days)
             .collect(Collectors.toList());
-        Collection<Object[]> data = dailyAttendenceRepository.findStatisticWorkFromRangeDate(from.atStartOfDay(ZoneId.systemDefault()), 
+        Collection<Object[]> data = dailyAttendanceRepository.findStatisticWorkFromRangeDate(from.atStartOfDay(ZoneId.systemDefault()), 
             to.atStartOfDay(ZoneId.systemDefault()));
         logger.debug("[getDailyAbsenceCountWeekly] Date Range size... " + dateRange.size());
         for(var record : data) {
@@ -93,14 +94,14 @@ public class AbsenceService {
         return Arrays.asList(dateRange, wfo, wfh);
     }
 
-    public Attendence getLastAbsence(User user, String type, String code) {
+    public Attendance getLastAbsence(User user, String type, String code) {
         try {
-            Attendence attendence = null;
+            Attendance attendence = null;
             if(type.equalsIgnoreCase("DAILY")) {
-                attendence = dailyAttendenceRepository.findFirstByUserOrderByDateTimeDesc(user)
-                    .orElse(new DailyAttendence());
+                attendence = dailyAttendanceRepository.findFirstByUserOrderByDateTimeDesc(user)
+                    .orElse(new DailyAttendance());
             } else if(type.equalsIgnoreCase("MEETING")) {
-                attendence = meetingRepository.findFirstByUserAndCodeOrderByDateTimeDesc(user, code).orElse(new MeetingAttendence());
+                attendence = meetingRepository.findFirstByUserAndCodeOrderByDateTimeDesc(user, code).orElse(new MeetingAttendance());
             }
             return attendence;
         } catch(Exception ex) {
@@ -109,13 +110,13 @@ public class AbsenceService {
         }
     }
 
-    public Attendence save(Attendence attendence) {
+    public Attendance save(Attendance attendence) {
         ActivityLog activityLog = null;
         LocationLog locationLog = null;
-        if(attendence instanceof DailyAttendence) {
+        if(attendence instanceof DailyAttendance) {
             double limitRadiusInM = Double.parseDouble(sysParamRepository.findByCode("WFO_RADIUS_LIMIT").get().getValue());
             Office office = officeRepository.findHeadOffice().get();
-            DailyAttendence daily = (DailyAttendence) attendence;
+            DailyAttendance daily = (DailyAttendance) attendence;
             if(daily.getInWork() == null) {
                 if(daily.getLatitude() == 0.0 && daily.getLongitude() == 0.0) {
                     daily.setWorkFrom("wfh");
@@ -157,9 +158,9 @@ public class AbsenceService {
                     .longitude(daily.getOutLongitude())
                     .isMockLocation(daily.isOutMockLocation());
             }
-            attendence = dailyAttendenceRepository.save(daily);
-        } else if(attendence instanceof MeetingAttendence) {
-            MeetingAttendence meeting = (MeetingAttendence) attendence;
+            attendence = dailyAttendanceRepository.save(daily);
+        } else if(attendence instanceof MeetingAttendance) {
+            MeetingAttendance meeting = (MeetingAttendance) attendence;
             activityLog = new ActivityLog().user(meeting.getUser())
                     .actionTime(meeting.getDateTime())
                     .actionName("check.in")
@@ -184,7 +185,16 @@ public class AbsenceService {
         return attendence;
     }
 
-	public Attendence getByUserAndId(User user, UUID id) {
+	public Attendance getByUserAndId(User user, UUID id) {
 		return attendenceRepo.getByUserAndId(user, id).orElse(null);
-	}
+    }
+    
+    public Collection<?> getHistoryByUser(User user, String type, ZonedDateTime from, ZonedDateTime to) {
+        switch(type) {
+            case "daily":
+                return dailyAttendanceRepository.findHistoryByUser(user, from, to);
+            default:
+                return null;
+        }
+    }
 }
