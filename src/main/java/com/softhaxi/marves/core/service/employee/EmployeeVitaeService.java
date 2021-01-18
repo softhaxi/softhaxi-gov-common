@@ -207,12 +207,16 @@ public class EmployeeVitaeService {
             return null;
         }
         Map<?, ?> body = (Map<?, ?>) response.getBody();
-        Map<?, ?> result = (Map<?, ?>) ((List<?>) body.get("result")).get(0);
-        Map<Object, Object> data = new HashMap<>();
-        profileMapping.entrySet().forEach(entry -> data.put(entry.getValue(), result.get(entry.getKey())));
-        needUpdateUrlKey.forEach(item -> data.put(item, String.format("%s%s", marvesHRUtil.getBaseUrl(), data.get(item))));
-        // logger.info("[getPersonalInfo] Data..." + data.toString());
-        return data;
+        try {
+            Map<?, ?> result = (Map<?, ?>) ((List<?>) body.get("result")).get(0);
+            Map<Object, Object> data = new HashMap<>();
+            profileMapping.entrySet().forEach(entry -> data.put(entry.getValue(), result.get(entry.getKey())));
+            needUpdateUrlKey.forEach(item -> data.put(item, String.format("%s%s", marvesHRUtil.getBaseUrl(), data.get(item))));
+            // logger.info("[getPersonalInfo] Data..." + data.toString());
+            return data;
+        } catch(IndexOutOfBoundsException ex) {
+            return null;
+        }
     }
 
     public Map<?, ?> getEducations(String userId) {

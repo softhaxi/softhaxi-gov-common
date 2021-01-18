@@ -33,10 +33,34 @@ public class EmployeeInfoService {
     @Autowired
     private MarvesHRUtil marvesHRUtil;
 
+    private List<?> needUpdateUrlKey = List.of("thumbnail", "identity_file");
+
     private Map<Object, Object> employeeMapping = Map.ofEntries(
         entry("nama", "name"),
         entry("NIP", "employeeNumber"),
         entry("emailuser", "email")
+    );
+
+    private Map<Object, Object> findMapping = Map.ofEntries(
+        entry("NAMALENGKAP", "fullName"),
+        entry("NAMA_ONLY", "name"),
+        entry("FOTO_THUMB", "thumbnail"),
+        entry("NIP", "employeeNumber"),
+        entry("JENISPEGAWAI", "type"),
+        entry("STATUSAKTIF", "status"),
+        entry("STATUSPEGAWAI", "employement"),
+        entry("PANGKATGOLRUANG", "orgLevel"),
+        entry("KETERANGANJABATAN", "descPosition"),
+        entry("TMT_PNS", "pnsDate"),
+        entry("TMT_CPNS", "cpnsDate"),
+        entry("JABATAN_AKTIF", "position"),
+        entry("NPWP", "taxNumber"),
+        entry("UNITKERJA", "division"),
+        entry("EMAIL", "email"),
+        entry("BANK", "bankName"),
+        entry("BANK_REK", "accountNumber"),
+        entry("BANK_NAMA", "accountName"),
+        entry("NOHP", "phoneNumber")
     );
 
     private Map<Object, Object> birthdayMapping = Map.ofEntries(
@@ -72,6 +96,41 @@ public class EmployeeInfoService {
         result.forEach(item -> {
             Map<Object, Object> temp = new HashMap<>();
             employeeMapping.entrySet().forEach(entry -> temp.put(entry.getValue().toString(), item.get(entry.getKey())));
+            needUpdateUrlKey.forEach(item1 -> temp.put(item1, String.format("%s%s", marvesHRUtil.getBaseUrl(), temp.get(item1))));
+            data.add(temp);
+        });
+        return data;
+    }
+
+    public Collection<?> findEmployeeList(String keyword) {
+        RestTemplate restTemplate = new RestTemplate();
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        String token = marvesHRUtil.getAccessToken();
+        if(token == null) {
+            return null;
+        }
+        
+        headers.add("token", token);
+        MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
+        form.add("api", "find_staff");
+        form.add("NAMA", keyword.trim());
+        HttpEntity<Map<?, ?>> entity = new HttpEntity<>(form, headers);
+        ResponseEntity<?> response = restTemplate.postForEntity(String.format("%s%s", marvesHRUtil.getBaseUrl(), marvesHRUtil.getApiEndpoint()), 
+            entity, 
+            Map.class);
+        if(response.getStatusCode() != HttpStatus.OK) {
+            return null;
+        }
+        Map<?, ?> body = (Map<?, ?>) response.getBody();
+        List<Map<?, ?>> result = (List<Map<?, ?>>) body.get("result");
+        List<Map<?, ?>> data = new LinkedList<>();
+        logger.info("Number of result === " + result.size());
+        result.forEach(item -> {
+            Map<Object, Object> temp = new HashMap<>();
+            findMapping.entrySet().forEach(entry -> temp.put(entry.getValue().toString(), item.get(entry.getKey())));
+            needUpdateUrlKey.forEach(item1 -> temp.put(item1, String.format("%s%s", marvesHRUtil.getBaseUrl(), temp.get(item1))));
             data.add(temp);
         });
         return data;

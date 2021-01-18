@@ -51,6 +51,15 @@ public class DailyAttendance extends Attendance {
 
     @Column(name = "out_work", length = 10)
     protected String outWork;
+
+    @Column(name = "dispensation_code")
+    protected String dispensationCode;
+
+    @Column(name = "dispensation_type")
+    protected String dispensationType;
+
+    @Column(name = "dispensation_file")
+    protected ZonedDateTime dispensationFile;
     
     public DailyAttendance() {
         setType("DAILY");
@@ -143,6 +152,30 @@ public class DailyAttendance extends Attendance {
         this.outWork = outWork;
     }
 
+    public String getDispensationCode() {
+        return this.dispensationCode;
+    }
+
+    public void setDispensationCode(String dispensationCode) {
+        this.dispensationCode = dispensationCode;
+    }
+
+    public String getDispensationType() {
+        return this.dispensationType;
+    }
+
+    public void setDispensationType(String dispensationType) {
+        this.dispensationType = dispensationType;
+    }
+
+    public ZonedDateTime getDispensationFile() {
+        return this.dispensationFile;
+    }
+
+    public void setDispensationFile(ZonedDateTime dispensationFile) {
+        this.dispensationFile = dispensationFile;
+    }
+
     public DailyAttendance workFrom(String workFrom) {
         this.workFrom = workFrom;
         return this;
@@ -188,6 +221,21 @@ public class DailyAttendance extends Attendance {
         return this;
     }
 
+    public DailyAttendance dispensationCode(String dispensationCode) {
+        setDispensationCode(dispensationCode);
+        return this;
+    }
+
+    public DailyAttendance dispensationType(String dispensationType) {
+        setDispensationType(dispensationType);
+        return this;
+    }
+
+    public DailyAttendance dispensationFile(ZonedDateTime dispensationFile) {
+        setDispensationFile(dispensationFile);
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -216,6 +264,9 @@ public class DailyAttendance extends Attendance {
             ", isOutMockLocation='" + isOutMockLocation() + "'" +
             ", outPicturePath='" + getOutPicturePath() + "'" +
             ", outWork='" + getOutWork() + "'" +
+            ", dispensationCode='" + getDispensationCode() + "'" +
+            ", dispensationType='" + getDispensationType() + "'" +
+            ", dispensationFile='" + getDispensationFile() + "'" +
             "}";
     }
 }

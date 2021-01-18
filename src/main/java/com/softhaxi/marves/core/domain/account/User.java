@@ -303,7 +303,7 @@ public class User extends Auditable<String> implements Serializable {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(id, user.id) || Objects.equals(username, user.username);
+        return Objects.equals(id, user.id);
     }
 
     @Override

@@ -33,8 +33,8 @@ public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    @Value("${app.ldap.base-dn}")
-    private String baseDN;
+    @Value("${ldap.base.dn}")
+    private String ldapBaseDN;
 
     @Autowired
     private LdapTemplate ldapTemplate;
