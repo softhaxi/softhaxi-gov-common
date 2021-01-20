@@ -64,6 +64,8 @@ public abstract class Attendance extends Auditable<String> implements Serializab
     @Column(name = "picture_path")
     protected String picturePath;
 
+    @Column(name = "ip_address")
+    protected String ipAddress;
 
     public Attendance() {
     }
@@ -143,6 +145,14 @@ public abstract class Attendance extends Auditable<String> implements Serializab
         this.picturePath = picturePath;
     }
 
+    public String getIpAddress() {
+        return this.ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
     public String getPhotoUrl() {
         if(getPicturePath() == null)
             return null;
@@ -191,6 +201,11 @@ public abstract class Attendance extends Auditable<String> implements Serializab
 
     public Attendance picturePath(String picturePath) {
         this.picturePath = picturePath;
+        return this;
+    }
+
+    public Attendance ipAddress(String ipAddress) {
+        setIpAddress(ipAddress);
         return this;
     }
 

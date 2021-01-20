@@ -130,7 +130,8 @@ public class AbsenceService {
                 activityLog = new ActivityLog().user(daily.getUser())
                     .actionTime(daily.getDateTime())
                     .actionName("clock.in")
-                    .description(daily.getInWork());
+                    .description(daily.getInWork())
+                    .ipAddress(daily.getIpAddress());
                 locationLog = new LocationLog().user(daily.getUser())
                     .dateTime(daily.getDateTime())
                     .latitude(daily.getLatitude())
@@ -151,7 +152,8 @@ public class AbsenceService {
                 activityLog = new ActivityLog().user(daily.getUser())
                     .actionTime(daily.getOutDateTime())
                     .actionName("clock.out")
-                    .description(daily.getWorkFrom());
+                    .description(daily.getWorkFrom())
+                    .ipAddress(daily.getOutIpAddress());
                 locationLog = new LocationLog().user(daily.getUser())
                     .dateTime(daily.getOutDateTime())
                     .latitude(daily.getOutLatitude())
@@ -164,7 +166,8 @@ public class AbsenceService {
             activityLog = new ActivityLog().user(meeting.getUser())
                     .actionTime(meeting.getDateTime())
                     .actionName("check.in")
-                    .description(meeting.getCode());
+                    .description(meeting.getCode())
+                    .ipAddress(meeting.getIpAddress());
             locationLog = new LocationLog().user(meeting.getUser())
                     .dateTime(meeting.getDateTime())
                     .latitude(meeting.getLatitude())

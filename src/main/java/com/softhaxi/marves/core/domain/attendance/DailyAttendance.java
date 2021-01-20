@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softhaxi.marves.core.domain.account.User;
 
 /**
@@ -51,6 +52,9 @@ public class DailyAttendance extends Attendance {
 
     @Column(name = "out_work", length = 10)
     protected String outWork;
+    
+    @Column(name = "ip_address")
+    protected String outIpAddress;
 
     @Column(name = "dispensation_code")
     protected String dispensationCode;
@@ -63,21 +67,6 @@ public class DailyAttendance extends Attendance {
     
     public DailyAttendance() {
         setType("DAILY");
-    }
-
-    public DailyAttendance(String id, User user, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
-        String workFrom, String inWork, String outAction, ZonedDateTime outDateTime, double outLatitude, double outLongitude, boolean isOutMockLocation, String outPicturePath,
-        String outWork) {
-        super(user, "DAILY", dateTime, action, latitude, longitude, isMockLocation, picturePath);
-        this.workFrom = workFrom;
-        this.inWork = inWork;
-        this.outAction = outAction;
-        this.outDateTime = outDateTime;
-        this.outLatitude = outLatitude;
-        this.outLongitude = outLongitude;
-        this.isOutMockLocation = isOutMockLocation;
-        this.outPicturePath = outPicturePath;
-        this.outWork = outWork;
     }
 
     public String getWorkFrom() {
@@ -152,6 +141,14 @@ public class DailyAttendance extends Attendance {
         this.outWork = outWork;
     }
 
+    public String getOutIpAddress() {
+        return this.outIpAddress;
+    }
+
+    public void setOutIpAddress(String outIpAddress) {
+        this.outIpAddress = outIpAddress;
+    }
+
     public String getDispensationCode() {
         return this.dispensationCode;
     }
@@ -218,6 +215,11 @@ public class DailyAttendance extends Attendance {
 
     public DailyAttendance outWork(String outWork) {
         this.outWork = outWork;
+        return this;
+    }
+
+    public DailyAttendance outIpAddress(String outIpAddress) {
+        setOutIpAddress(outIpAddress);
         return this;
     }
 

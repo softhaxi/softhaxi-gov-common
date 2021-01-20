@@ -62,6 +62,10 @@ public class ActivityLog extends Auditable<String> implements Serializable {
     @Column(name="description")
     protected String description;
 
+    @JsonIgnore
+    @Column(name="ip_address")
+    protected String ipAddress;
+
     public ActivityLog() {
     }
 
@@ -148,6 +152,14 @@ public class ActivityLog extends Auditable<String> implements Serializable {
         this.description = description;
     }
 
+    public String getIpAddress() {
+        return this.ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
     public ActivityLog id(UUID id) {
         this.id = id;
         return this;
@@ -195,6 +207,11 @@ public class ActivityLog extends Auditable<String> implements Serializable {
 
     public ActivityLog description(String description) {
         this.description = description;
+        return this;
+    }
+
+    public ActivityLog ipAddress(String ipAddress) {
+        setIpAddress(ipAddress);
         return this;
     }
 
