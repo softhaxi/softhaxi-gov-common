@@ -1,6 +1,7 @@
 package com.softhaxi.marves.core.domain.employee;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -61,6 +62,12 @@ public class Invitation extends Auditable<String> implements Serializable {
     @Column(name = "category")
     protected String category = "INOFFICE";
 
+    @Column(name = "start_date")
+    protected LocalDate startDate;
+
+    @Column(name = "end_date")
+    protected LocalDate endDate;
+
     @Column(name = "start_time", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
     protected ZonedDateTime startTime;
 
@@ -73,9 +80,16 @@ public class Invitation extends Auditable<String> implements Serializable {
     @Column(name = "longitude")
     protected double longitude;
 
+    @Column(name = "file_name")
+    protected String fileName;
+
     @JsonIgnore
     @Column(name = "attachment")
     protected String attachement;
+
+    @JsonIgnore
+    @Column(name = "is_deleted")
+    protected boolean deleted;
 
     @JsonIgnore
     @OneToMany(mappedBy = "invitation", fetch = FetchType.LAZY)
@@ -87,10 +101,11 @@ public class Invitation extends Auditable<String> implements Serializable {
     @Transient
     protected boolean completed;
 
+
     public Invitation() {
     }
 
-    public Invitation(String type, User user, String code, String title, String description, String location, String category, ZonedDateTime startTime, ZonedDateTime endTime, double latitude, double longitude, String attachement) {
+    public Invitation(String type, User user, String code, String title, String description, String location, String category, LocalDate startDate, LocalDate endDate, ZonedDateTime startTime, ZonedDateTime endTime, double latitude, double longitude, String attachement, Set<InvitationMember> invitees, Set<Map<String,Object>> members, boolean completed) {
         this.type = type;
         this.user = user;
         this.code = code;
@@ -98,11 +113,16 @@ public class Invitation extends Auditable<String> implements Serializable {
         this.description = description;
         this.location = location;
         this.category = category;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.startTime = startTime;
         this.endTime = endTime;
         this.latitude = latitude;
         this.longitude = longitude;
         this.attachement = attachement;
+        this.invitees = invitees;
+        this.members = members;
+        this.completed = completed;
     }
 
     public String getType() {
@@ -161,6 +181,22 @@ public class Invitation extends Auditable<String> implements Serializable {
         this.category = category;
     }
 
+    public LocalDate getStartDate() {
+        return this.startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return this.endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
     public ZonedDateTime getStartTime() {
         return this.startTime;
     }
@@ -193,6 +229,14 @@ public class Invitation extends Auditable<String> implements Serializable {
         this.longitude = longitude;
     }
 
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public String getAttachement() {
         return this.attachement;
     }
@@ -209,7 +253,19 @@ public class Invitation extends Auditable<String> implements Serializable {
         this.invitees = invitees;
     }
 
-    public void setMembers(Set<Map<String, Object>> members) {
+    public boolean isDeleted() {
+        return this.deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Set<Map<String,Object>> getMembers() {
+        return this.members;
+    }
+
+    public void setMembers(Set<Map<String,Object>> members) {
         this.members = members;
     }
 
@@ -225,10 +281,6 @@ public class Invitation extends Auditable<String> implements Serializable {
         if(getAttachement() == null)
             return null;
         return String.format("/asset%s", getAttachement());
-    }
-
-    public Set<Map<String, Object>> getMembers() {
-        return this.members;
     }
 
     public Invitation type(String type) {
@@ -266,6 +318,16 @@ public class Invitation extends Auditable<String> implements Serializable {
         return this;
     }
 
+    public Invitation startDate(LocalDate startDate) {
+        setStartDate(startDate);
+        return this;
+    }
+
+    public Invitation endDate(LocalDate endDate) {
+        setEndDate(endDate);
+        return this;
+    }
+
     public Invitation startTime(ZonedDateTime startTime) {
         setStartTime(startTime);
         return this;
@@ -285,9 +347,34 @@ public class Invitation extends Auditable<String> implements Serializable {
         setLongitude(longitude);
         return this;
     }
+    
+    public Invitation fileName(String fileName) {
+        setFileName(fileName);
+        return this;
+    }
 
     public Invitation attachement(String attachement) {
         setAttachement(attachement);
+        return this;
+    }
+
+    public Invitation deleted(boolean deleted) {
+        setDeleted(deleted);
+        return this;
+    }
+
+    public Invitation invitees(Set<InvitationMember> invitees) {
+        setInvitees(invitees);
+        return this;
+    }
+
+    public Invitation members(Set<Map<String,Object>> members) {
+        setMembers(members);
+        return this;
+    }
+
+    public Invitation completed(boolean completed) {
+        setCompleted(completed);
         return this;
     }
 
@@ -304,25 +391,29 @@ public class Invitation extends Auditable<String> implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, user.getId(), code, title, description, location, category, startTime, endTime, latitude, longitude, attachement);
+        return Objects.hash(type, user, code, title, description, location, category, startDate, endDate, startTime, endTime, latitude, longitude, attachement, invitees, members, completed);
     }
 
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
-            ", type='" + getType() + "'" +
-            ", user='" + getUser().getId() + "'" +
+            " type='" + getType() + "'" +
+            ", user='" + getUser() + "'" +
             ", code='" + getCode() + "'" +
             ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
             ", location='" + getLocation() + "'" +
             ", category='" + getCategory() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
             ", startTime='" + getStartTime() + "'" +
             ", endTime='" + getEndTime() + "'" +
             ", latitude='" + getLatitude() + "'" +
             ", longitude='" + getLongitude() + "'" +
             ", attachement='" + getAttachement() + "'" +
+            ", invitees='" + getInvitees() + "'" +
+            ", members='" + getMembers() + "'" +
+            ", completed='" + isCompleted() + "'" +
             "}";
     }
 

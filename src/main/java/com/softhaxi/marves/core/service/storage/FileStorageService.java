@@ -48,7 +48,12 @@ public class FileStorageService {
                 logger.error(ex.getMessage(), ex);
             }
         }
-        rename = String.format("%s.%s", rename, filename.substring(filename.lastIndexOf(".") + 1));
+        if(rename != null) {
+            rename = String.format("%s.%s", rename, filename.substring(filename.lastIndexOf(".") + 1));
+        } else {
+            rename = filename;
+        }
+        
         Path targetPath = targetFolder.resolve(rename);
         logger.info("[store] Target path.." + targetPath.toString());
         Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);

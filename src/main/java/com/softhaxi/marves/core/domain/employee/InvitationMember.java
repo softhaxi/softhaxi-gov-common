@@ -53,6 +53,9 @@ public class InvitationMember extends Auditable<String> implements Serializable 
     @Column(name = "is_organizer")
     protected boolean organizer;
 
+    @JsonIgnore
+    @Column(name = "is_deleted")
+    protected boolean deleted;
 
     public InvitationMember() {
     }
@@ -118,6 +121,14 @@ public class InvitationMember extends Auditable<String> implements Serializable 
         this.organizer = organizer;
     }
 
+    public boolean isDeleted() {
+        return this.deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public InvitationMember invitation(Invitation invitation) {
         setInvitation(invitation);
         return this;
@@ -148,6 +159,11 @@ public class InvitationMember extends Auditable<String> implements Serializable 
         return this;
     }
 
+    public InvitationMember deleted(boolean deleted) {
+        setDeleted(deleted);
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -161,7 +177,7 @@ public class InvitationMember extends Auditable<String> implements Serializable 
 
     @Override
     public int hashCode() {
-        return Objects.hash(invitation, onBehalfOf, user, response, status, organizer);
+        return Objects.hash(invitation.getId(), user.getId(), response, status, organizer);
     }
 
     @Override
