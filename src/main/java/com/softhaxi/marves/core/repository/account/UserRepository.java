@@ -1,6 +1,7 @@
 package com.softhaxi.marves.core.repository.account;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,4 +26,8 @@ public interface UserRepository extends JpaRepository<User, UUID>{
 
     @Query("FROM User u left join UserRole ur on u.id = ur.user.id left join Role r on r.id = ur.role.id where r.name='MOBILE'")
     public Collection<User> findAllNonAdminUsers();
+    
+    //@Query("FROM User u left join UserRole ur on u.id = ur.user.id left join Role r on r.id = ur.role.id where r.name='MOBILE' and u.username like ?1%")
+    @Query("FROM User u left join UserRole ur on u.id = ur.user.id left join Role r on r.id = ur.role.id where r.name='MOBILE' and lower(u.username) like lower(concat('%', ?1,'%'))")
+    public List<User> findUserByUsernameLike(String username);
 }

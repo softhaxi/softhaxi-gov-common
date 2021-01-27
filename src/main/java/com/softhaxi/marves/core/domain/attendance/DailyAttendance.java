@@ -1,6 +1,9 @@
 package com.softhaxi.marves.core.domain.attendance;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 import javax.persistence.Access;
@@ -49,10 +52,12 @@ public class DailyAttendance extends Attendance {
 
     @Column(name = "out_work", length = 10)
     protected String outWork;
-    
+
     @Column(name = "ip_address")
     protected String outIpAddress;
-    
+
+    protected transient String workDuration;
+
     public DailyAttendance() {
         setType("DAILY");
     }
@@ -187,6 +192,14 @@ public class DailyAttendance extends Attendance {
         return this;
     }
 
+    public String getWorkDuration() {
+        Duration duration = Duration.between(this.dateTime, this.outDateTime);
+        long seconds = duration.getSeconds();
+        long absSeconds = Math.abs(seconds);
+        String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60, absSeconds % 60);
+        return seconds < 0 ? "-" + positive : positive;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -200,21 +213,17 @@ public class DailyAttendance extends Attendance {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), workFrom, inWork, outAction, outDateTime, outLatitude, outLongitude, isOutMockLocation, outPicturePath, outWork);
+        return Objects.hash(super.hashCode(), workFrom, inWork, outAction, outDateTime, outLatitude, outLongitude,
+                isOutMockLocation, outPicturePath, outWork);
     }
 
     @Override
     public String toString() {
-        return "{" + super.toString() +
-            ", workFrom='" + getWorkFrom() + "'" +
-            ", inWork='" + getInWork() + "'" +
-            ", outAction='" + getOutAction() + "'" +
-            ", outDateTime='" + getOutDateTime() + "'" +
-            ", outLatitude='" + getOutLatitude() + "'" +
-            ", outLongitude='" + getOutLongitude() + "'" +
-            ", isOutMockLocation='" + isOutMockLocation() + "'" +
-            ", outPicturePath='" + getOutPicturePath() + "'" +
-            ", outWork='" + getOutWork() + "'" +
-            "}";
+        return "{" + super.toString() + ", workFrom='" + getWorkFrom() + "'" + ", inWork='" + getInWork() + "'"
+                + ", outAction='" + getOutAction() + "'" + ", outDateTime='" + getOutDateTime() + "'"
+                + ", outLatitude='" + getOutLatitude() + "'" + ", outLongitude='" + getOutLongitude() + "'"
+                + ", isOutMockLocation='" + isOutMockLocation() + "'" + ", outPicturePath='" + getOutPicturePath() + "'"
+                + ", outWork='" + getOutWork() + "'" + "}";
     }
+
 }

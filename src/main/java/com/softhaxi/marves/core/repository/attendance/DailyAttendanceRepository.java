@@ -2,6 +2,7 @@ package com.softhaxi.marves.core.repository.attendance;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,4 +28,7 @@ public interface DailyAttendanceRepository extends JpaRepository<DailyAttendance
 
     @Query("FROM DailyAttendance WHERE user = ?1 AND dateTime >= ?2 AND dateTime < ?3 ORDER BY dateTime DESC")
     public Collection<DailyAttendance> findHistoryByUser(User user, ZonedDateTime from, ZonedDateTime to);
+
+    @Query("select d from DailyAttendance d where user = ?1 and month(dateTime) = ?2 and year(dateTime) = ?3")
+     public List<DailyAttendance> findUserHistoryByMonthYear(User user, int month, int year);
 }
