@@ -1,7 +1,10 @@
 package com.softhaxi.marves.core.domain.attendance;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -193,7 +196,26 @@ public class DailyAttendance extends Attendance {
     }
 
     public String getWorkDuration() {
-        Duration duration = Duration.between(this.dateTime, this.outDateTime);
+/*        LocalDateTime localInDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse("07:30:00.00"));
+        LocalDateTime localOutDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse("16:30:00.00"));
+        if(null!=this.dateTime){
+            localInDateTime = LocalDateTime.ofInstant(this.dateTime.toInstant(), ZoneOffset.systemDefault());
+        }
+        if(null!=this.outDateTime){
+            localOutDateTime = LocalDateTime.ofInstant(this.outDateTime.toInstant(), ZoneOffset.systemDefault());
+        }*/
+
+        LocalTime localTime = LocalTime.parse("07:30:00.00");
+        LocalTime localOutTime = LocalTime.parse("16:30:00.00");
+        
+        if(null!=this.dateTime){
+            localTime = LocalTime.ofInstant(this.dateTime.toInstant(), ZoneOffset.systemDefault());
+        }
+        if(null!=this.outDateTime){
+            localTime = LocalTime.ofInstant(this.outDateTime.toInstant(), ZoneOffset.systemDefault());
+        }
+
+        Duration duration = Duration.between(localTime, localOutTime);
         long seconds = duration.getSeconds();
         long absSeconds = Math.abs(seconds);
         String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60, absSeconds % 60);
