@@ -1,12 +1,9 @@
 package com.softhaxi.marves.core.domain.attendance;
 
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 import javax.persistence.Access;
@@ -14,6 +11,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author Raja Sihombing
@@ -59,7 +57,14 @@ public class DailyAttendance extends Attendance {
     @Column(name = "ip_address")
     protected String outIpAddress;
 
-    protected transient String workDuration;
+    @Transient
+    protected String workDuration;
+
+    @Transient
+    protected boolean comeLate;
+
+    @Transient
+    protected boolean goBackEarly;
 
     public DailyAttendance() {
         setType("DAILY");
@@ -212,7 +217,7 @@ public class DailyAttendance extends Attendance {
             localTime = LocalTime.ofInstant(this.dateTime.toInstant(), ZoneOffset.systemDefault());
         }
         if(null!=this.outDateTime){
-            localTime = LocalTime.ofInstant(this.outDateTime.toInstant(), ZoneOffset.systemDefault());
+            localOutTime = LocalTime.ofInstant(this.outDateTime.toInstant(), ZoneOffset.systemDefault());
         }
 
         Duration duration = Duration.between(localTime, localOutTime);
@@ -220,6 +225,22 @@ public class DailyAttendance extends Attendance {
         long absSeconds = Math.abs(seconds);
         String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60, absSeconds % 60);
         return seconds < 0 ? "-" + positive : positive;
+    }
+
+    public boolean isComeLate() {
+        return comeLate;
+    }
+
+    public void setComeLate(boolean comeLate) {
+        this.comeLate = comeLate;
+    }
+
+    public boolean isGoBackEarly() {
+        return goBackEarly;
+    }
+
+    public void setGoBackEarly(boolean goBackEarly) {
+        this.goBackEarly = goBackEarly;
     }
 
     @Override
