@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softhaxi.marves.core.domain.Auditable;
 import com.softhaxi.marves.core.domain.access.UserRole;
 import com.softhaxi.marves.core.domain.employee.Employee;
@@ -40,31 +41,39 @@ public class User extends Auditable<String> implements Serializable {
  	@Column(name = "mobile", length = 20)
     protected String mobile;
     
+    @JsonIgnore
     @NotBlank
  	@Column(name = "password")
     protected String password;
     
+    @JsonIgnore
  	@Column(name = "status")
     protected String status = "ACTIVE";
     
  	@Column(name = "no_login_failed")
     protected int noLoginFailed = 0;
     
+    @JsonIgnore
  	@Column(name = "passphrase", length = 20)
     protected String passphrase;
     
+    @JsonIgnore
  	@Column(name = "image_security")
     protected String imageSecurity;
 
+    @JsonIgnore
  	@Column(name = "is_ldap_user")
     protected boolean isLDAPUser = true;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     protected Profile profile;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     protected Employee employee;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     protected Set<UserRole> roles;
     

@@ -1,6 +1,7 @@
 package com.softhaxi.marves.core.domain.chatting;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -45,7 +46,10 @@ public class ChatRoom extends Auditable<String> implements Serializable {
     protected Set<Chat> chats;
 
     @Transient
-    protected String lastMessage;
+    protected String recipient;
+
+    @Transient
+    protected Chat latestChat;
 
     public ChatRoom() {
     }
@@ -96,12 +100,20 @@ public class ChatRoom extends Auditable<String> implements Serializable {
         this.chats = chats;
     }
 
-    public String getLastMessage() {
-        return this.lastMessage;
+    public String getRecipient() {
+        return this.recipient;
     }
 
-    public void setLastMessage(String lastMessage) {
-        this.lastMessage = lastMessage;
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
+    }
+
+    public Chat getLatestChat() {
+        return latestChat;
+    }
+
+    public void setLatestChat(Chat latestChat) {
+        this.latestChat = latestChat;
     }
 
     public ChatRoom id(UUID id) {

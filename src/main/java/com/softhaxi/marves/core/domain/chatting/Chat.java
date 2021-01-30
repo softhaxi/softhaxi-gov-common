@@ -37,7 +37,7 @@ public class Chat extends Message {
     protected User sender;
 
     @Transient
-    protected boolean myself = false;;
+    protected boolean myself = false;
 
     public Chat() {
         this.type = "CHAT";
