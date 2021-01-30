@@ -1,5 +1,7 @@
 package com.softhaxi.marves.core.repository.messaging;
 
+import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,7 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface NotificationStatusRepository extends JpaRepository<NotificationStatus, UUID> {
-
+    
     @Query("FROM NotificationStatus WHERE message= ?1 AND user= ?2 AND delivered = false")
     public Optional<NotificationStatus> findOneUndeliveredNotificationByUser(Notification notification, User user);
 
