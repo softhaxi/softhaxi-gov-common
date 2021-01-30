@@ -31,4 +31,7 @@ public interface DailyAttendanceRepository extends JpaRepository<DailyAttendance
 
     @Query("select d from DailyAttendance d where user = ?1 and month(dateTime) = ?2 and year(dateTime) = ?3")
      public List<DailyAttendance> findUserHistoryByMonthYear(User user, int month, int year);
-}
+     
+     @Query("select count(d) from DailyAttendance d where mockLocation=true")
+     public List<DailyAttendance> getCountByFakeLocator();
+    }

@@ -10,7 +10,6 @@ import java.util.UUID;
 import com.softhaxi.marves.core.domain.account.User;
 import com.softhaxi.marves.core.domain.logging.ActivityLog;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -30,4 +29,7 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog, UUID> 
 
     @Query("FROM ActivityLog WHERE user = ?1")
     List<ActivityLog> findActivityLogByUserName(User user);
+
+    @Query("SELECT count(distinct a.user.id) FROM ActivityLog a WHERE a.actionName = ?1 ")
+    Integer findUserByActionName(String actionName);
 }

@@ -2,6 +2,7 @@ package com.softhaxi.marves.core.repository.attendance;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import com.softhaxi.marves.core.domain.account.User;
@@ -16,4 +17,7 @@ public interface DispensationRepository extends JpaRepository<Dispensation, UUID
     @Query("FROM Dispensation " +
         " WHERE user = ?1 AND startDate <= ?2 AND endDate >= ?2")
     public Collection<Dispensation> findByUserAndDate(User user, LocalDate date);
+
+    @Query("FROM Dispensation WHERE CURRENT_DATE >= startDate  AND CURRENT_DATE <= endDate")
+    public List<Dispensation> findDispensationByRangeDate();
 }
