@@ -39,4 +39,7 @@ public interface UserRepository extends JpaRepository<User, UUID>{
     "WHERE c.role.name='MOBILE' AND a.status='ACTIVE' " +
     "ORDER BY a.email ASC")
     public Collection<User> findAllActiveMobileUser();
+
+    @Query("FROM User WHERE lower(email)=lower(?1)")
+    public Optional<User> findUserByEmail(String email);
 }
