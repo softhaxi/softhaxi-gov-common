@@ -215,6 +215,7 @@ public class EmployeeVitaeService {
             // logger.info("[getPersonalInfo] Data..." + data.toString());
             return data;
         } catch(IndexOutOfBoundsException ex) {
+            logger.error(ex.getMessage(), ex);
             return null;
         }
     }
@@ -524,7 +525,9 @@ public class EmployeeVitaeService {
             data.put("children", children);
             
             temp = result.stream()
-                .filter(item -> item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Orang Tua Kandung"))
+                .filter(item -> item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Orang Tua Kandung")
+                || item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Ayah Kandung") 
+                || item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Ibu Kandung"))
                 .collect(Collectors.toList());
             List<Map<Object, Object>> parents = new LinkedList<>();
             if(temp != null) {
@@ -535,6 +538,20 @@ public class EmployeeVitaeService {
                 });
             }
             data.put("parent", parents);
+
+            temp = result.stream()
+                .filter(item -> item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Saudari Kandung")
+                || item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Saudara Kandung"))
+                .collect(Collectors.toList());
+            List<Map<Object, Object>> siblings = new LinkedList<>();
+            if(temp != null) {
+                temp.forEach(item -> {
+                    Map<Object, Object> temp1 = new HashMap<>();
+                    familyMapping.entrySet().forEach(entry -> temp1.put(entry.getValue().toString(), item.get(entry.getKey())));
+                    siblings.add(temp1);
+                });
+            }
+            data.put("sibling", siblings);
 
             temp = result.stream()
                 .filter(item -> item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Mertua"))
