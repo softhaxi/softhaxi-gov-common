@@ -66,6 +66,9 @@ public class DailyAttendance extends Attendance {
     @Transient
     protected boolean goBackEarly;
 
+    @Transient 
+    protected Dispensation dispensation;
+
     public DailyAttendance() {
         setType("DAILY");
     }
@@ -134,6 +137,12 @@ public class DailyAttendance extends Attendance {
         this.outPicturePath = outPicturePath;
     }
 
+    public String getOutPhotoUrl() {
+        if(getOutPicturePath() == null)
+            return null;
+        return String.format("/asset%s", getOutPicturePath());
+    }
+
     public String getOutWork() {
         return this.outWork;
     }
@@ -148,6 +157,14 @@ public class DailyAttendance extends Attendance {
 
     public void setOutIpAddress(String outIpAddress) {
         this.outIpAddress = outIpAddress;
+    }
+
+    public Dispensation getDispensation() {
+        return dispensation;
+    }
+
+    public void setDispensation(Dispensation dispensation) {
+        this.dispensation = dispensation;
     }
 
     public DailyAttendance workFrom(String workFrom) {

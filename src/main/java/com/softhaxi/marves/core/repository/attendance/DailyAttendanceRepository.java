@@ -30,8 +30,11 @@ public interface DailyAttendanceRepository extends JpaRepository<DailyAttendance
     public Collection<DailyAttendance> findHistoryByUser(User user, ZonedDateTime from, ZonedDateTime to);
 
     @Query("select d from DailyAttendance d where user = ?1 and month(dateTime) = ?2 and year(dateTime) = ?3")
-     public List<DailyAttendance> findUserHistoryByMonthYear(User user, int month, int year);
+    public List<DailyAttendance> findUserHistoryByMonthYear(User user, int month, int year);
      
-     @Query("select count(d) from DailyAttendance d where mockLocation=true")
-     public List<DailyAttendance> getCountByFakeLocator();
-    }
+    @Query("select count(d) from DailyAttendance d where mockLocation=true")
+    public List<DailyAttendance> getCountByFakeLocator();
+
+    @Query("SELECT DISTINCT EXTRACT(YEAR FROM dateTime) FROM DailyAttendance ORDER BY EXTRACT(YEAR FROM dateTime) DESC")
+    public Collection<Object[]> findAllYearsByUser(User user);
+}
