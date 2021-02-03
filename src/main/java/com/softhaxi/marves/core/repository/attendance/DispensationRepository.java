@@ -18,6 +18,10 @@ public interface DispensationRepository extends JpaRepository<Dispensation, UUID
         " WHERE user = ?1 AND startDate <= ?2 AND endDate >= ?2")
     public Collection<Dispensation> findByUserAndDate(User user, LocalDate date);
 
+    @Query("FROM Dispensation " +
+        " WHERE user = ?1 AND startDate >= ?2 AND endDate <= ?3")
+    public Collection<Dispensation> findByUserAndBetweenDates(User user, LocalDate start, LocalDate end);
+
     @Query("FROM Dispensation WHERE CURRENT_DATE >= startDate  AND CURRENT_DATE <= endDate")
     public List<Dispensation> findDispensationByRangeDate();
 }
