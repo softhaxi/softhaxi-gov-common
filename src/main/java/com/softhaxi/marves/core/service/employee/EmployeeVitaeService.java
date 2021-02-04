@@ -502,7 +502,8 @@ public class EmployeeVitaeService {
         // logger.info("[getFamily]Result..." + result.toString());
         if(result != null && !result.isEmpty()) {
             List<Map<?, ?>> temp = result.stream()
-                .filter(item -> item.get("F_HUBUNGAN").toString().equalsIgnoreCase("SUAMI") || item.get("F_HUBUNGAN").toString().equalsIgnoreCase("ISTRI"))
+                .filter(item -> item.get("F_HUBUNGAN") != null
+                    && (item.get("F_HUBUNGAN").toString().equalsIgnoreCase("SUAMI") || item.get("F_HUBUNGAN").toString().equalsIgnoreCase("ISTRI")))
                 .collect(Collectors.toList());
             Map<Object, Object> spouse = new HashMap<>();
             if(temp != null && !temp.isEmpty()) {
@@ -512,7 +513,8 @@ public class EmployeeVitaeService {
             data.put("spouse", spouse);
 
             temp = result.stream()
-                .filter(item -> item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Anak Kandung"))
+                .filter(item -> item.get("F_HUBUNGAN") != null
+                    && item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Anak Kandung"))
                 .collect(Collectors.toList());
             List<Map<Object, Object>> children = new LinkedList<>();
             if(temp != null) {
@@ -525,9 +527,10 @@ public class EmployeeVitaeService {
             data.put("children", children);
             
             temp = result.stream()
-                .filter(item -> item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Orang Tua Kandung")
+                .filter(item -> item.get("F_HUBUNGAN") != null
+                && (item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Orang Tua Kandung")
                 || item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Ayah Kandung") 
-                || item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Ibu Kandung"))
+                || item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Ibu Kandung")))
                 .collect(Collectors.toList());
             List<Map<Object, Object>> parents = new LinkedList<>();
             if(temp != null) {
@@ -540,8 +543,9 @@ public class EmployeeVitaeService {
             data.put("parent", parents);
 
             temp = result.stream()
-                .filter(item -> item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Saudari Kandung")
-                || item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Saudara Kandung"))
+                .filter(item -> item.get("F_HUBUNGAN") != null
+                && (item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Saudari Kandung")
+                || item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Saudara Kandung")))
                 .collect(Collectors.toList());
             List<Map<Object, Object>> siblings = new LinkedList<>();
             if(temp != null) {
@@ -554,7 +558,8 @@ public class EmployeeVitaeService {
             data.put("sibling", siblings);
 
             temp = result.stream()
-                .filter(item -> item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Mertua"))
+                .filter(item -> item.get("F_HUBUNGAN") != null
+                && item.get("F_HUBUNGAN").toString().equalsIgnoreCase("Mertua"))
                 .collect(Collectors.toList());
             List<Map<Object, Object>> parentInLaws = new LinkedList<>();
             if(temp != null) {
