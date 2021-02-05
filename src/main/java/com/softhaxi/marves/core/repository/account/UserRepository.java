@@ -31,7 +31,7 @@ public interface UserRepository extends JpaRepository<User, UUID>{
     @Query("FROM User u left join UserRole ur on u.id = ur.user.id "+
     "left join Role r on r.id = ur.role.id"+
     " left join Profile p on p.user.id=u.id "+
-    " where r.name='MOBILE' and lower(p.fullName) like lower(concat('%', ?1,'%'))")
+    " where r.name='MOBILE' and lower(p.fullName) like lower(concat(?1,'%'))")
     public List<User> findUserByUsernameLike(String username);
 
     @Query("FROM User a JOIN Profile b ON b.user.id=a.id " +

@@ -2,6 +2,7 @@ package com.softhaxi.marves.core.service.support;
 
 import java.util.Collection;
 
+import com.softhaxi.marves.core.domain.account.User;
 import com.softhaxi.marves.core.domain.support.Ticket;
 import com.softhaxi.marves.core.repository.support.TicketRepository;
 
@@ -34,5 +35,9 @@ public class TicketService {
             ticket.setStatus(action.toLowerCase().trim());
             ticketRepo.save(ticket);
         }
+    }
+
+    public Collection<Ticket> findByUserId(User user){
+        return ticketRepo.findAllByUserOrderByCreatedAt(user);
     }
 }
