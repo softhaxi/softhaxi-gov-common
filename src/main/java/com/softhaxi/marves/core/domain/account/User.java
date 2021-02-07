@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,6 +65,9 @@ public class User extends Auditable<String> implements Serializable {
     @JsonIgnore
  	@Column(name = "is_ldap_user")
     protected boolean isLDAPUser = true;
+
+    @Column(name = "onesignal_id")
+    protected String oneSignalId;
 
     @JsonIgnore
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
@@ -219,6 +223,14 @@ public class User extends Auditable<String> implements Serializable {
         this.isLDAPUser = isLDAPUser;
     }
 
+    public String getOneSignalId() {
+        return oneSignalId;
+    }
+
+    public void setOneSignalId(String oneSignalId) {
+        this.oneSignalId = oneSignalId;
+    }
+
     public Profile getProfile() {
         return this.profile;
     }
@@ -289,6 +301,16 @@ public class User extends Auditable<String> implements Serializable {
         return this;
     }
 
+    public User isLDAPUser(boolean isLDAPUser) {
+        this.isLDAPUser = isLDAPUser;
+        return this;
+    }
+
+    public User oneSignalId(String oneSignalId) {
+        this.oneSignalId = oneSignalId;
+        return this;
+    }
+
     public User roles(Set<UserRole> roles) {
         this.roles = roles;
         return this;
@@ -336,5 +358,4 @@ public class User extends Auditable<String> implements Serializable {
             ", isLDAPUser='" + isLDAPUser() + "'" +
             "}";
     }
-
 }
