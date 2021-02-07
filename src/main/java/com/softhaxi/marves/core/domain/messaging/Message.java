@@ -57,6 +57,9 @@ public abstract class Message extends Auditable<String> implements Serializable 
     @Column(name= "is_read")
     protected boolean read = false;
 
+    @Column(name= "onesignal_Id")
+    protected String oneSignalId;
+
     @JsonIgnore
     @OneToMany(mappedBy = "message", fetch = FetchType.LAZY)
     protected Set<MessageStatus> statuses;
@@ -114,6 +117,14 @@ public abstract class Message extends Auditable<String> implements Serializable 
         this.read = read;
     }
 
+    public String getOneSignalId() {
+        return oneSignalId;
+    }
+
+    public void setOneSignalId(String oneSignalId) {
+        this.oneSignalId = oneSignalId;
+    }
+
     public Set<MessageStatus> getStatuses() {
         return this.statuses;
     }
@@ -154,6 +165,11 @@ public abstract class Message extends Auditable<String> implements Serializable 
 
     public Message read(boolean read) {
         this.read = read;
+        return this;
+    }
+
+    public Message oneSignalId(String oneSignalId) {
+        this.oneSignalId = oneSignalId;
         return this;
     }
 
