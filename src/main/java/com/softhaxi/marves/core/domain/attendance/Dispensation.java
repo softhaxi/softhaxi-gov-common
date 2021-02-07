@@ -38,6 +38,9 @@ public class Dispensation extends Auditable<String> implements Serializable {
     @Column(name = "code", nullable = true, length = 50)
     protected String code;
 
+    @Column(name = "description", nullable = true, length = 100)
+    protected String description;
+
     @Column(name = "start_date")
     protected LocalDate startDate;
 
@@ -93,6 +96,14 @@ public class Dispensation extends Auditable<String> implements Serializable {
         this.code = code;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public LocalDate getStartDate() {
         return this.startDate;
     }
@@ -145,6 +156,11 @@ public class Dispensation extends Auditable<String> implements Serializable {
 
     public Dispensation code(String code) {
         setCode(code);
+        return this;
+    }
+
+    public Dispensation desciption(String description) {
+        setDescription(description);
         return this;
     }
 
