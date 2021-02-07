@@ -1,6 +1,7 @@
 package com.softhaxi.marves.core.service.support;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import com.softhaxi.marves.core.domain.account.User;
 import com.softhaxi.marves.core.domain.support.Ticket;
@@ -39,5 +40,17 @@ public class TicketService {
 
     public Collection<Ticket> findByUserId(User user){
         return ticketRepo.findAllByUserOrderByCreatedAt(user);
+    }
+
+    public Optional<Ticket> findTicketByCode(String ticketCode){
+        return ticketRepo.findTicketByCode(ticketCode);
+    }
+
+    public void updateTicketStatus(String ticketCode, String status){
+        ticketRepo.updateTicketStatus(ticketCode, status);
+    }
+
+    public Collection<Ticket> findTicketLikeCode(String strTicketCode){
+        return ticketRepo.findTicketLikeCode(strTicketCode);
     }
 }
