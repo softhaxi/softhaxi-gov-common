@@ -27,10 +27,10 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog, UUID> 
     @Query("FROM ActivityLog WHERE user = ?1 AND actionType='daily' AND actionTime >= ?2 AND actionTime <= ?3 ORDER BY actionTime DESC")
     Collection<ActivityLog> findAllUserDailyActivityOrderByActionTimeDesc(User user, ZonedDateTime startTime, ZonedDateTime endTime);
 
-    @Query("FROM ActivityLog WHERE user = ?1 and lower(actionName) like lower(concat('%', ?2,'%'))")
+    @Query("FROM ActivityLog WHERE user = ?1 and lower(actionName) like lower(concat('%', ?2,'%')) ORDER BY actionTime DESC")
     List<ActivityLog> findActivityLogByUserName(User user, String actionName);
 
-    @Query("FROM ActivityLog WHERE lower(actionName) like lower(concat('%', ?1,'%'))")
+    @Query("FROM ActivityLog WHERE lower(actionName) like lower(concat('%', ?1,'%')) ORDER BY actionTime DESC")
     List<ActivityLog> findActivityLogByAction(String actionName);
 
     @Query("SELECT count(distinct a.user.id) FROM ActivityLog a WHERE a.actionName = ?1 ")
