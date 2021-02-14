@@ -1,5 +1,6 @@
 package com.softhaxi.marves.core.service.account;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -120,5 +121,13 @@ public class UserService {
         }
 
         return user;
+    }
+
+    public List<User> findUserByUsernameLike(String username){
+        return userRepo.findUserByUsernameLike(username);
+    }
+
+    public Collection<User> findAll(){
+        return userRepo.findAllNonAdminUsers();
     }
 }

@@ -20,6 +20,10 @@ public interface InvitationRepository extends JpaRepository<Invitation, UUID> {
         " WHERE b.user = ?1 AND a.startDate <= ?2 AND a.endDate >= ?2 AND a.deleted=false AND b.deleted=false")
     public Collection<Invitation> findAllUserDailyInvitation(User user, LocalDate date);
 
+    @Query("SELECT DISTINCT a FROM Invitation a " +
+        " JOIN InvitationMember b ON b.invitation.id=a.id " +
+        " where a.createdBy = ?1 AND a.startDate = ?2 AND a.deleted=false AND b.deleted=false")
+    public Collection<Invitation> findAllUserDailyInvitationByCreated(String userId, LocalDate date);
     // public default Collection<Invitation> findAllUserDailyInvitation(User user, LocalDate actionDate) {
     //     return findAllByUserAndDate(user, 
     //         actionDate.atStartOfDay(ZoneId.systemDefault()), 
