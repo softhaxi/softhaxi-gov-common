@@ -29,6 +29,12 @@ public interface DispensationRepository extends JpaRepository<Dispensation, UUID
     @Query("FROM Dispensation WHERE CURRENT_DATE >= startDate  AND CURRENT_DATE <= endDate")
     public List<Dispensation> findDispensationByRangeDate();
 
+    @Query("SELECT COUNT(*) FROM Dispensation WHERE startDate <= ?1 AND endDate >= ?1")
+    public Object findStatisticByDate(LocalDate date);
+
+    @Query("SELECT COUNT(*) FROM Dispensation WHERE type = ?1 AND startDate <= ?2 AND endDate >= ?2")
+    public Object findStatisticByTypeAndDate(String type, LocalDate date);
+
     @Query("SELECT startDate, endDate, COUNT(startDate) " +
         " FROM Dispensation WHERE startDate >= ?1 AND endDate <= ?2" + 
         " GROUP BY startDate, endDate ORDER BY startDate")
