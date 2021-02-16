@@ -56,7 +56,7 @@ public interface NotificationRepository extends JpaRepository<Notification, UUID
         "OR A.id IN (" +
         "SELECT A.id FROM Notification A "+
             "JOIN NotificationStatus B ON B.message.id=A.id " +
-            "WHERE B.user = ?1)" +
+            "WHERE B.user = ?1) " +
         "ORDER BY A.dateTime DESC")
     public Collection<Notification> findAllByUser(User user);
 
@@ -66,4 +66,7 @@ public interface NotificationRepository extends JpaRepository<Notification, UUID
         "WHERE A.id = ?1 " +
         "AND (B.user IS NULL OR B.user = ?2)")
     public Optional<Notification> findOneByIdAndUser(UUID id, User user);
+
+    @Query("FROM Notification WHERE user = ?1 AND referenceId = ?2")
+    public Optional<Notification> findOneByUserAndReferenceId(User user, String referenceId);
 }
