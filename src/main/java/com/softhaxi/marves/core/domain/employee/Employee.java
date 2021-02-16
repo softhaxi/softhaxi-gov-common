@@ -39,7 +39,9 @@ public class Employee extends Auditable<String> implements Serializable {
 
     @Column(name = "employee_no", nullable = false, length = 50)
     protected String employeeNo;
-    
+
+    @Column(name = "division_name", length = 100)
+    protected String divisionName;
 
     public Employee() {
     }
@@ -65,6 +67,14 @@ public class Employee extends Auditable<String> implements Serializable {
         this.employeeNo = employeeNo;
     }
 
+    public String getDivisionName() {
+        return this.divisionName;
+    }
+
+    public void setDivisionName(String divisionName) {
+        this.divisionName = divisionName;
+    }
+
     public Employee id(UUID id) {
         this.id = id;
         return this;
@@ -77,6 +87,11 @@ public class Employee extends Auditable<String> implements Serializable {
 
     public Employee employeeNo(String employeeNo) {
         this.employeeNo = employeeNo;
+        return this;
+    }
+
+    public Employee divisionName(String divisionName) {
+        setDivisionName(divisionName);
         return this;
     }
 

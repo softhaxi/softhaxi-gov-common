@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.softhaxi.marves.core.util.MarvesHRUtil;
@@ -73,7 +72,8 @@ public class EmployeeVitaeService {
         entry("HOBI", "hobby"),
         entry("BANK", "bankName"),
         entry("BANK_REK", "accountNumber"),
-        entry("BANK_NAMA", "accountName")
+        entry("BANK_NAMA", "accountName"),
+        entry("UNITKERJA", "division")
     );
 
     private Map<Object, Object> educationMapping = Map.ofEntries(
