@@ -2,6 +2,7 @@ package com.softhaxi.marves.core.domain.attendance;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 import javax.persistence.Access;
@@ -16,6 +17,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softhaxi.marves.core.domain.Auditable;
 import com.softhaxi.marves.core.domain.account.User;
+import com.softhaxi.marves.core.enums.DispensationType;
 
 @Entity
 @Table(name = "dispensations")
@@ -32,6 +34,7 @@ public class Dispensation extends Auditable<String> implements Serializable {
     @JoinColumn(name = "user_id")
     protected User user;
 
+    @JsonIgnore
     @Column(name = "type", nullable = false, length = 50)
     protected String type = "LEAVE";
 
@@ -142,6 +145,17 @@ public class Dispensation extends Auditable<String> implements Serializable {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    public String getTypeDescription() {
+        DispensationType type = DispensationType.valueOf(this.type.toUpperCase());
+        return type.getValue();
+    }
+
+    public long getTakingDays() {
+        long days = ChronoUnit.DAYS.between(startDate, endDate) + 1;
+        // System.out.println(days);
+        return days;
     }
 
     public Dispensation user(User user) {
