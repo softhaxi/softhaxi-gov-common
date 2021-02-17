@@ -34,7 +34,7 @@ public class Dispensation extends Auditable<String> implements Serializable {
     @JoinColumn(name = "user_id")
     protected User user;
 
-    @JsonIgnore
+    // @JsonIgnore
     @Column(name = "type", nullable = false, length = 50)
     protected String type = "LEAVE";
 
