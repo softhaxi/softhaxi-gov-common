@@ -33,12 +33,15 @@ public class Employee extends Auditable<String> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", nullable = false)
     protected User user;
 
     @Column(name = "employee_no", nullable = false, length = 50)
     protected String employeeNo;
+
+    @Column(name = "picture_url")
+    protected String pictureUrl;
 
     @Column(name = "division_name", length = 100)
     protected String divisionName;
@@ -46,11 +49,13 @@ public class Employee extends Auditable<String> implements Serializable {
     public Employee() {
     }
 
-    public Employee(User user, String employeeNo) {
+    public Employee(User user, String employeeNo, String pictureUrl, String divisionName) {
         this.user = user;
         this.employeeNo = employeeNo;
+        this.pictureUrl = pictureUrl;
+        this.divisionName = divisionName;
     }
-    
+
     public User getUser() {
         return this.user;
     }
@@ -67,6 +72,14 @@ public class Employee extends Auditable<String> implements Serializable {
         this.employeeNo = employeeNo;
     }
 
+    public String getPictureUrl() {
+        return this.pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
     public String getDivisionName() {
         return this.divisionName;
     }
@@ -75,18 +88,18 @@ public class Employee extends Auditable<String> implements Serializable {
         this.divisionName = divisionName;
     }
 
-    public Employee id(UUID id) {
-        this.id = id;
-        return this;
-    }
-
     public Employee user(User user) {
-        this.user = user;
+        setUser(user);
         return this;
     }
 
     public Employee employeeNo(String employeeNo) {
-        this.employeeNo = employeeNo;
+        setEmployeeNo(employeeNo);
+        return this;
+    }
+
+    public Employee pictureUrl(String pictureUrl) {
+        setPictureUrl(pictureUrl);
         return this;
     }
 
@@ -114,9 +127,10 @@ public class Employee extends Auditable<String> implements Serializable {
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
-            ", user='" + getUser() + "'" +
+            " user='" + getUser() + "'" +
             ", employeeNo='" + getEmployeeNo() + "'" +
+            ", pictureUrl='" + getPictureUrl() + "'" +
+            ", divisionName='" + getDivisionName() + "'" +
             "}";
     }
 
