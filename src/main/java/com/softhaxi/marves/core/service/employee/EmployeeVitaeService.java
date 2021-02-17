@@ -208,9 +208,13 @@ public class EmployeeVitaeService {
         }
         Map<?, ?> body = (Map<?, ?>) response.getBody();
         try {
-            Map<?, ?> result = (Map<?, ?>) ((List<?>) body.get("result")).get(0);
+            var result = (List<?>) body.get("result");
+            // logger.debug("[getPersonalInfo] result..." + result.toString());
+            if(result == null || result.isEmpty())
+                return null;
             Map<Object, Object> data = new HashMap<>();
-            profileMapping.entrySet().forEach(entry -> data.put(entry.getValue(), result.get(entry.getKey())));
+            Map<?, ?> temp = (Map<?, ?>) result.get(0);
+            profileMapping.entrySet().forEach(entry -> data.put(entry.getValue(), temp.get(entry.getKey())));
             needUpdateUrlKey.forEach(item -> data.put(item, String.format("%s%s", marvesHRUtil.getBaseUrl(), data.get(item))));
             // logger.info("[getPersonalInfo] Data..." + data.toString());
             return data;
