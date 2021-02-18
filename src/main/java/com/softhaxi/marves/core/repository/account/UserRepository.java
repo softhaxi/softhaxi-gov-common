@@ -34,7 +34,7 @@ public interface UserRepository extends JpaRepository<User, UUID>{
     " where r.name='MOBILE' and lower(p.fullName) like lower(concat(?1,'%'))")
     public List<User> findUserByUsernameLike(String username);
 
-    @Query("FROM User a JOIN Profile b ON b.user.id=a.id " +
+    @Query("SELECT a FROM User a JOIN Profile b ON b.user.id=a.id " +
     "LEFT JOIN UserRole c ON c.user.id=a.id " +
     "WHERE c.role.name='MOBILE' AND a.status='ACTIVE' " +
     "ORDER BY a.email ASC")
@@ -42,4 +42,10 @@ public interface UserRepository extends JpaRepository<User, UUID>{
 
     @Query("FROM User WHERE lower(email)=lower(?1)")
     public Optional<User> findUserByEmail(String email);
+
+    @Query("FROM User WHERE id NOT IN (SELECT e.user.id FROM Employee e)")
+    public Collection<User> findUserWithoutEmployee();
+
+    @Query("FROM User WHERE email IN (?1)")
+    public Collection<User> findAllByEmails(Collection<String> emails);
 }
