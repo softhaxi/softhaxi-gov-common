@@ -3,6 +3,7 @@ package com.softhaxi.marves.core.domain.support;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -14,12 +15,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softhaxi.marves.core.domain.Auditable;
 import com.softhaxi.marves.core.domain.account.User;
+import com.softhaxi.marves.core.domain.logging.ActivityLog;
+import com.softhaxi.marves.core.enums.TicketStatus;
 
 /**
  * @author Raja Sihombing
@@ -53,7 +56,7 @@ public class Ticket extends Auditable<String> implements Serializable {
     protected String content;
 
     @Column(name= "status")
-    protected String status = "open";
+    protected String status = "OPEN";
 
     @Column(name= "filename")
     protected String filename;
@@ -65,8 +68,11 @@ public class Ticket extends Auditable<String> implements Serializable {
     @Column(name= "sla_date", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     protected ZonedDateTime slaDate;
 
-    @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
-    protected Set<TicketComment> comments;
+    @Transient
+    protected Collection<TicketComment> comments;
+
+    @Transient
+    protected Collection<ActivityLog> activities;
 
     public Ticket() {
     }
@@ -165,12 +171,25 @@ public class Ticket extends Auditable<String> implements Serializable {
         return String.format("/asset%s", getStoragePath().replace('\\', '/'));
     }
 
-    public Set<TicketComment> getComments() {
+    public Collection<TicketComment> getComments() {
         return this.comments;
     }
 
-    public void setComments(Set<TicketComment> comments) {
+    public void setComments(Collection<TicketComment> comments) {
         this.comments = comments;
+    }
+
+    public Collection<ActivityLog> getActivities() {
+        return this.activities;
+    }
+
+    public void setActivities(Collection<ActivityLog> activities) {
+        this.activities = activities;
+    }
+
+    public String getStatusDisplay() {
+        TicketStatus status = TicketStatus.valueOf(this.status.toUpperCase());
+        return status.getValue();
     }
 
     public Ticket id(UUID id) {

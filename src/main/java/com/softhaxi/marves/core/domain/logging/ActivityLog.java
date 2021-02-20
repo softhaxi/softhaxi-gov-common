@@ -160,6 +160,13 @@ public class ActivityLog extends Auditable<String> implements Serializable {
         this.ipAddress = ipAddress;
     }
 
+    public String getAuthor() {
+        if(user.getProfile() != null)
+            return user.getProfile().getFullName();
+
+        return user.getEmail();
+    }
+
     public ActivityLog id(UUID id) {
         this.id = id;
         return this;

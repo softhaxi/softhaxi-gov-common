@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, UUID>{
     @Query("FROM User WHERE username =?1 and password=?2")
     public Optional<User> findUserByUsernameAndPassword(String username, String password);
 
-    @Query("FROM User u left join UserRole ur on u.id = ur.user.id left join Role r on r.id = ur.role.id where r.name='MOBILE'")
+    @Query("FROM User u JOIN Profile p ON p.user.id=u.id left join UserRole ur on u.id = ur.user.id left join Role r on r.id = ur.role.id where r.name='MOBILE'")
     public Collection<User> findAllNonAdminUsers();
     
     //@Query("FROM User u left join UserRole ur on u.id = ur.user.id left join Role r on r.id = ur.role.id where r.name='MOBILE' and u.username like ?1%")
@@ -46,6 +46,6 @@ public interface UserRepository extends JpaRepository<User, UUID>{
     @Query("FROM User WHERE id NOT IN (SELECT e.user.id FROM Employee e)")
     public Collection<User> findUserWithoutEmployee();
 
-    @Query("FROM User WHERE email IN (?1)")
+    @Query("SELECT a FROM User a JOIN Profile b ON b.user.id=a.id WHERE a.email IN (?1)")
     public Collection<User> findAllByEmails(Collection<String> emails);
 }

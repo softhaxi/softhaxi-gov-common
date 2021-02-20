@@ -19,13 +19,13 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface ActivityLogRepository extends JpaRepository<ActivityLog, UUID> {
     public default Collection<ActivityLog> findAllUserDailyActivity(User user, LocalDate actionDate) {
-        return findAllUserDailyActivityOrderByActionTimeDesc(user, 
-            actionDate.atStartOfDay(ZoneId.systemDefault()), 
-            actionDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
+        return findAllUserDailyActivityOrderByActionTimeDesc(user, actionDate.atStartOfDay(ZoneId.systemDefault()),
+                actionDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
     }
 
     @Query("FROM ActivityLog WHERE user = ?1 AND actionType='daily' AND actionTime >= ?2 AND actionTime <= ?3 ORDER BY actionTime DESC")
-    Collection<ActivityLog> findAllUserDailyActivityOrderByActionTimeDesc(User user, ZonedDateTime startTime, ZonedDateTime endTime);
+    Collection<ActivityLog> findAllUserDailyActivityOrderByActionTimeDesc(User user, ZonedDateTime startTime,
+            ZonedDateTime endTime);
 
     @Query("FROM ActivityLog WHERE user = ?1 and lower(actionName) like lower(concat('%', ?2,'%')) ORDER BY actionTime DESC")
     List<ActivityLog> findActivityLogByUserName(User user, String actionName);
@@ -35,4 +35,16 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog, UUID> 
 
     @Query("SELECT count(distinct a.user.id) FROM ActivityLog a WHERE a.actionName = ?1 ")
     Integer findUserByActionName(String actionName);
+
+    public default Object findStatisticByActionAndDate(String actionName, LocalDate date) {
+        return findStatisticByActionAndActionTime(actionName, date.atStartOfDay(ZoneId.systemDefault()),
+                date.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
+    }
+
+    @Query("SELECT COUNT(*) FROM ActivityLog WHERE actionName = ?1 AND actionTime >= ?2 AND actionTime <= ?3")
+    Object findStatisticByActionAndActionTime(String actionName, ZonedDateTime startTime, ZonedDateTime endTime);
+
+    @Query("FROM ActivityLog WHERE referenceId = ?1 ORDER BY actionTime DESC")
+    public Collection<ActivityLog> findAllByRefIdOrderByActionTimeDesc(String referenceId);
+
 }

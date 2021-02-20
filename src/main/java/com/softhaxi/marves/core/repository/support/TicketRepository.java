@@ -32,4 +32,19 @@ public interface TicketRepository extends JpaRepository<Ticket, UUID> {
 
     @Query("FROM Ticket where lower(code) like lower(concat('%', ?1, '%'))")
     public Collection<Ticket> findTicketLikeCode(String strTicketCode);
+
+    @Query("FROM Ticket WHERE LOWER(status) != 'closed' ORDER BY createdAt")
+    public Collection<Ticket> findAllNonClosed();
+
+    @Query("FROM Ticket WHERE LOWER(status) = 'closed' ORDER BY updatedAt DESC")
+    public Collection<Ticket> findAllClosed();
+
+    @Query("FROM Ticket WHERE user = ?1 AND LOWER(status) != 'closed' ORDER BY createdAt")
+    public Collection<Ticket> findAllNonClosedByUser(User user);
+
+    @Query("FROM Ticket WHERE user = ?1 AND LOWER(status) = 'closed' ORDER BY updatedAt DESC")
+    public Collection<Ticket> findAllClosedByUser(User user);
+
+    @Query("FROM Ticket WHERE user = ?1 AND id = ?2")
+    public Optional<Ticket> findOneByUserAndId(User user, UUID id);
 }
