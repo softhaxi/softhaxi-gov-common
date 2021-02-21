@@ -1,11 +1,15 @@
 package com.softhaxi.marves.core.domain.chatting;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -16,6 +20,8 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softhaxi.marves.core.domain.account.User;
 import com.softhaxi.marves.core.domain.messaging.Message;
+
+import org.springframework.http.MediaType;
 
 @Entity
 @Table(name = "chats")
@@ -35,6 +41,9 @@ public class Chat extends Message {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
     protected User sender;
+
+    @Column(name = "content_type", nullable = true)
+    protected String contentType = MediaType.TEXT_PLAIN_VALUE;
 
     @Transient
     protected boolean myself = false;
@@ -74,6 +83,14 @@ public class Chat extends Message {
         return this.sender.getEmail();
     }
 
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
     public boolean isMyself() {
         return this.myself;
     }
@@ -82,6 +99,13 @@ public class Chat extends Message {
         this.myself = myself;
     }
 
+    public String getDateTimeDisplay() {
+        LocalDate date = this.dateTime.toLocalDate();
+        if(date.equals(LocalDate.now())) {
+            return dateTime.format(DateTimeFormatter.ofPattern("HH:mm").withLocale(new Locale("id", "ID")));
+        }
+        return dateTime.format(DateTimeFormatter.ofPattern("dd MMM yy HH:mm").withLocale(new Locale("id", "ID")));
+    }
 
     public Chat chatRoom(ChatRoom chatRoom) {
         this.chatRoom = chatRoom;
@@ -102,6 +126,11 @@ public class Chat extends Message {
 	@Override
 	public Chat dateTime(ZonedDateTime dateTime) {
         this.dateTime = dateTime;
+		return this;
+    }
+    
+	public Chat contentType(String contentType) {
+        this.contentType = contentType;
 		return this;
 	}
 
