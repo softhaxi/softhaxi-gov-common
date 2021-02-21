@@ -130,4 +130,16 @@ public class UserService {
     public Collection<User> findAll(){
         return userRepo.findAllNonAdminUsers();
     }
+
+    public Collection<User> findAllIncludeAdmin(){
+        return userRepo.findAll();
+    }
+
+    public List<User> findUserByEmailLike(String email){
+        return userRepo.findUserByEmailLike(email);
+    }
+
+    public Optional<User> findByUsernameOrEmailIgnoreCase(String email){
+        userRepo.findByUsernameOrEmailIgnoreCase(email);
+    }
 }
