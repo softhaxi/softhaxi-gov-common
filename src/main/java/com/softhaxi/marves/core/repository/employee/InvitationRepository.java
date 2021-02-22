@@ -34,4 +34,9 @@ public interface InvitationRepository extends JpaRepository<Invitation, UUID> {
     //     " JOIN InvitationMember b ON b.invitation.id=a.id " +
     //     " WHERE b.user = ?1 AND a.startTime >= ?2 AND a.startTime <= ?3")
     // Collection<Invitation> findAllByUserAndDate(User user, ZonedDateTime startTime, ZonedDateTime endTime);
+
+    @Query("SELECT DISTINCT a FROM Invitation a " +
+    // " JOIN InvitationMember b ON b.invitation.id=a.id " +
+     " where a.createdBy = ?1 AND a.category=?2 AND a.deleted=false")
+ public Collection<Invitation> findAllUserDailyInvitationByCategory(String userId, String category, LocalDate date);
 }

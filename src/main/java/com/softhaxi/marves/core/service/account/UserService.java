@@ -140,6 +140,6 @@ public class UserService {
     }
 
     public Optional<User> findByUsernameOrEmailIgnoreCase(String email){
-        userRepo.findByUsernameOrEmailIgnoreCase(email);
+        return userRepo.findByUsernameOrEmailIgnoreCase(email);
     }
 }
