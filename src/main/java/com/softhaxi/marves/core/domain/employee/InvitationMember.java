@@ -183,9 +183,9 @@ public class InvitationMember extends Auditable<String> implements Serializable 
     @Override
     public String toString() {
         return "{" +
-            " invitation='" + getInvitation() + "'" +
+            //" invitation='" + getInvitation() + "'" +
             ", onBehalfOf='" + getOnBehalfOf() + "'" +
-            ", user='" + getUser() + "'" +
+            //", user='" + getUser() + "'" +
             ", response='" + getResponse() + "'" +
             ", status='" + getStatus() + "'" +
             ", organizer='" + isOrganizer() + "'" +

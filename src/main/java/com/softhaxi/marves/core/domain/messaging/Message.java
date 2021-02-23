@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -44,7 +45,7 @@ public abstract class Message extends Auditable<String> implements Serializable 
     @Column(name = "type", nullable = false, length = 50)
     protected String type = "MESSAGE";
 
-    @Column(name= "content")
+    @Column(name= "content", columnDefinition = "TEXT")
     protected String content;
 
     @Column(name = "date_time", columnDefinition = "TIMESTAMP WITH TIME ZONE")

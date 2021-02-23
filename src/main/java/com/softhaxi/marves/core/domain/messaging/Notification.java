@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softhaxi.marves.core.domain.account.User;
+import com.softhaxi.marves.core.enums.NotificationCategory;
 
 @Entity
 @Table(name = "notifications")
@@ -28,11 +29,11 @@ public class Notification extends Message {
 
     @JsonIgnore
     @Column(name = "assignee", nullable = false)
-    protected String assignee = "ALL";
+    protected String assignee = "ALL"; // ALL, DIVISION
 
     @JsonIgnore
     @Column(name = "category", nullable = false)
-    protected String category = "GENERAL";
+    protected String category = "GENERAL"; // GENERAL, WEDDING, CONDOLENCE, EMERGENCY, OTHERS
 
     @Column(name = "deep_link", length = 200)
     protected String deepLink;
@@ -44,12 +45,19 @@ public class Notification extends Message {
     @Column(name = "reference_id", length = 50)
     protected String referenceId;
 
+    @Column(name = "assignee_name")
+    protected String assigneeName;
+
+    @JsonIgnore
+    @Column(name = "source", length = 50)
+    protected String source = "SYSTEM"; // WEB, SYSTEM
+
     public Notification() {
         this.type = "NOTIFICATION";
     }
 
     public Notification(User user, String content, ZonedDateTime dateTime, boolean delivered, boolean read, 
-            String level, String assignee, String category, String deepLink, String uri, String referenceId) {
+            String level, String assignee, String category, String deepLink, String uri, String referenceId, String assigneeName, String source) {
         super(user, "NOTIFICATION", content, dateTime, delivered, read);
         this.level = level;
         this.assignee = assignee;
@@ -57,6 +65,8 @@ public class Notification extends Message {
         this.deepLink = deepLink;
         this.uri = uri;
         this.referenceId = referenceId;
+        this.assigneeName = assigneeName;
+        this.source = source;
     }
 
     public String getLevel() {
@@ -76,7 +86,7 @@ public class Notification extends Message {
     }
 
     public String getCategory() {
-        return this.assignee;
+        return this.category;
     }
 
     public void setCategory(String category) {
@@ -107,6 +117,31 @@ public class Notification extends Message {
         this.referenceId = referenceId;
     }
 
+    public String getAssigneeName() {
+        return this.assigneeName;
+    }
+
+    public void setAssigneeName(String assigneeName) {
+        this.assigneeName = assigneeName;
+    }
+
+    public String getSource() {
+        return this.source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getCategoryDisplay() {
+        try {
+            NotificationCategory category = NotificationCategory.valueOf(this.category.toUpperCase());
+            return category.getValue();
+        } catch(Exception ex) {
+            return null;
+        }
+    }
+
     public Notification level(String level) {
         this.level = level;
         return this;
@@ -134,6 +169,16 @@ public class Notification extends Message {
 
     public Notification referenceId(String referenceId) {
         this.referenceId = referenceId;
+        return this;
+    }
+
+    public Notification assigneeName(String assigneeName) {
+        setAssigneeName(assigneeName);
+        return this;
+    }
+
+    public Notification source(String source) {
+        setSource(source);
         return this;
     }
 
