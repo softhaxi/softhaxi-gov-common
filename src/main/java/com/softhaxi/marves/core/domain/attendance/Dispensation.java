@@ -158,6 +158,12 @@ public class Dispensation extends Auditable<String> implements Serializable {
         return days;
     }
 
+    public String getAttachmentUrl() {
+        if(getAttachment() == null)
+            return null;
+        return String.format("/asset%s", getAttachment());
+    }
+
     public Dispensation user(User user) {
         setUser(user);
         return this;
