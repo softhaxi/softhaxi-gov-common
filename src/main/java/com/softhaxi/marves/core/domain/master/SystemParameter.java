@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softhaxi.marves.core.domain.Auditable;
 
 /**
@@ -38,18 +39,22 @@ public class SystemParameter extends Auditable<String> implements Serializable {
     @Column(name = "value", nullable = true)
     protected String value;
 
+    @JsonIgnore
     @Column(name = "regex", nullable = true)
     protected String regex;
 
     @Column(name = "additional_info", nullable = true)
     protected String additionalInfo;
 
+    @JsonIgnore
     @Column(name = "is_system")
     protected boolean isSystem = false;
 
+    @JsonIgnore
     @Column(name = "is_editable")
     protected boolean isEditable = true;
 
+    @JsonIgnore
     @Column(name = "is_deleted")
     protected boolean isDeleted;
 
