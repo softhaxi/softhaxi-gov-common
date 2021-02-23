@@ -2,6 +2,7 @@ package com.softhaxi.marves.core.repository.employee;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,6 +38,6 @@ public interface InvitationRepository extends JpaRepository<Invitation, UUID> {
 
     @Query("SELECT DISTINCT a FROM Invitation a " +
     // " JOIN InvitationMember b ON b.invitation.id=a.id " +
-     " where a.createdBy = ?1 AND a.category=?2 AND a.deleted=false")
- public Collection<Invitation> findAllUserDailyInvitationByCategory(String userId, String category, LocalDate date);
+     " where a.createdBy = ?1 AND a.category IN ?2 AND a.deleted=false")
+ public Collection<Invitation> findAllUserDailyInvitationByCategory(String userId, List<String> category, LocalDate date);
 }
