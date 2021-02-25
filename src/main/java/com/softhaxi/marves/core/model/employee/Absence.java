@@ -26,20 +26,21 @@ public class Absence implements Serializable {
     private ZonedDateTime clockInTime;
     private String clockInIpAddress;
     private boolean clockInMockLocation;
+    private Duration late;
     private ZonedDateTime clockOutTime;
     private String clockOutIpAddress;
     private boolean clockOutMockLocation;
+    private Duration early;
+    private Duration working;
     private UUID dispensationId;
     private String dispensation;
     private String dispensationReason;
     private boolean weekend;
 
-
-
     public Absence() {
     }
 
-    public Absence(UUID id, UUID userId, String email, String fullName, String divisionName, String workFrom, LocalDate date, ZonedDateTime clockInTime, String clockInIpAddress, boolean clockInMockLocation, ZonedDateTime clockOutTime, String clockOutIpAddress, boolean clockOutMockLocation, UUID dispensationId, String dispensation, String dispensationReason, boolean weekend) {
+    public Absence(UUID id, UUID userId, String email, String fullName, String divisionName, String workFrom, LocalDate date, ZonedDateTime clockInTime, String clockInIpAddress, boolean clockInMockLocation, Duration late, ZonedDateTime clockOutTime, String clockOutIpAddress, boolean clockOutMockLocation, Duration early, Duration working, UUID dispensationId, String dispensation, String dispensationReason, boolean weekend) {
         this.id = id;
         this.userId = userId;
         this.email = email;
@@ -50,14 +51,17 @@ public class Absence implements Serializable {
         this.clockInTime = clockInTime;
         this.clockInIpAddress = clockInIpAddress;
         this.clockInMockLocation = clockInMockLocation;
+        this.late = late;
         this.clockOutTime = clockOutTime;
         this.clockOutIpAddress = clockOutIpAddress;
         this.clockOutMockLocation = clockOutMockLocation;
+        this.early = early;
+        this.working = working;
         this.dispensationId = dispensationId;
         this.dispensation = dispensation;
         this.dispensationReason = dispensationReason;
         this.weekend = weekend;
-    } 
+    }
 
     public UUID getId() {
         return this.id;
@@ -113,7 +117,7 @@ public class Absence implements Serializable {
 
     public void setDate(LocalDate date) {
         this.date = date;
-    } 
+    }
 
     public ZonedDateTime getClockInTime() {
         return this.clockInTime;
@@ -141,6 +145,14 @@ public class Absence implements Serializable {
 
     public void setClockInMockLocation(boolean clockInMockLocation) {
         this.clockInMockLocation = clockInMockLocation;
+    }
+
+    public Duration getLate() {
+        return this.late;
+    }
+
+    public void setLate(Duration late) {
+        this.late = late;
     }
 
     public ZonedDateTime getClockOutTime() {
@@ -171,6 +183,22 @@ public class Absence implements Serializable {
         this.clockOutMockLocation = clockOutMockLocation;
     }
 
+    public Duration getEarly() {
+        return this.early;
+    }
+
+    public void setEarly(Duration early) {
+        this.early = early;
+    }
+
+    public Duration getWorking() {
+        return this.working;
+    }
+
+    public void setWorking(Duration working) {
+        this.working = working;
+    }
+
     public UUID getDispensationId() {
         return this.dispensationId;
     }
@@ -194,14 +222,18 @@ public class Absence implements Serializable {
     public void setDispensationReason(String dispensationReason) {
         this.dispensationReason = dispensationReason;
     }
-    
+
     public boolean isWeekend() {
+        return this.weekend;
+    }
+
+    public boolean getWeekend() {
         return this.weekend;
     }
 
     public void setWeekend(boolean weekend) {
         this.weekend = weekend;
-    }  
+    }
 
     public String getStatus() {
         if(this.weekend) return "Weekend";
@@ -225,25 +257,31 @@ public class Absence implements Serializable {
         return false;
     }
 
-    public String workingDuration() {
-        LocalTime startTime = null;
-        LocalTime endTime = null;
-        if (this.clockInTime != null) {
-            startTime = LocalTime.ofInstant(this.clockInTime.toInstant(), ZoneOffset.systemDefault());
+    public String getWorkingDisplay() {
+        if(working != null) {
+            long seconds = working.getSeconds();
+            long absSeconds = Math.abs(seconds);
+            String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60,
+                    absSeconds % 60);
+            return positive;
         }
+        return null;
+    }
 
-        if (startTime != null) {
+    public String getLateDisplay() {
+        if(this.late != null) {
+            long seconds = late.getSeconds();
+            long absSeconds = Math.abs(seconds);
+            String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60,
+                    absSeconds % 60);
+            return positive;
+        }
+        return null;
+    }
 
-            if (this.clockOutTime != null) {
-                endTime = LocalTime.ofInstant(this.clockOutTime.toInstant(), ZoneOffset.systemDefault());
-            } else {
-                if (!clockInTime.toLocalDate().equals(LocalDate.now())) {
-                    return null;
-                }
-                endTime = LocalTime.now();
-            }
-            Duration duration = Duration.between(startTime, endTime);
-            long seconds = duration.getSeconds();
+    public String getEarlyDisplay() {
+        if(this.early != null) {
+            long seconds = early.getSeconds();
             long absSeconds = Math.abs(seconds);
             String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60,
                     absSeconds % 60);
@@ -281,11 +319,11 @@ public class Absence implements Serializable {
         setWorkFrom(workFrom);
         return this;
     }
-    
+
     public Absence date(LocalDate date) {
         setDate(date);
         return this;
-    } 
+    }
 
     public Absence clockInTime(ZonedDateTime clockInTime) {
         setClockInTime(clockInTime);
@@ -302,6 +340,11 @@ public class Absence implements Serializable {
         return this;
     }
 
+    public Absence late(Duration late) {
+        setLate(late);
+        return this;
+    }
+
     public Absence clockOutTime(ZonedDateTime clockOutTime) {
         setClockOutTime(clockOutTime);
         return this;
@@ -314,6 +357,16 @@ public class Absence implements Serializable {
 
     public Absence clockOutMockLocation(boolean clockOutMockLocation) {
         setClockOutMockLocation(clockOutMockLocation);
+        return this;
+    }
+
+    public Absence early(Duration early) {
+        setEarly(early);
+        return this;
+    }
+
+    public Absence working(Duration working) {
+        setWorking(working);
         return this;
     }
 
@@ -339,14 +392,27 @@ public class Absence implements Serializable {
 
     @Override
     public String toString() {
-        return "{" + " id='" + getId() + "'" + ", userId='" + getUserId() + "'" + ", email='" + getEmail() + "'"
-                + ", fullName='" + getFullName() + "'" + ", divisionName='" + getDivisionName() + "'" + ", workFrom='"
-                + getWorkFrom() + "'" + ", clockInTime='" + getClockInTime() + "'" + ", clockInIpAddress='"
-                + getClockInIpAddress() + "'" + ", clockInMockLocation='" + isClockInMockLocation() + "'"
-                + ", clockOutTime='" + getClockOutTime() + "'" + ", clockOutIpAddress='" + getClockOutIpAddress() + "'"
-                + ", clockOutMockLocation='" + isClockOutMockLocation() + "'" + ", dispensationId='"
-                + getDispensationId() + "'" + ", dispensation='" + getDispensation() + "'" + ", dispensationReason='"
-                + getDispensationReason() + "'" + "}";
+        return "{" +
+            " id='" + getId() + "'" +
+            ", userId='" + getUserId() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", fullName='" + getFullName() + "'" +
+            ", divisionName='" + getDivisionName() + "'" +
+            ", workFrom='" + getWorkFrom() + "'" +
+            ", date='" + getDate() + "'" +
+            ", clockInTime='" + getClockInTime() + "'" +
+            ", clockInIpAddress='" + getClockInIpAddress() + "'" +
+            ", clockInMockLocation='" + isClockInMockLocation() + "'" +
+            ", late='" + getLate() + "'" +
+            ", clockOutTime='" + getClockOutTime() + "'" +
+            ", clockOutIpAddress='" + getClockOutIpAddress() + "'" +
+            ", clockOutMockLocation='" + isClockOutMockLocation() + "'" +
+            ", early='" + getEarly() + "'" +
+            ", working='" + getWorking() + "'" +
+            ", dispensationId='" + getDispensationId() + "'" +
+            ", dispensation='" + getDispensation() + "'" +
+            ", dispensationReason='" + getDispensationReason() + "'" +
+            ", weekend='" + isWeekend() + "'" +
+            "}";
     }
-
 }

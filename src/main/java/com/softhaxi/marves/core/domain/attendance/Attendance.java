@@ -45,8 +45,12 @@ public abstract class Attendance extends Auditable<String> implements Serializab
     @Column(name = "type", nullable = false, length = 50)
     protected String type = "ATTENDENCE";
 
-    @Column(name = "date_time", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
+    @Column(name = "date_time", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     protected ZonedDateTime dateTime;
+
+    @JsonIgnore
+    @Column(name = "date_time_mobile", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    protected ZonedDateTime dateTimeMobile;
 
     @Column(name = "action", length = 10)
     protected String action;
@@ -68,17 +72,6 @@ public abstract class Attendance extends Auditable<String> implements Serializab
     protected String ipAddress;
 
     public Attendance() {
-    }
-
-    public Attendance(User user, String type, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath) {
-        this.user = user;
-        this.type = type;
-        this.dateTime = dateTime;
-        this.action = action;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.isMockLocation = isMockLocation;
-        this.picturePath = picturePath;
     }
 
     public User getUser() {
@@ -103,6 +96,14 @@ public abstract class Attendance extends Auditable<String> implements Serializab
 
     public void setDateTime(ZonedDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public ZonedDateTime getDateTimeMobile() {
+        return this.dateTimeMobile;
+    }
+
+    public void setDateTimeMobile(ZonedDateTime dateTimeMobile) {
+        this.dateTimeMobile = dateTimeMobile;
     }
 
     public String getAction() {
@@ -179,6 +180,11 @@ public abstract class Attendance extends Auditable<String> implements Serializab
         return this;
     }
 
+    public Attendance dateTimeMobile(ZonedDateTime dateTimeMobile) {
+        this.dateTimeMobile = dateTimeMobile;
+        return this;
+    }
+
     public Attendance action(String action) {
         this.action = action;
         return this;
@@ -232,6 +238,7 @@ public abstract class Attendance extends Auditable<String> implements Serializab
             ", user='" + getUser().getId() + "'" +
             ", type='" + getType() + "'" +
             ", dateTime='" + getDateTime() + "'" +
+            ", dateTimeMobile='" + getDateTimeMobile() + "'" +
             ", action='" + getAction() + "'" +
             ", latitude='" + getLatitude() + "'" +
             ", longitude='" + getLongitude() + "'" +

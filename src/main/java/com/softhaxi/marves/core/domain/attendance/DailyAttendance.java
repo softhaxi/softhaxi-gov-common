@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author Raja Sihombing
  * @since 1
@@ -39,6 +41,10 @@ public class DailyAttendance extends Attendance {
     @Column(name = "date_time", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     protected ZonedDateTime outDateTime;
 
+    @JsonIgnore
+    @Column(name = "date_time_mobile", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    protected ZonedDateTime outDateTimeMobile;
+
     @Column(name = "latitude", nullable = true)
     protected double outLatitude;
 
@@ -58,13 +64,13 @@ public class DailyAttendance extends Attendance {
     protected String outIpAddress;
 
     @Transient
-    protected String workDuration;
+    protected long working;
 
     @Transient
-    protected boolean comeLate;
+    protected long late;
 
     @Transient
-    protected boolean goBackEarly;
+    protected long early;
 
     @Transient 
     protected Dispensation dispensation;
@@ -103,6 +109,14 @@ public class DailyAttendance extends Attendance {
 
     public void setOutDateTime(ZonedDateTime outDateTime) {
         this.outDateTime = outDateTime;
+    }
+
+    public ZonedDateTime getOutDateTimeMobile() {
+        return this.outDateTimeMobile;
+    }
+
+    public void setOutDateTimeMobile(ZonedDateTime outDateTimeMobile) {
+        this.outDateTimeMobile = outDateTimeMobile;
     }
 
     public double getOutLatitude() {
@@ -187,6 +201,11 @@ public class DailyAttendance extends Attendance {
         return this;
     }
 
+    public DailyAttendance outDateTimeMobile(ZonedDateTime outDateTimeMobile) {
+        this.outDateTimeMobile = outDateTimeMobile;
+        return this;
+    }
+
     public DailyAttendance outLatitude(double outLatitude) {
         this.outLatitude = outLatitude;
         return this;
@@ -217,48 +236,72 @@ public class DailyAttendance extends Attendance {
         return this;
     }
 
-    public String getWorkDuration() {
-/*        LocalDateTime localInDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse("07:30:00.00"));
-        LocalDateTime localOutDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse("16:30:00.00"));
-        if(null!=this.dateTime){
-            localInDateTime = LocalDateTime.ofInstant(this.dateTime.toInstant(), ZoneOffset.systemDefault());
-        }
-        if(null!=this.outDateTime){
-            localOutDateTime = LocalDateTime.ofInstant(this.outDateTime.toInstant(), ZoneOffset.systemDefault());
-        }*/
+    public long getWorking() {
+        return this.working;
+    }
 
-        LocalTime localTime = LocalTime.parse("07:30:00.00");
-        LocalTime localOutTime = LocalTime.parse("16:30:00.00");
+    public void setWorking(long working) {
+        this.working = working;
+    }
+
+    public long getLate() {
+        return this.late;
+    }
+
+    public void setLate(long late) {
+        this.late = late;
+    }
+
+    public long getEarly() {
+        return this.early;
+    }
+
+    public void setEarly(long early) {
+        this.early = early;
+    }
+
+//     public String getWorkDuration() {
+// /*        LocalDateTime localInDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse("07:30:00.00"));
+//         LocalDateTime localOutDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse("16:30:00.00"));
+//         if(null!=this.dateTime){
+//             localInDateTime = LocalDateTime.ofInstant(this.dateTime.toInstant(), ZoneOffset.systemDefault());
+//         }
+//         if(null!=this.outDateTime){
+//             localOutDateTime = LocalDateTime.ofInstant(this.outDateTime.toInstant(), ZoneOffset.systemDefault());
+//         }*/
+
+//         LocalTime localTime = LocalTime.parse("07:30:00.00");
+//         LocalTime localOutTime = LocalTime.parse("16:30:00.00");
         
-        if(null!=this.dateTime){
-            localTime = LocalTime.ofInstant(this.dateTime.toInstant(), ZoneOffset.systemDefault());
-        }
-        if(null!=this.outDateTime){
-            localOutTime = LocalTime.ofInstant(this.outDateTime.toInstant(), ZoneOffset.systemDefault());
-        }
+//         if(null!=this.dateTime){
+//             localTime = LocalTime.ofInstant(this.dateTime.toInstant(), ZoneOffset.systemDefault());
+//         }
+//         if(null!=this.outDateTime){
+//             localOutTime = LocalTime.ofInstant(this.outDateTime.toInstant(), ZoneOffset.systemDefault());
+//         }
 
-        Duration duration = Duration.between(localTime, localOutTime);
-        long seconds = duration.getSeconds();
-        long absSeconds = Math.abs(seconds);
-        String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60, absSeconds % 60);
-        return seconds < 0 ? "-" + positive : positive;
-    }
+//         Duration duration = Duration.between(localTime, localOutTime);
+//         long seconds = duration.getSeconds();
+//         long absSeconds = Math.abs(seconds);
+//         String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60, absSeconds % 60);
+//         return seconds < 0 ? "-" + positive : positive;
+//     }
 
-    public boolean isComeLate() {
-        return comeLate;
-    }
+//     public boolean isComeLate() {
+//         return comeLate;
+//     }
 
-    public void setComeLate(boolean comeLate) {
-        this.comeLate = comeLate;
-    }
+//     public void setComeLate(boolean comeLate) {
+//         this.comeLate = comeLate;
+//     }
 
-    public boolean isGoBackEarly() {
-        return goBackEarly;
-    }
+//     public boolean isGoBackEarly() {
+//         return goBackEarly;
+//     }
 
-    public void setGoBackEarly(boolean goBackEarly) {
-        this.goBackEarly = goBackEarly;
-    }
+//     public void setGoBackEarly(boolean goBackEarly) {
+//         this.goBackEarly = goBackEarly;
+//     }
 
     @Override
     public boolean equals(Object o) {
@@ -280,10 +323,9 @@ public class DailyAttendance extends Attendance {
     @Override
     public String toString() {
         return "{" + super.toString() + ", workFrom='" + getWorkFrom() + "'" + ", inWork='" + getInWork() + "'"
-                + ", outAction='" + getOutAction() + "'" + ", outDateTime='" + getOutDateTime() + "'"
+                + ", outAction='" + getOutAction() + "'" + ", outDateTime='" + getOutDateTime() + "', outDateTimeMobile='" + getOutDateTimeMobile() + "'"
                 + ", outLatitude='" + getOutLatitude() + "'" + ", outLongitude='" + getOutLongitude() + "'"
                 + ", isOutMockLocation='" + isOutMockLocation() + "'" + ", outPicturePath='" + getOutPicturePath() + "'"
                 + ", outWork='" + getOutWork() + "'" + "}";
     }
-
 }
