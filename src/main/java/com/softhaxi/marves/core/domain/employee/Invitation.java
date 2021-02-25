@@ -71,6 +71,12 @@ public class Invitation extends Auditable<String> implements Serializable {
     @Column(name = "end_time", columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = true)
     protected ZonedDateTime endTime;
 
+    // @Column(name = "start_time_mobile", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    // protected ZonedDateTime startTimeMobile;
+
+    // @Column(name = "end_time_mobile", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    // protected ZonedDateTime endTimeMobile;
+
     @Column(name = "latitude")
     protected double latitude;
 
@@ -100,26 +106,6 @@ public class Invitation extends Auditable<String> implements Serializable {
 
 
     public Invitation() {
-    }
-
-    public Invitation(String type, User user, String code, String title, String description, String location, String category, LocalDate startDate, LocalDate endDate, ZonedDateTime startTime, ZonedDateTime endTime, double latitude, double longitude, String attachement, Set<InvitationMember> invitees, Set<Map<String,Object>> members, boolean completed) {
-        this.type = type;
-        this.user = user;
-        this.code = code;
-        this.title = title;
-        this.description = description;
-        this.location = location;
-        this.category = category;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.attachement = attachement;
-        this.invitees = invitees;
-        this.members = members;
-        this.completed = completed;
     }
 
     public String getType() {
@@ -209,6 +195,22 @@ public class Invitation extends Auditable<String> implements Serializable {
     public void setEndTime(ZonedDateTime endTime) {
         this.endTime = endTime;
     }
+
+    // public ZonedDateTime getStartTimeMobile() {
+    //     return this.startTimeMobile;
+    // }
+
+    // public void setStartTimeMobile(ZonedDateTime startTimeMobile) {
+    //     this.startTimeMobile = startTimeMobile;
+    // }
+
+    // public ZonedDateTime getEndTimeMobile() {
+    //     return this.endTimeMobile;
+    // }
+
+    // public void setEndTimeMobile(ZonedDateTime endTimeMobile) {
+    //     this.endTimeMobile = endTimeMobile;
+    // }
 
     public double getLatitude() {
         return this.latitude;
@@ -334,6 +336,16 @@ public class Invitation extends Auditable<String> implements Serializable {
         setEndTime(endTime);
         return this;
     }
+
+    // public Invitation startTimeMobile(ZonedDateTime startTimeMobile) {
+    //     setStartTimeMobile(startTimeMobile);
+    //     return this;
+    // }
+
+    // public Invitation endTimeMobile(ZonedDateTime endTimeMobile) {
+    //     setEndTimeMobile(endTimeMobile);
+    //     return this;
+    // }
 
     public Invitation latitude(double latitude) {
         setLatitude(latitude);

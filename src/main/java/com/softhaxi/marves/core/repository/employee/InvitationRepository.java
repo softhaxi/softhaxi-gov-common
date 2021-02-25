@@ -13,6 +13,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface InvitationRepository extends JpaRepository<Invitation, UUID> {
+
+    @Query("FROM Invitation " +
+        "WHERE startDate <= ?1 AND endDate >= ?1 " +
+        "AND deleted=false")
+    public Collection<Invitation> findAllDaily(LocalDate date);
+
+    @Query("FROM Invitation " +
+        "WHERE startDate <= ?1 AND endDate >= ?1 " +
+        "AND function('TO_CHAR', startTime, 'hh:mi')=  ?2 " +
+        "AND deleted=false")
+    public Collection<Invitation> findAllDailyInvitationByTime(LocalDate date, String time);
+
     @Query("SELECT a FROM Invitation a JOIN InvitationMember b ON b.invitation.id=a.id WHERE b.user = ?1 AND a.id = ?2 AND a.deleted=false AND b.deleted=false")
     public Optional<Invitation> findByUserAndId(User user, UUID id);
 
@@ -39,5 +51,5 @@ public interface InvitationRepository extends JpaRepository<Invitation, UUID> {
     @Query("SELECT DISTINCT a FROM Invitation a " +
     // " JOIN InvitationMember b ON b.invitation.id=a.id " +
      " where a.createdBy = ?1 AND a.category IN ?2 AND a.deleted=false")
- public Collection<Invitation> findAllUserDailyInvitationByCategory(String userId, List<String> category, LocalDate date);
+    public Collection<Invitation> findAllUserDailyInvitationByCategory(String userId, List<String> category, LocalDate date);
 }
