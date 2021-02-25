@@ -18,6 +18,9 @@ public interface SystemParameterRepository extends JpaRepository<SystemParameter
     @Query("FROM SystemParameter WHERE UPPER(code) = UPPER(?1)")
     public Optional<SystemParameter> findByCode(String code);
 
+    @Query("FROM SystemParameter WHERE code IN (?1)")
+    public Collection<SystemParameter> findByCodes(Collection<String> codes);
+
     @Query("FROM SystemParameter WHERE UPPER(code) like UPPER(?1)")//TODO add like %%
     public Collection<SystemParameter> findSysParamByCode(String code);
 
