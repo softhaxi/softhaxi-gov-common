@@ -14,6 +14,9 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface InvitationRepository extends JpaRepository<Invitation, UUID> {
 
+    @Query("FROM Invitation WHERE deleted=false")
+    public Collection<Invitation> findAllNotDeleted();
+
     @Query("FROM Invitation " +
         "WHERE startDate <= ?1 AND endDate >= ?1 " +
         "AND deleted=false")
