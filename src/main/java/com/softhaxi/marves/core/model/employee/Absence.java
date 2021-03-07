@@ -32,15 +32,17 @@ public class Absence implements Serializable {
     private boolean clockOutMockLocation;
     private Duration early;
     private Duration working;
+    private boolean notAbsence = false;
     private UUID dispensationId;
     private String dispensation;
     private String dispensationReason;
     private boolean weekend;
 
+
     public Absence() {
     }
 
-    public Absence(UUID id, UUID userId, String email, String fullName, String divisionName, String workFrom, LocalDate date, ZonedDateTime clockInTime, String clockInIpAddress, boolean clockInMockLocation, Duration late, ZonedDateTime clockOutTime, String clockOutIpAddress, boolean clockOutMockLocation, Duration early, Duration working, UUID dispensationId, String dispensation, String dispensationReason, boolean weekend) {
+    public Absence(UUID id, UUID userId, String email, String fullName, String divisionName, String workFrom, LocalDate date, ZonedDateTime clockInTime, String clockInIpAddress, boolean clockInMockLocation, Duration late, ZonedDateTime clockOutTime, String clockOutIpAddress, boolean clockOutMockLocation, Duration early, Duration working, boolean notAbsence, UUID dispensationId, String dispensation, String dispensationReason, boolean weekend) {
         this.id = id;
         this.userId = userId;
         this.email = email;
@@ -57,6 +59,7 @@ public class Absence implements Serializable {
         this.clockOutMockLocation = clockOutMockLocation;
         this.early = early;
         this.working = working;
+        this.notAbsence = notAbsence;
         this.dispensationId = dispensationId;
         this.dispensation = dispensation;
         this.dispensationReason = dispensationReason;
@@ -199,6 +202,14 @@ public class Absence implements Serializable {
         this.working = working;
     }
 
+    public boolean isNotAbsence() {
+        return this.notAbsence;
+    }
+
+    public void setNotAbsence(boolean notAbsence) {
+        this.notAbsence = notAbsence;
+    }
+
     public UUID getDispensationId() {
         return this.dispensationId;
     }
@@ -237,13 +248,15 @@ public class Absence implements Serializable {
 
     public String getStatus() {
         if(this.weekend) return "Weekend";
+        
         if (this.dispensationId != null) {
             DispensationType type = DispensationType.valueOf(this.dispensation);
             if (type.equals(DispensationType.OTHERS)) {
-                return dispensationReason;
+                return String.format("%s - %s", "Dispensasi", dispensationReason);
             }
             return type.getValue();
-        }
+        } else if(this.notAbsence) return "Absen";
+        
         return this.workFrom != null ? this.workFrom.toUpperCase() : null;
     }
 
@@ -370,6 +383,11 @@ public class Absence implements Serializable {
         return this;
     }
 
+    public Absence notAbsence(boolean notAbsence) {
+        setNotAbsence(notAbsence);
+        return this;
+    }
+
     public Absence dispensationId(UUID dispensationId) {
         setDispensationId(dispensationId);
         return this;
@@ -409,10 +427,12 @@ public class Absence implements Serializable {
             ", clockOutMockLocation='" + isClockOutMockLocation() + "'" +
             ", early='" + getEarly() + "'" +
             ", working='" + getWorking() + "'" +
+            ", notAbsence='" + isNotAbsence() + "'" +
             ", dispensationId='" + getDispensationId() + "'" +
             ", dispensation='" + getDispensation() + "'" +
             ", dispensationReason='" + getDispensationReason() + "'" +
             ", weekend='" + isWeekend() + "'" +
             "}";
     }
+    
 }

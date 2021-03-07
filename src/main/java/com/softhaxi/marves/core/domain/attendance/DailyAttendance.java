@@ -71,6 +71,9 @@ public class DailyAttendance extends Attendance {
 
     @Transient
     protected long early;
+    
+    @Transient
+    protected boolean notAbsence;
 
     @Transient 
     protected Dispensation dispensation;
@@ -172,6 +175,38 @@ public class DailyAttendance extends Attendance {
     public void setOutIpAddress(String outIpAddress) {
         this.outIpAddress = outIpAddress;
     }
+    
+    public long getWorking() {
+        return this.working;
+    }
+
+    public void setWorking(long working) {
+        this.working = working;
+    }
+
+    public long getLate() {
+        return this.late;
+    }
+
+    public void setLate(long late) {
+        this.late = late;
+    }
+
+    public long getEarly() {
+        return this.early;
+    }
+
+    public void setEarly(long early) {
+        this.early = early;
+    }
+
+    public boolean isNotAbsence() {
+        return this.notAbsence;
+    }
+
+    public void setNotAbsence(boolean notAbsence) {
+        this.notAbsence = notAbsence;
+    }
 
     public Dispensation getDispensation() {
         return dispensation;
@@ -235,73 +270,6 @@ public class DailyAttendance extends Attendance {
         setOutIpAddress(outIpAddress);
         return this;
     }
-
-    public long getWorking() {
-        return this.working;
-    }
-
-    public void setWorking(long working) {
-        this.working = working;
-    }
-
-    public long getLate() {
-        return this.late;
-    }
-
-    public void setLate(long late) {
-        this.late = late;
-    }
-
-    public long getEarly() {
-        return this.early;
-    }
-
-    public void setEarly(long early) {
-        this.early = early;
-    }
-
-//     public String getWorkDuration() {
-// /*        LocalDateTime localInDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse("07:30:00.00"));
-//         LocalDateTime localOutDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse("16:30:00.00"));
-//         if(null!=this.dateTime){
-//             localInDateTime = LocalDateTime.ofInstant(this.dateTime.toInstant(), ZoneOffset.systemDefault());
-//         }
-//         if(null!=this.outDateTime){
-//             localOutDateTime = LocalDateTime.ofInstant(this.outDateTime.toInstant(), ZoneOffset.systemDefault());
-//         }*/
-
-//         LocalTime localTime = LocalTime.parse("07:30:00.00");
-//         LocalTime localOutTime = LocalTime.parse("16:30:00.00");
-        
-//         if(null!=this.dateTime){
-//             localTime = LocalTime.ofInstant(this.dateTime.toInstant(), ZoneOffset.systemDefault());
-//         }
-//         if(null!=this.outDateTime){
-//             localOutTime = LocalTime.ofInstant(this.outDateTime.toInstant(), ZoneOffset.systemDefault());
-//         }
-
-//         Duration duration = Duration.between(localTime, localOutTime);
-//         long seconds = duration.getSeconds();
-//         long absSeconds = Math.abs(seconds);
-//         String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60, absSeconds % 60);
-//         return seconds < 0 ? "-" + positive : positive;
-//     }
-
-//     public boolean isComeLate() {
-//         return comeLate;
-//     }
-
-//     public void setComeLate(boolean comeLate) {
-//         this.comeLate = comeLate;
-//     }
-
-//     public boolean isGoBackEarly() {
-//         return goBackEarly;
-//     }
-
-//     public void setGoBackEarly(boolean goBackEarly) {
-//         this.goBackEarly = goBackEarly;
-//     }
 
     @Override
     public boolean equals(Object o) {
