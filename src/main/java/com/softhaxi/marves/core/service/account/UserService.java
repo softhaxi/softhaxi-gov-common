@@ -117,7 +117,7 @@ public class UserService {
         
         Role role = roleRepo.findByName("MOBILE").orElse(null);
         if(role != null) {
-            userRoleRepo.save(new UserRole(user, role));
+            userRoleRepo.save(new UserRole(user, role, false));
         }
 
         return user;

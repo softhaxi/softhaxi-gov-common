@@ -26,6 +26,12 @@ public interface UserRepository extends JpaRepository<User, UUID>{
 
     @Query("FROM User u JOIN Profile p ON p.user.id=u.id left join UserRole ur on u.id = ur.user.id left join Role r on r.id = ur.role.id where r.name='MOBILE'")
     public Collection<User> findAllNonAdminUsers();
+
+    @Query("FROM User " +
+    "WHERE id NOT IN (" +
+    "SELECT DISTINCT a.id FROM User a JOIN UserRole b ON b.user.id=a.id WHERE b.role.name='SADMIN') " + 
+    "ORDER BY createdAt DESC")
+    public Collection<User> findAllNonSuperAdminUsers();
     
     //@Query("FROM User u left join UserRole ur on u.id = ur.user.id left join Role r on r.id = ur.role.id where r.name='MOBILE' and u.username like ?1%")
     @Query("FROM User u left join UserRole ur on u.id = ur.user.id "+

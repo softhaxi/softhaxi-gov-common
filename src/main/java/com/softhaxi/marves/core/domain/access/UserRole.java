@@ -1,6 +1,7 @@
 package com.softhaxi.marves.core.domain.access;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 import javax.persistence.Access;
@@ -38,6 +39,10 @@ public class UserRole extends Auditable<String> implements Serializable {
 
     @Column(name = "description", length = 100)
     protected String description;
+
+    @Column(name = "is_removable")
+    protected boolean removable = true;
+
     
     public UserRole() {
 
@@ -49,9 +54,10 @@ public class UserRole extends Auditable<String> implements Serializable {
      * @param user
      * @param role 
      */
-    public UserRole(User user, Role role) {
+    public UserRole(User user, Role role, boolean removable) {
         this.user = user;
         this.role = role;
+        this.removable = removable;
     }
     
     /**
@@ -96,6 +102,14 @@ public class UserRole extends Auditable<String> implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    public boolean isRemovable() {
+        return this.removable;
+    }
+
+    public void setRemovable(boolean removable) {
+        this.removable = removable;
+    }
 
     public UserRole id(UUID id) {
         this.id = id;
@@ -116,6 +130,23 @@ public class UserRole extends Auditable<String> implements Serializable {
         this.description = description;
         return this;
     }
+
+    public UserRole removable(boolean removable) {
+        setRemovable(removable);
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof UserRole)) {
+            return false;
+        }
+        UserRole userRole = (UserRole) o;
+        return Objects.equals(id, userRole.id);
+    }
+    
 
     /**
      * 
