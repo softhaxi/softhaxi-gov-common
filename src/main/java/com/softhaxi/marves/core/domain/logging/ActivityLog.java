@@ -66,10 +66,14 @@ public class ActivityLog extends Auditable<String> implements Serializable {
     @Column(name="ip_address")
     protected String ipAddress;
 
+    @JsonIgnore
+    @Column(name = "is_deleted")
+    protected boolean deleted = false;
+
     public ActivityLog() {
     }
 
-    public ActivityLog(User user, String deepLink, String uri, String referenceId, String actionName, String actionType, ZonedDateTime actionTime, String description) {
+    public ActivityLog(User user, String deepLink, String uri, String referenceId, String actionName, String actionType, ZonedDateTime actionTime, String description, String ipAddress, boolean deleted) {
         this.user = user;
         this.deepLink = deepLink;
         this.uri = uri;
@@ -78,6 +82,8 @@ public class ActivityLog extends Auditable<String> implements Serializable {
         this.actionType = actionType;
         this.actionTime = actionTime;
         this.description = description;
+        this.ipAddress = ipAddress;
+        this.deleted = deleted;
     }
 
     public User getUser() {
@@ -160,6 +166,14 @@ public class ActivityLog extends Auditable<String> implements Serializable {
         this.ipAddress = ipAddress;
     }
 
+    public boolean isDeleted() {
+        return this.deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public String getAuthor() {
         if(user.getProfile() != null)
             return user.getProfile().getFullName();
@@ -219,6 +233,11 @@ public class ActivityLog extends Auditable<String> implements Serializable {
 
     public ActivityLog ipAddress(String ipAddress) {
         setIpAddress(ipAddress);
+        return this;
+    }
+
+    public ActivityLog deleted(boolean deleted) {
+        setDeleted(deleted);
         return this;
     }
 
