@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import com.softhaxi.marves.core.domain.account.User;
 import com.softhaxi.marves.core.domain.attendance.DailyAttendance;
-import com.softhaxi.marves.core.model.employee.Absence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +21,8 @@ public interface DailyAttendanceRepository extends JpaRepository<DailyAttendance
     public Optional<DailyAttendance> findFirstByOrderByDateTimeDesc();
 
     public Optional<DailyAttendance> findFirstByUserOrderByDateTimeDesc(User user);
+
+    public Optional<DailyAttendance> findByIdAndUser(UUID id, User user);
 
     @Query("SELECT CAST(a.dateTime as date), a.workFrom, COUNT(a.workFrom) "
             + " FROM DailyAttendance a WHERE a.dateTime BETWEEN ?1 AND ?2"

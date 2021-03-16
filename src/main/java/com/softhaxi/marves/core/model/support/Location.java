@@ -8,6 +8,10 @@ import java.util.Locale;
 import java.util.UUID;
 
 public class Location implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -8358717390964569960L;
     private UUID id;
     private UUID userId;
     private String email;

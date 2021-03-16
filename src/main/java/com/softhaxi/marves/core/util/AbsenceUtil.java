@@ -64,6 +64,11 @@ public class AbsenceUtil {
                     clockOutTime.getZone());
         }
 
+        Duration minWorkDuration = Duration.ofHours(8).plusMinutes(30);
+        if (clockInTime.getDayOfWeek().equals(DayOfWeek.FRIDAY)) {
+            minWorkDuration = Duration.ofHours(9);
+        }
+
         if (!calendarUtil.isWeekend(clockInTime.toLocalDate())) {
             if(clockOutTime != null) {
                 if (clockInTime.isBefore(paramClockIn) || clockInTime.isEqual(paramClockIn)) {
@@ -73,10 +78,6 @@ public class AbsenceUtil {
                         }
                     }
                 } else if (clockInTime.isAfter(paramClockIn)) {
-                    Duration minWorkDuration = Duration.ofHours(8).plusMinutes(30);
-                    if (clockInTime.getDayOfWeek().equals(DayOfWeek.FRIDAY)) {
-                        minWorkDuration = Duration.ofHours(9);
-                    }
                     Duration duration = calculateWorkDuration(clockInTime, clockOutTime, false);
                     ZonedDateTime bufferClockIn = paramClockIn.plusMinutes(clockInBuffer);
                     if(clockInTime.isAfter(bufferClockIn)) {
@@ -96,8 +97,15 @@ public class AbsenceUtil {
                         result.put("late", Duration.between(bufferClockIn, clockInTime));
                     }
                 }
-                if(!clockInTime.toLocalDate().equals(LocalDate.now())) 
+                if(!clockInTime.toLocalDate().equals(LocalDate.now())) {
                     result.put("notAbsence", true);
+                } else {
+                    result.put("outExpected", clockInTime.plusSeconds(minWorkDuration.getSeconds()));
+                }
+            }
+        } else {
+            if(clockInTime.toLocalDate().equals(LocalDate.now())) {
+                result.put("outExpected", clockInTime.plusSeconds(minWorkDuration.getSeconds()));
             }
         }
         result.put("working", calculateWorkDuration(clockInTime, clockOutTime, true));

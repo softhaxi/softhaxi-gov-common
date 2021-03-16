@@ -53,17 +53,17 @@ public class MeetingAttendance extends Attendance {
         setType("MEETING");
     }
 
-    public MeetingAttendance(String id, User user, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
-    String code, String referenceId, String location, String organizer, String title, String description, String startTime, String endTime) {
-        super(user, "MEETING", dateTime, action, latitude, longitude, isMockLocation, picturePath);this.code = code;
-        this.referenceId = referenceId;
-        this.location = location;
-        this.organizer = organizer;
-        this.title = title;
-        this.description = description;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
+    // public MeetingAttendance(String id, User user, ZonedDateTime dateTime, String action, double latitude, double longitude, boolean isMockLocation, String picturePath, 
+    // String code, String referenceId, String location, String organizer, String title, String description, String startTime, String endTime) {
+    //     super(user, "MEETING", dateTime, action, latitude, longitude, isMockLocation, picturePath);this.code = code;
+    //     this.referenceId = referenceId;
+    //     this.location = location;
+    //     this.organizer = organizer;
+    //     this.title = title;
+    //     this.description = description;
+    //     this.startTime = startTime;
+    //     this.endTime = endTime;
+    // }
 
     public String getCode() {
         return this.code;

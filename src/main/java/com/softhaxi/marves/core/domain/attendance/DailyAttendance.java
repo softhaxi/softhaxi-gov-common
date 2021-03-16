@@ -1,8 +1,7 @@
 package com.softhaxi.marves.core.domain.attendance;
 
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -14,6 +13,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.softhaxi.marves.core.domain.account.User;
+import com.softhaxi.marves.core.domain.master.CalendarEvent;
+import com.softhaxi.marves.core.enums.employee.DispensationType;
 
 /**
  * @author Raja Sihombing
@@ -73,10 +75,16 @@ public class DailyAttendance extends Attendance {
     protected long early;
     
     @Transient
+    protected ZonedDateTime outExpected;
+
+    @Transient
     protected boolean notAbsence;
 
     @Transient 
     protected Dispensation dispensation;
+
+    @Transient
+    protected CalendarEvent holiday;
 
     public DailyAttendance() {
         setType("DAILY");
@@ -200,6 +208,14 @@ public class DailyAttendance extends Attendance {
         this.early = early;
     }
 
+    public ZonedDateTime getOutExpected() {
+        return this.outExpected;
+    }
+
+    public void setOutExpected(ZonedDateTime outExpected) {
+        this.outExpected = outExpected;
+    }
+
     public boolean isNotAbsence() {
         return this.notAbsence;
     }
@@ -214,6 +230,80 @@ public class DailyAttendance extends Attendance {
 
     public void setDispensation(Dispensation dispensation) {
         this.dispensation = dispensation;
+    }
+
+    public CalendarEvent getHoliday() {
+        return holiday;
+    }
+
+    public void setHoliday(CalendarEvent holiday) {
+        this.holiday = holiday;
+    }
+
+    public boolean isWeekend() {
+        if(this.dateTime != null) {
+        return this.dateTime.toLocalDate().getDayOfWeek() == DayOfWeek.SATURDAY 
+            || this.dateTime.toLocalDate().getDayOfWeek() == DayOfWeek.SUNDAY;
+        }
+        return LocalDate.now().getDayOfWeek() == DayOfWeek.SATURDAY 
+        || LocalDate.now().getDayOfWeek() == DayOfWeek.SUNDAY;
+    }
+
+    public String getStatus() {
+        if(isWeekend()) 
+            return "Akhir Pekan";
+
+        if(this.holiday != null) return this.holiday.getDescription();
+        
+        if (this.dispensation != null) {
+            DispensationType type = DispensationType.valueOf(this.dispensation.getType());
+            if (type.equals(DispensationType.OTHERS)) {
+                return String.format("%s (%s)", this.dispensation.getDescription(), "Dispensasi");
+            }
+            return type.getValue();
+        } else if(this.notAbsence) return "Absen";
+        
+        return this.workFrom != null ? this.workFrom.toUpperCase() : null;
+    }
+
+    public boolean isFakeLocator() {
+        if (this.dateTime != null) {
+            if (this.outDateTime != null) {
+                return this.isMockLocation || this.isOutMockLocation;
+            } else
+                return this.isMockLocation;
+        }
+        return false;
+    }
+
+    public String getWorkingDisplay() {
+        if(working != 0) {
+            long absSeconds = Math.abs(working);
+            String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60,
+                    absSeconds % 60);
+            return positive;
+        }
+        return null;
+    }
+
+    public String getLateDisplay() {
+        if(this.late != 0) {
+            long absSeconds = Math.abs(late);
+            String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60,
+                    absSeconds % 60);
+            return positive;
+        }
+        return null;
+    }
+
+    public String getEarlyDisplay() {
+        if(this.early != 0) {
+            long absSeconds = Math.abs(early);
+            String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60,
+                    absSeconds % 60);
+            return positive;
+        }
+        return null;
     }
 
     public DailyAttendance workFrom(String workFrom) {
@@ -268,6 +358,22 @@ public class DailyAttendance extends Attendance {
 
     public DailyAttendance outIpAddress(String outIpAddress) {
         setOutIpAddress(outIpAddress);
+        return this;
+    }
+
+    @Override
+    public DailyAttendance user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public DailyAttendance dispensation(Dispensation dispensation) {
+        setDispensation(dispensation);
+        return this;
+    }
+
+    public DailyAttendance outExpected(ZonedDateTime outExpected) {
+        setOutExpected(outExpected);
         return this;
     }
 

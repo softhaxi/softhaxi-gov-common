@@ -18,12 +18,12 @@ import org.springframework.data.jpa.repository.Query;
  * @since 1
  */
 public interface ActivityLogRepository extends JpaRepository<ActivityLog, UUID> {
-    public default Collection<ActivityLog> findAllUserDailyActivity(User user, LocalDate actionDate) {
+    public default Collection<ActivityLog> findAllUserActivity(User user, LocalDate actionDate) {
         return findAllUserDailyActivityOrderByActionTimeDesc(user, actionDate.atStartOfDay(ZoneId.systemDefault()),
                 actionDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
     }
 
-    @Query("FROM ActivityLog WHERE user = ?1 AND actionType='daily' AND actionTime >= ?2 AND actionTime <= ?3 ORDER BY actionTime DESC")
+    @Query("FROM ActivityLog WHERE user = ?1 AND actionType <> 'audit' AND actionTime >= ?2 AND actionTime <= ?3 ORDER BY actionTime DESC")
     Collection<ActivityLog> findAllUserDailyActivityOrderByActionTimeDesc(User user, ZonedDateTime startTime,
             ZonedDateTime endTime);
 

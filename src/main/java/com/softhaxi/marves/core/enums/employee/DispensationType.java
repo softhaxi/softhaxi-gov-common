@@ -1,4 +1,4 @@
-package com.softhaxi.marves.core.enums;
+package com.softhaxi.marves.core.enums.employee;
 
 public enum DispensationType {
     SICK("Sakit"),

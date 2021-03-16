@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softhaxi.marves.core.domain.Auditable;
 import com.softhaxi.marves.core.domain.account.User;
-import com.softhaxi.marves.core.enums.DispensationType;
+import com.softhaxi.marves.core.enums.employee.DispensationType;
 
 @Entity
 @Table(name = "dispensations")

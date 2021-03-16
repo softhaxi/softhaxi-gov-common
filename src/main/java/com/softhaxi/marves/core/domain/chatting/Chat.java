@@ -45,6 +45,10 @@ public class Chat extends Message {
     @Column(name = "content_type", nullable = true)
     protected String contentType = MediaType.TEXT_PLAIN_VALUE;
 
+    @JsonIgnore
+    @Column(name = "file_path", nullable = true)
+    protected String filePath;
+
     @Transient
     protected boolean myself = false;
 
@@ -89,6 +93,20 @@ public class Chat extends Message {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getFileUrl() {
+        if(getFilePath() == null)
+            return null;
+        return String.format("/asset%s", getFilePath());
     }
 
     public boolean isMyself() {

@@ -14,6 +14,9 @@ public interface CalendarEventRepository extends JpaRepository<CalendarEvent, UU
     @Query("FROM CalendarEvent WHERE EXTRACT(YEAR FROM date) = ?1 AND deleted = false")
     public Collection<CalendarEvent> findAllByYear(int year);
 
+    @Query("FROM CalendarEvent WHERE date >= ?1 AND date <= ?2 AND type = 'holiday' AND deleted = false")
+    public Collection<CalendarEvent> findAllByDateRange(LocalDate startDate, LocalDate endDate);
+
     @Query("FROM CalendarEvent WHERE date = ?1 AND type = 'holiday' AND deleted = false")
     public Optional<CalendarEvent> findOneHolidayByDate(LocalDate date);
 }

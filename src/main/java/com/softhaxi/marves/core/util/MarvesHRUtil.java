@@ -31,22 +31,27 @@ public class MarvesHRUtil {
     private String apiEndpoint;
 
     public String getAccessToken() {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
-        form.add("username", username);
-        form.add("secret", secret);
-        HttpEntity<Map<?, ?>> entity = new HttpEntity<>(form, headers);
-        ResponseEntity<?> response = restTemplate.postForEntity(String.format("%s%s", baseUrl, tokenEndpoint), 
-            entity, 
-            Map.class);
-        if(response.getStatusCode() != HttpStatus.OK) {
+            MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
+            form.add("username", username);
+            form.add("secret", secret);
+            HttpEntity<Map<?, ?>> entity = new HttpEntity<>(form, headers);
+            ResponseEntity<?> response = restTemplate.postForEntity(String.format("%s%s", baseUrl, tokenEndpoint), 
+                entity, 
+                Map.class);
+            if(response.getStatusCode() != HttpStatus.OK) {
+                return null;
+            }
+            Map<?, ?> data = (Map<?, ?>) response.getBody();
+            return data.get("token").toString().trim();
+        } catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
-        Map<?, ?> data = (Map<?, ?>) response.getBody();
-        return data.get("token").toString().trim();
     }
 
     public String getBaseUrl() {
